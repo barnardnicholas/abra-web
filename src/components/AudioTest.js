@@ -80,6 +80,7 @@ function Lights() {
 }
 
 function AudioTests() {
+  console.log("Canvas mounting");
   const { isPlaying, setIsPlaying, soundPosition, handlePlay } = useScenario();
 
   const canvasProps = { camera: { fov: 75, position: [0, 0, 3] } };
