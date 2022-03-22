@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./App.css";
+import "./_styles/App.scss";
 import AudioTests from "./components/AudioTest";
 
 function App() {
