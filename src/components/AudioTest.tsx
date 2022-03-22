@@ -79,7 +79,19 @@ const CanvasContent: React.FC<CanvasContentProps> = ({
 
 const Canvas: React.FC = () => {
   console.log("Canvas mounting");
-  const { isPlaying, setIsPlaying, soundPosition, handlePlay } = useScenario();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [soundPosition, setSoundPosition] = useState(new Vector3(0, 0, 0));
+
+  const handlePlay = () => {
+    setSoundPosition(
+      new Vector3(
+        Math.random() * 4 - 2,
+        Math.random() * 4 - 2,
+        Math.random() * 4 - 2
+      )
+    );
+    setIsPlaying(true);
+  };
 
   const canvasProps = { camera: { fov: 75, position: new Vector3(0, 0, 3) } };
   const contentProps = { isPlaying, setIsPlaying, handlePlay, soundPosition };
