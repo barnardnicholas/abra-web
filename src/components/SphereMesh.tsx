@@ -5,7 +5,7 @@ import * as THREE from "three";
 const SphereMesh: React.FC<Props> = ({
   castShadow = true,
   visible = true,
-  position = [0, 0, 0],
+  position = new Vector3(0, 0, 0),
   ...props
 }) => {
   const { color, children } = props;
@@ -31,7 +31,7 @@ interface Props {
   color: string;
   scale?: Vector3;
   visible?: boolean;
-  position: Vector3;
+  position?: Vector3;
 }
 
 export default SphereMesh;
