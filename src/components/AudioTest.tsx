@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { Canvas, useThree } from "react-three-fiber";
+import { Canvas as ThreeCanvas, useThree } from "react-three-fiber";
 import LoopingSoundFile from "../assets/audio/background/rain-1.ogg";
 import SingleSoundFile from "../assets/audio/random/thunder/thunder-1.mp3";
 import LoopingSound from "./LoopingSound";
@@ -15,6 +15,7 @@ import Controls from "./Controls";
 import SphereMesh from "./SphereMesh";
 import useScenario from "./hooks/useScenario";
 import { Vector3, AudioListener, MeshLambertMaterial } from "three";
+import GroundPlane from "./GroundPlane";
 
 const sphereScale = new Vector3(0.25, 0.25, 0.25);
 
@@ -31,8 +32,6 @@ const CanvasContent: React.FC<CanvasContentProps> = ({
 }) => {
   const { camera } = useThree();
   const [listener] = useState(() => new AudioListener());
-
-  const planeMaterial = new MeshLambertMaterial({ color: "blue" });
 
   useEffect(() => {
     camera.add(listener);
@@ -71,22 +70,14 @@ const CanvasContent: React.FC<CanvasContentProps> = ({
             listener={listener}
           />
         </SphereMesh>
-        <mesh
-          receiveShadow
-          castShadow
-          position={[0, -2, 0]}
-          rotation={new THREE.Euler((Math.PI / 2) * -1, 0, 0)}
-          material={planeMaterial}
-        >
-          <planeGeometry attach="geometry" args={[15, 15]} />
-        </mesh>
+        <GroundPlane />
       </Suspense>
       <Controls />
     </>
   );
 };
 
-const AudioTests: React.FC = () => {
+const Canvas: React.FC = () => {
   console.log("Canvas mounting");
   const { isPlaying, setIsPlaying, soundPosition, handlePlay } = useScenario();
 
@@ -95,9 +86,9 @@ const AudioTests: React.FC = () => {
 
   return (
     <>
-      <Canvas {...canvasProps} shadows dpr={[1, 2]}>
+      <ThreeCanvas {...canvasProps} shadows dpr={[1, 2]}>
         <CanvasContent {...contentProps} />
-      </Canvas>
+      </ThreeCanvas>
       <div className="floating-controls">
         <button onClick={handlePlay} disabled={isPlaying}>
           Play sound
@@ -107,4 +98,4 @@ const AudioTests: React.FC = () => {
   );
 };
 
-export default AudioTests;
+export default Canvas;
