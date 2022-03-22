@@ -1,8 +1,8 @@
 import * as THREE from "three";
 import React, { Suspense, useEffect, useState } from "react";
 import { Canvas, useThree } from "react-three-fiber";
-import LoopingSoundFile from "../sounds/rain-1.ogg";
-import SingleSoundFile from "../sounds/thunder-1.mp3";
+import LoopingSoundFile from "../assets/audio/background/rain-1.ogg";
+import SingleSoundFile from "../assets/audio/random/thunder/thunder-1.mp3";
 import LoopingSound from "./LoopingSound";
 import SingleSound from "./SingleSound";
 import Controls from "./Controls";
