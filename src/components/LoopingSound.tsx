@@ -1,10 +1,10 @@
-import * as THREE from "three";
 import React, { useRef, useEffect } from "react";
 import { useLoader } from "react-three-fiber";
+import { PositionalAudio, AudioListener, AudioLoader } from "three";
 
-function LoopingSound({ SoundFile, listener }) {
-  const sound = useRef();
-  const buffer = useLoader(THREE.AudioLoader, SoundFile);
+const LoopingSound: React.FC<Props> = ({ soundFile, listener }) => {
+  const sound = useRef<PositionalAudio>(null!);
+  const buffer = useLoader(AudioLoader, soundFile);
 
   useEffect(() => {
     sound.current.setBuffer(buffer);
@@ -15,5 +15,10 @@ function LoopingSound({ SoundFile, listener }) {
   }, []);
 
   return <positionalAudio ref={sound} args={[listener]} />;
+};
+
+interface Props {
+  soundFile: string;
+  listener: AudioListener;
 }
 export default LoopingSound;
