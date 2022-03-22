@@ -1,5 +1,11 @@
 import * as THREE from "three";
-import React, { Suspense, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  Suspense,
+  useEffect,
+  useState,
+} from "react";
 import { Canvas, useThree } from "react-three-fiber";
 import LoopingSoundFile from "../assets/audio/background/rain-1.ogg";
 import SingleSoundFile from "../assets/audio/random/thunder/thunder-1.mp3";
@@ -8,18 +14,31 @@ import SingleSound from "./SingleSound";
 import Controls from "./Controls";
 import SphereMesh from "./SphereMesh";
 import useScenario from "./hooks/useScenario";
+import { Vector3, AudioListener, MeshLambertMaterial } from "three";
 
-const sphereScale = [0.25, 0.25, 0.25];
+const sphereScale = new Vector3(0.25, 0.25, 0.25);
 
-const CanvasContent = ({ isPlaying, setIsPlaying, soundPosition }) => {
+interface CanvasContentProps {
+  isPlaying: boolean;
+  setIsPlaying: Dispatch<SetStateAction<boolean>>;
+  soundPosition: Vector3;
+}
+
+const CanvasContent: React.FC<CanvasContentProps> = ({
+  isPlaying,
+  setIsPlaying,
+  soundPosition,
+}) => {
   const { camera } = useThree();
-  const [listener] = useState(() => new THREE.AudioListener());
+  const [listener] = useState(() => new AudioListener());
 
-  const planeMaterial = new THREE.MeshLambertMaterial({ color: "blue" });
+  const planeMaterial = new MeshLambertMaterial({ color: "blue" });
 
   useEffect(() => {
     camera.add(listener);
-    return () => camera.remove(listener);
+    return () => {
+      camera.remove(listener);
+    };
   }, []);
 
   return (
@@ -28,7 +47,6 @@ const CanvasContent = ({ isPlaying, setIsPlaying, soundPosition }) => {
         <color attach="background" args={["#101010"]} />
         <fog attach="fog" args={["#101010", 5, 20]} />
         <ambientLight />
-        {/* <pointLight position={[10, 10, 10]} /> */}
         <spotLight
           castShadow
           intensity={8}
@@ -38,7 +56,7 @@ const CanvasContent = ({ isPlaying, setIsPlaying, soundPosition }) => {
           shadow-mapSize-height={2048}
         />
         <SphereMesh color="green" scale={sphereScale}>
-          <LoopingSound SoundFile={LoopingSoundFile} listener={listener} />
+          <LoopingSound soundFile={LoopingSoundFile} listener={listener} />
         </SphereMesh>
         <SphereMesh
           scale={sphereScale}
@@ -68,22 +86,11 @@ const CanvasContent = ({ isPlaying, setIsPlaying, soundPosition }) => {
   );
 };
 
-function Lights() {
-  return (
-    <>
-      <color attach="background" args={["#f0f0f0"]} />
-      <ambientLight intensity={1} />
-      <pointLight position={[20, 30, 10]} />
-      <pointLight position={[-10, -10, -10]} color="blue" />
-    </>
-  );
-}
-
-function AudioTests() {
+const AudioTests: React.FC = () => {
   console.log("Canvas mounting");
   const { isPlaying, setIsPlaying, soundPosition, handlePlay } = useScenario();
 
-  const canvasProps = { camera: { fov: 75, position: [0, 0, 3] } };
+  const canvasProps = { camera: { fov: 75, position: new Vector3(0, 0, 3) } };
   const contentProps = { isPlaying, setIsPlaying, handlePlay, soundPosition };
 
   return (
@@ -98,6 +105,6 @@ function AudioTests() {
       </div>
     </>
   );
-}
+};
 
 export default AudioTests;
