@@ -35,6 +35,7 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
 
     useEffect(() => {
         if (!isEmpty(soundChannels) && isPlaying && !prevProps.isPlaying) startScenario();
+        else if (!isEmpty(soundChannels) && !isPlaying && prevProps.isPlaying) stopScenario();
     }, [soundChannels, prevProps, isPlaying]);
 
     const setPosition = (slug: string, position: Vector3) => {

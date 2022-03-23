@@ -27,7 +27,7 @@ const SingleSound: React.FC<Props> = ({
             let duration = 5;
             if (sound.current.buffer) duration = sound.current.buffer.duration;
             setTimeout(onPlaybackEnd, duration * 1000 + 100);
-        }
+        } else if (prevProps.isPlaying && !isPlaying && !!sound.current) sound.current.stop();
     }, [isPlaying, prevProps.isPlaying, sound, onPlaybackEnd, slug]);
 
     useEffect(() => {

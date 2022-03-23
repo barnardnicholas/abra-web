@@ -30,6 +30,8 @@ const LoopingSound: React.FC<Props> = ({
     useEffect(() => {
         if (!prevProps.isPlaying && isPlaying && !!sound.current) {
             sound.current.play();
+        } else if (prevProps.isPlaying && !isPlaying && !!sound.current) {
+            sound.current.stop();
         }
     }, [isPlaying, prevProps.isPlaying, sound, slug]);
 
