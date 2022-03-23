@@ -2,35 +2,36 @@ html,
 body,
 #root,
 canvas {
-  height: 90%;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  background: #272730;
-  color: #f7f7f7;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background: #272730;
+    color: #f7f7f7;
 }
 
 .App {
-  text-align: center;
+    text-align: center;
+    height: 100vh;
 }
 
 h1 {
-  color: f7f7f7;
+    color: f7f7f7;
 }
 
 .floating-controls {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: auto;
-  z-index: 1;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    z-index: 1;
 }
 .floating-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: auto;
-  z-index: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    z-index: 1;
 }
