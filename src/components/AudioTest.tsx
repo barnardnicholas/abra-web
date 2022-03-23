@@ -19,7 +19,7 @@ interface CanvasContentProps {
 }
 
 const CanvasContent: React.FC<CanvasContentProps> = ({ scenario }) => {
-    const { soundChannels, setPosition, play, stop, reportDuration } = scenario;
+    const { soundChannels, setPosition, play, stop, reportDuration, startScenario } = scenario;
     const { camera } = useThree();
     const [listener] = useState(() => new AudioListener());
 
@@ -55,6 +55,7 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario }) => {
                                     reportDuration={reportDuration}
                                     soundFile={channel.path}
                                     listener={listener}
+                                    isPlaying={channel.isPlaying}
                                 />
                             </SphereMesh>
                         );
@@ -100,20 +101,8 @@ const Canvas: React.FC = () => {
                 <CanvasContent {...contentProps} />
             </ThreeCanvas>
             <div className="floating-controls">
-                <button
-                    onClick={() =>
-                        scenario.play(
-                            'thunder1',
-                            new Vector3(
-                                Math.random() * 4 - 2,
-                                Math.random() * 4 - 2,
-                                Math.random() * 4 - 2,
-                            ),
-                        )
-                    }
-                    disabled={!!scenario?.soundChannels?.rain1?.isPlaying}
-                >
-                    Play Rain1
+                <button onClick={() => scenario.setIsPlaying(!scenario.isPlaying)}>
+                    {scenario.isPlaying ? 'Stop' : 'Play'}
                 </button>
             </div>
         </>
