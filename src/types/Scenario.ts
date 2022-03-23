@@ -24,10 +24,11 @@ export interface SoundChannel {
     slug: string;
     position: Vector3;
     isPlaying: boolean;
-    duration: number | null;
+    duration: number;
     type: soundTypes;
     path: string;
     frequency: number;
+    tick: NodeJS.Timer | null | undefined;
 }
 
 export enum soundTypes {
