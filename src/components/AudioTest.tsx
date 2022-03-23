@@ -111,7 +111,7 @@ const Canvas: React.FC = () => {
                             ),
                         )
                     }
-                    // disabled={!!scenario.soundChannels.rain1.isPlaying}
+                    disabled={!!scenario?.soundChannels?.rain1?.isPlaying}
                 >
                     Play Rain1
                 </button>
