@@ -8,21 +8,23 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
     const [soundChannels, setSoundChannels] = useState<Record<string, SoundChannel>>({});
 
     useEffect(() => {
+        const channels: Record<string, SoundChannel> = {};
+
         Object.values(scenario.sounds).forEach((sound: Sound) => {
-            setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => ({
-                ...prevSoundChannels,
-                [sound.slug]: {
-                    id: sound.id,
-                    name: sound.name,
-                    slug: sound.slug,
-                    position: new Vector3(0, 0, 0),
-                    isPlaying: false,
-                    duration: null,
-                    type: sound.type,
-                    path: `/audio/${soundTypeValues[sound.type]}/${sound.path}`,
-                },
-            }));
+            channels[sound.slug] = {
+                id: sound.id,
+                name: sound.name,
+                slug: sound.slug,
+                position: new Vector3(0, 0, 0),
+                isPlaying: false,
+                duration: null,
+                type: sound.type,
+                path: `/audio/${soundTypeValues[sound.type]}/${sound.path}`,
+                frequency: sound.frequency,
+            };
         });
+
+        setSoundChannels(channels);
     }, []);
 
     const setPosition = (slug: string, position: Vector3) => {

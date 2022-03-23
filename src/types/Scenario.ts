@@ -27,6 +27,7 @@ export interface SoundChannel {
     duration: number | null;
     type: soundTypes;
     path: string;
+    frequency: number;
 }
 
 export enum soundTypes {
