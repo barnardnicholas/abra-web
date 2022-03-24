@@ -1,15 +1,15 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas as ThreeCanvas, useThree } from 'react-three-fiber';
 import LoopingSound from './LoopingSound';
 import SingleSound from './SingleSound';
 import Controls from './Controls';
 import SphereMesh from './SphereMesh';
 import useScenario, { UseScenarioProps } from './hooks/useScenario';
-import { Vector3, AudioListener } from 'three';
+import { Vector3, AudioListener, Mesh, MeshLambertMaterial } from 'three';
 import GroundPlane from './GroundPlane';
 import { SoundChannel, soundTypes } from '../types/Scenario';
 import Debug from './Debug';
-import { isEmpty } from '../utils/utils';
+import { isEmpty, usePrevious } from '../utils/utils';
 
 const sphereScale = new Vector3(0.25, 0.25, 0.25);
 
@@ -19,15 +19,20 @@ interface CanvasContentProps {
 
 const CanvasContent: React.FC<CanvasContentProps> = ({ scenario }) => {
     const { soundChannels, reportDuration } = scenario;
-    const { camera } = useThree();
     const [listener] = useState(() => new AudioListener());
 
+    const cameraTarget = useRef<Mesh>(null!);
+
+    const prevProps = usePrevious({ cameraTarget });
+
     useEffect(() => {
-        camera.add(listener);
+        if (!prevProps.cameraTarget && cameraTarget.current) {
+            cameraTarget.current.add(listener);
+        }
         return () => {
-            camera.remove(listener);
+            if (!!cameraTarget.current) cameraTarget.current.remove(listener);
         };
-    }, []);
+    }, [cameraTarget, prevProps]);
 
     return (
         <>
@@ -43,6 +48,21 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario }) => {
                     shadow-mapSize-width={2048}
                     shadow-mapSize-height={2048}
                 />
+                {/* <SphereMesh
+                    position={new Vector3(0, 0.5, 0)}
+                    scale={sphereScale}
+                    color="purple"
+                    ref={cameraTarget}
+                /> */}
+                <mesh
+                    ref={cameraTarget}
+                    position={new Vector3(0, 0.5, 0)}
+                    scale={sphereScale}
+                    material={new MeshLambertMaterial({ color: 'purple' })}
+                    castShadow
+                >
+                    <sphereBufferGeometry attach="geometry" />
+                </mesh>
                 {/* Sounds */}
                 {Object.values(soundChannels).map((channel: SoundChannel, i: number) => {
                     if (channel.type === soundTypes.background)
@@ -91,7 +111,7 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario }) => {
 const Canvas: React.FC = () => {
     const scenario = useScenario('rainstorm');
 
-    const canvasProps = { camera: { fov: 75, position: new Vector3(0, 0, 3) } };
+    const canvasProps = { camera: { fov: 75, position: new Vector3(0, 0, 4) } };
     const contentProps = { scenario };
 
     return (

@@ -85,7 +85,7 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
 
                 if (!isPlaying) play(slug);
             } else {
-                const maxDelay = 10000;
+                const maxDelay = 30000;
                 let minDelay = maxDelay / 4;
 
                 if (!Number.isNaN(duration)) {
