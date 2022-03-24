@@ -11,6 +11,8 @@ import useScenario, { UseScenarioProps } from './hooks/useScenario';
 import { Vector3, AudioListener, MeshLambertMaterial } from 'three';
 import GroundPlane from './GroundPlane';
 import { SoundChannel, soundTypes } from '../types/Scenario';
+import Debug from './Debug';
+import { isEmpty } from '../utils/utils';
 
 const sphereScale = new Vector3(0.25, 0.25, 0.25);
 
@@ -79,7 +81,7 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario }) => {
                                 />
                             </SphereMesh>
                         );
-                    else return <></>;
+                    else return <React.Fragment key={i} />;
                 })}
 
                 <GroundPlane />
@@ -105,6 +107,7 @@ const Canvas: React.FC = () => {
                     {scenario.isPlaying ? 'Stop' : 'Play'}
                 </button>
             </div>
+            {!isEmpty(scenario.soundChannels) && <Debug scenario={scenario} />}
         </>
     );
 };
