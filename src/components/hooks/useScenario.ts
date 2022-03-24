@@ -1,9 +1,10 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Vector3 } from 'three';
-import { getNodeMajorVersion } from 'typescript';
 import scenarios from '../../constants/scenarios';
 import { Scenario, Sound, SoundChannel, soundTypes, soundTypeValues } from '../../types/Scenario';
 import { isEmpty, usePrevious } from '../../utils/utils';
+
+const timers: Record<string, NodeJS.Timer | number> = {};
 
 const useScenario = (scenarioName: string): UseScenarioProps => {
     const scenario: Scenario = scenarios[scenarioName];
@@ -38,68 +39,64 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
         else if (!isEmpty(soundChannels) && !isPlaying && prevProps.isPlaying) stopScenario();
     }, [soundChannels, prevProps, isPlaying]);
 
-    const setPosition = (slug: string, position: Vector3) => {
-        setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => ({
-            ...prevSoundChannels,
-            [slug]: {
-                ...prevSoundChannels[slug],
-                position,
-            },
-        }));
-    };
+    function setPosition(slug: string, position: Vector3) {
+        setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
+            return { ...prevSoundChannels, [slug]: { ...prevSoundChannels[slug], position } };
+        });
+    }
 
-    const play = (slug: string, position?: Vector3) => {
+    function play(slug: string, position?: Vector3) {
+        if (!!position) {
+            const duration = soundChannels[slug].duration ? soundChannels[slug].duration : 5000;
+            setTimeout(() => {
+                stop(slug);
+            }, (duration as number) + 100);
+        }
         setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
             const newChannel = { ...prevSoundChannels[slug], isPlaying: true };
             if (!!position) newChannel.position = position;
+            return { ...prevSoundChannels, [slug]: newChannel };
+        });
+    }
+
+    function stop(slug: string) {
+        setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
             return {
                 ...prevSoundChannels,
-                [slug]: newChannel,
+                [slug]: { ...prevSoundChannels[slug], isPlaying: false },
             };
         });
-        const duration = soundChannels[slug].duration ? soundChannels[slug].duration : 5000;
-        setTimeout(() => {
-            stop(slug);
-        }, (duration as number) + 100);
-    };
+    }
 
-    const stop = (slug: string) => {
-        setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => ({
-            ...prevSoundChannels,
-            [slug]: {
-                ...prevSoundChannels[slug],
-                isPlaying: false,
-            },
-        }));
-    };
+    function reportDuration(slug: string, duration: number) {
+        setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
+            return { ...prevSoundChannels, [slug]: { ...prevSoundChannels[slug], duration } };
+        });
+    }
 
-    const reportDuration = (slug: string, duration: number) => {
-        setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => ({
-            ...prevSoundChannels,
-            [slug]: {
-                ...prevSoundChannels[slug],
-                duration,
-            },
-        }));
-    };
-
-    const startScenario = () => {
+    function startScenario() {
         console.log('starting scenario');
+
         Object.keys(soundChannels).forEach((slug: string) => {
             const { type, duration, isPlaying } = soundChannels[slug];
+
             if (type === soundTypes.background) {
                 console.log(`Playing ${slug}`);
+
                 if (!isPlaying) play(slug);
             } else {
-                const maxDelay = 30000;
+                const maxDelay = 10000;
                 let minDelay = maxDelay / 4;
+
                 if (!Number.isNaN(duration)) {
                     if (maxDelay / 4 < duration) minDelay = duration + 100;
                 }
+
                 const delayDiff = maxDelay - minDelay;
 
                 const event = () => {
                     console.log(`Playing ${slug}`);
+                    clearTimeout(timers[slug] as NodeJS.Timer);
                     if (!isPlaying)
                         play(
                             slug,
@@ -109,39 +106,31 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
                                 Math.random() * 4 - 2,
                             ),
                         );
+                    timers[slug] = setTimeout(event, Math.random() * delayDiff + minDelay);
                 };
 
                 console.log(`start ${slug}`);
-
-                setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => ({
-                    ...prevSoundChannels,
-                    [slug]: {
-                        ...prevSoundChannels[slug],
-                        tick: setInterval(() => {
-                            // console.log(minDelay + (Math.random() * delayDiff))
-                            setTimeout(event, Math.random() * delayDiff);
-                        }, maxDelay),
-                    },
-                }));
+                timers[slug] = setTimeout(event, Math.random() * delayDiff + minDelay);
             }
         });
-    };
+    }
 
-    const stopScenario = () => {
+    function stopScenario() {
         console.log('stopping scenario');
         Object.keys(soundChannels).forEach((slug: string) => {
             const { tick, type, isPlaying } = soundChannels[slug];
             console.log(`Stopping ${slug}`);
             if (isPlaying) stop(slug);
             if (type === soundTypes.random && !!tick) {
-                try {
-                    clearInterval(soundChannels[slug].tick as NodeJS.Timer);
-                } catch (e) {
-                    console.log('failed to clear timer', e);
-                }
+                setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
+                    clearInterval(timers[slug] as NodeJS.Timer);
+                    prevSoundChannels[slug].tick = undefined;
+                    prevSoundChannels[slug].isPlaying = false;
+                    return prevSoundChannels;
+                });
             }
         });
-    };
+    }
 
     return {
         soundChannels,
