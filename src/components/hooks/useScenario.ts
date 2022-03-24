@@ -117,19 +117,13 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
 
     function stopScenario() {
         console.log('stopping scenario');
+        const newSoundChannels: Record<string, SoundChannel> = { ...soundChannels };
         Object.keys(soundChannels).forEach((slug: string) => {
-            const { tick, type, isPlaying } = soundChannels[slug];
             console.log(`Stopping ${slug}`);
-            if (isPlaying) stop(slug);
-            if (type === soundTypes.random && !!tick) {
-                setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
-                    clearInterval(timers[slug] as NodeJS.Timer);
-                    prevSoundChannels[slug].tick = undefined;
-                    prevSoundChannels[slug].isPlaying = false;
-                    return prevSoundChannels;
-                });
-            }
+            newSoundChannels[slug] = { ...newSoundChannels[slug], isPlaying: false };
+            clearInterval(timers[slug] as NodeJS.Timer);
         });
+        setSoundChannels(newSoundChannels);
     }
 
     return {

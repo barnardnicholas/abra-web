@@ -3,7 +3,6 @@ import { SoundChannel } from '../types/Scenario';
 import { UseScenarioProps } from './hooks/useScenario';
 
 const ChannelDebug: React.FC<ChannelProps> = ({ channel }) => {
-    console.log(channel);
     const { id, name, slug, position, isPlaying, duration, type, path, frequency, tick } = channel;
     return (
         <>
@@ -16,6 +15,7 @@ const ChannelDebug: React.FC<ChannelProps> = ({ channel }) => {
                 <div>{`path: ${path}`}</div>
                 <div>{`frequency: ${frequency}`}</div>
                 <div>{`tick: ${tick}`}</div>
+                <br />
             </div>
         </>
     );
@@ -25,7 +25,8 @@ const Debug: React.FC<Props> = ({ scenario }) => {
     return (
         <div className="debug">
             <div>
-                <div>{`isPlaying: ${scenario.isPlaying}`}</div>
+                <div>{`Scenario isPlaying: ${scenario.isPlaying}`}</div>
+                <br />
             </div>
             {Object.values(scenario.soundChannels).map((channel: SoundChannel, i: number) => (
                 <ChannelDebug key={i} channel={channel} />
