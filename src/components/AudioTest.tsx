@@ -1,14 +1,11 @@
-import * as THREE from 'three';
-import React, { Dispatch, SetStateAction, Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Canvas as ThreeCanvas, useThree } from 'react-three-fiber';
-import LoopingSoundFile from '../assets/audio/background/rain-1.ogg';
-import SingleSoundFile from '../assets/audio/random/thunder/thunder-1.mp3';
 import LoopingSound from './LoopingSound';
 import SingleSound from './SingleSound';
 import Controls from './Controls';
 import SphereMesh from './SphereMesh';
 import useScenario, { UseScenarioProps } from './hooks/useScenario';
-import { Vector3, AudioListener, MeshLambertMaterial } from 'three';
+import { Vector3, AudioListener } from 'three';
 import GroundPlane from './GroundPlane';
 import { SoundChannel, soundTypes } from '../types/Scenario';
 import Debug from './Debug';
@@ -21,7 +18,7 @@ interface CanvasContentProps {
 }
 
 const CanvasContent: React.FC<CanvasContentProps> = ({ scenario }) => {
-    const { soundChannels, setPosition, play, stop, reportDuration, startScenario } = scenario;
+    const { soundChannels, reportDuration } = scenario;
     const { camera } = useThree();
     const [listener] = useState(() => new AudioListener());
 
@@ -35,8 +32,8 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario }) => {
     return (
         <>
             <Suspense fallback={<></>}>
-                <color attach="background" args={['#101010']} />
-                <fog attach="fog" args={['#101010', 5, 20]} />
+                <color attach="background" args={['#000000']} />
+                {/* <fog attach="fog" args={['#000000', 5, 20]} /> */}
                 <ambientLight />
                 <spotLight
                     castShadow

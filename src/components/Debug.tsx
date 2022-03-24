@@ -1,5 +1,5 @@
 import React from 'react';
-import { SoundChannel } from '../types/Scenario';
+import { SoundChannel, soundTypes } from '../types/Scenario';
 import { UseScenarioProps } from './hooks/useScenario';
 
 const ChannelDebug: React.FC<ChannelProps> = ({ channel }) => {
@@ -9,7 +9,7 @@ const ChannelDebug: React.FC<ChannelProps> = ({ channel }) => {
             <div>
                 <strong>{`Channel: ${name}`}</strong>
                 <div>{`slug: ${slug}`}</div>
-                <div>{`type: ${type}`}</div>
+                <div>{`type: ${soundTypes[type]}`}</div>
                 <div>{`isPlaying: ${isPlaying}`}</div>
                 <div>{`duration: ${duration}`}</div>
                 <div>{`path: ${path}`}</div>
