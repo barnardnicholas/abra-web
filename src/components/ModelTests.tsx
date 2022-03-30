@@ -9,6 +9,7 @@ const modelScale = new Vector3(2, 2, 2);
 
 const CanvasContent = () => {
     const gltf = useLoader(GLTFLoader, '/models/mossy-rocks/scene.gltf');
+    console.log(gltf);
 
     return (
         <>
@@ -28,10 +29,11 @@ const CanvasContent = () => {
                 scale={sphereScale}
                 material={new MeshLambertMaterial({ color: 'purple' })}
                 castShadow
+                receiveShadow
             >
                 <sphereBufferGeometry attach="geometry" />
             </mesh>
-            <mesh position={new Vector3(0, -1, 0)} scale={modelScale} receiveShadow>
+            <mesh position={new Vector3(0, -1, 0)} scale={modelScale} castShadow receiveShadow>
                 <primitive object={gltf.scene} />
             </mesh>
             <Controls />
