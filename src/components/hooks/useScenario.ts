@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Vector3 } from 'three';
 import scenarios from '../../constants/scenarios';
 import { Scenario, Sound, SoundChannel, soundTypes, soundTypeValues } from '../../types/Scenario';
-import { isEmpty, usePrevious } from '../../utils/utils';
+import { isEmpty, usePrevious, getRandomBetween } from '../../utils/utils';
 
 const timers: Record<string, NodeJS.Timer | number> = {};
 
@@ -85,25 +85,25 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
     }
 
     function getNewDelay(channel: SoundChannel): number {
-        // TODO
+        // TODO - buggy
         const { duration, frequency } = channel;
 
-        const getDelay = (delayDiff: number, minDelay: number, freqDelay: number): number =>
-            Math.random() * (delayDiff + minDelay) + freqDelay;
+        const hardMin = duration + 5000; // sound duration + 5 seconds
+        const hardMax = duration + 100000; // sound duration + 10 minutes
 
-        const maxDelay = 30000;
-        let minDelay = maxDelay / 4;
+        const hardDiff = hardMax - hardMin;
 
-        if (!Number.isNaN(duration)) {
-            if (maxDelay / 4 < duration) minDelay = duration + 100;
-        }
+        const thisMin = hardMin + hardDiff * frequency;
+        const thisMax = hardDiff - hardDiff * frequency;
 
-        const delayDiff = maxDelay - minDelay;
+        const delay = getRandomBetween(thisMin, thisMax);
 
-        const freqDelay = 120000 - (Math.random() + 0.1 * 120000 * frequency);
+        console.log({
+            thisMin: thisMin / 1000 + 's',
+            thisMax: thisMax / 1000 + 's',
+            delay: delay / 1000 + 's',
+        });
 
-        const delay = getDelay(delayDiff, minDelay, freqDelay);
-        console.log({ delay: delay / 1000 + 's' });
         return delay;
     }
 

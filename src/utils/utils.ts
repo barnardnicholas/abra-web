@@ -20,9 +20,13 @@ export function isEmpty(item: any): boolean {
     return !item;
 }
 
-function isObjEmpty(obj: Record<string, unknown>): boolean {
+export function isObjEmpty(obj: Record<string, unknown>): boolean {
     for (const key in obj) {
         if (obj.hasOwnProperty(key)) return false;
     }
     return true;
+}
+
+export function getRandomBetween(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
