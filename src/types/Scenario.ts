@@ -31,6 +31,7 @@ export interface SoundChannel {
     frequency: number;
     tick: NodeJS.Timer | null | undefined;
     area: [number[], number[]];
+    volume: number;
 }
 
 export enum soundTypes {

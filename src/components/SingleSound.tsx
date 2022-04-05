@@ -11,6 +11,7 @@ const SingleSound: React.FC<Props> = ({
     onPlaybackEnd = () => {},
     listener,
     reportDuration = () => {},
+    volume = 0.5,
 }) => {
     const sound = useRef<PositionalAudio>(null!);
     const buffer = useLoader(AudioLoader, soundFile);
@@ -18,6 +19,7 @@ const SingleSound: React.FC<Props> = ({
 
     useEffect(() => {
         sound.current.setBuffer(buffer);
+        sound.current.setVolume(volume);
         sound.current.setRefDistance(2);
     }, []);
 
@@ -46,5 +48,6 @@ interface Props {
     listener: AudioListener;
     reportDuration?: (slug: string, duration: number) => void;
     duration: number | null;
+    volume: number;
 }
 export default SingleSound;

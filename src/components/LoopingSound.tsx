@@ -10,6 +10,7 @@ const LoopingSound: React.FC<Props> = ({
     duration,
     isPlaying,
     reportDuration = () => {},
+    volume = 0.66,
 }) => {
     const sound = useRef<PositionalAudio>(null!);
     const buffer = useLoader(AudioLoader, soundFile);
@@ -18,7 +19,7 @@ const LoopingSound: React.FC<Props> = ({
     useEffect(() => {
         sound.current.setBuffer(buffer);
         sound.current.setRefDistance(2);
-        sound.current.setVolume(1);
+        sound.current.setVolume(volume);
         sound.current.setLoop(true);
     }, []);
 
@@ -45,5 +46,6 @@ interface Props {
     reportDuration?: (slug: string, duration: number) => void;
     duration: number | null;
     isPlaying: boolean;
+    volume: number;
 }
 export default LoopingSound;

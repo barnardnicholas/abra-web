@@ -29,6 +29,7 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
                 frequency: sound.frequency,
                 tick: undefined,
                 area: sound.area,
+                volume: sound.volume,
             };
         });
 

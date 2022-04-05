@@ -82,6 +82,7 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario }) => {
                                     soundFile={channel.path}
                                     listener={listener}
                                     isPlaying={channel.isPlaying}
+                                    volume={channel.volume}
                                 />
                             </SphereMesh>
                         );
@@ -102,6 +103,7 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario }) => {
                                     isPlaying={channel.isPlaying}
                                     onPlaybackEnd={() => {}}
                                     listener={listener}
+                                    volume={channel.volume}
                                 />
                             </SphereMesh>
                         );
@@ -116,7 +118,7 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario }) => {
 };
 
 const Canvas: React.FC = () => {
-    const scenario = useScenario('rainstorm');
+    const scenario = useScenario('ocean');
 
     const canvasProps = { camera: { fov: 75, position: new Vector3(0, 0, 4) } };
     const contentProps = { scenario };
