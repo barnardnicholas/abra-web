@@ -28,6 +28,7 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
                 path: `/audio/${soundTypeValues[sound.type]}/${sound.path}`,
                 frequency: sound.frequency,
                 tick: undefined,
+                area: sound.area,
             };
         });
 
@@ -74,11 +75,19 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
         });
     }
 
+    function getPosition(area: [number[], number[]]): Vector3 {
+        // area = [minX, minY, minZ], [maxX, maxY, maxZ]
+        const pos = [0, 0, 0].map((_, i: number) => {
+            return Math.random() * (area[1][i] - area[0][i]) + area[0][i];
+        });
+        return new Vector3(pos[0], pos[1], pos[2]);
+    }
+
     function startScenario() {
         console.log('starting scenario');
 
         Object.keys(soundChannels).forEach((slug: string) => {
-            const { type, duration, isPlaying } = soundChannels[slug];
+            const { type, duration, isPlaying, area } = soundChannels[slug];
 
             if (type === soundTypes.background) {
                 console.log(`Playing ${slug}`);
@@ -97,15 +106,7 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
                 const event = () => {
                     console.log(`Playing ${slug}`);
                     clearTimeout(timers[slug] as NodeJS.Timer);
-                    if (!isPlaying)
-                        play(
-                            slug,
-                            new Vector3(
-                                Math.random() * 4 - 2,
-                                Math.random() * 4 - 2,
-                                Math.random() * 4 - 2,
-                            ),
-                        );
+                    if (!isPlaying) play(slug, getPosition(area) as Vector3);
                     timers[slug] = setTimeout(event, Math.random() * delayDiff + minDelay);
                 };
 

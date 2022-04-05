@@ -16,6 +16,7 @@ export interface Sound {
     path: string;
     volume: number;
     frequency: number;
+    area: [number[], number[]]; // [minX, minY, minZ], [maxX, maxY, maxZ]
 }
 
 export interface SoundChannel {
@@ -29,6 +30,7 @@ export interface SoundChannel {
     path: string;
     frequency: number;
     tick: NodeJS.Timer | null | undefined;
+    area: [number[], number[]];
 }
 
 export enum soundTypes {

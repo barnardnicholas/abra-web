@@ -13,6 +13,8 @@ import { isEmpty, usePrevious } from '../utils/utils';
 
 const sphereScale = new Vector3(0.25, 0.25, 0.25);
 
+const colors = ['green', 'red', 'yellow', 'purple', 'orange'];
+
 interface CanvasContentProps {
     scenario: UseScenarioProps;
 }
@@ -48,12 +50,6 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario }) => {
                     shadow-mapSize-width={2048}
                     shadow-mapSize-height={2048}
                 />
-                {/* <SphereMesh
-                    position={new Vector3(0, 0.5, 0)}
-                    scale={sphereScale}
-                    color="purple"
-                    ref={cameraTarget}
-                /> */}
                 <mesh
                     ref={cameraTarget}
                     position={new Vector3(0, 0.5, 0)}
@@ -67,7 +63,18 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario }) => {
                 {Object.values(soundChannels).map((channel: SoundChannel, i: number) => {
                     if (channel.type === soundTypes.background)
                         return (
-                            <SphereMesh key={i} color="green" scale={sphereScale}>
+                            <SphereMesh
+                                key={i}
+                                color={colors[i]}
+                                scale={sphereScale}
+                                position={
+                                    new Vector3(
+                                        channel.area[0][0],
+                                        channel.area[0][1],
+                                        channel.area[0][2],
+                                    )
+                                }
+                            >
                                 <LoopingSound
                                     slug={channel.slug}
                                     duration={channel.duration}
@@ -84,7 +91,7 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario }) => {
                                 key={i}
                                 scale={sphereScale}
                                 position={channel.position}
-                                color="red"
+                                color={colors[i % colors.length]}
                                 visible={channel.isPlaying}
                             >
                                 <SingleSound
