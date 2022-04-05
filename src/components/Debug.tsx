@@ -7,14 +7,12 @@ const ChannelDebug: React.FC<ChannelProps> = ({ channel }) => {
     return (
         <>
             <div>
-                <strong>{`Channel: ${name}`}</strong>
+                <strong>{`Channel: ${name} (${soundTypes[type]})`}</strong>
                 <div>{`slug: ${slug}`}</div>
-                <div>{`type: ${soundTypes[type]}`}</div>
                 <div>{`isPlaying: ${isPlaying}`}</div>
                 <div>{`duration: ${duration}`}</div>
                 <div>{`path: ${path}`}</div>
                 <div>{`frequency: ${frequency}`}</div>
-                <div>{`tick: ${tick}`}</div>
                 <br />
             </div>
         </>

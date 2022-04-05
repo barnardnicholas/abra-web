@@ -84,35 +84,48 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
         return new Vector3(pos[0], pos[1], pos[2]);
     }
 
+    function getNewDelay(channel: SoundChannel): number {
+        // TODO
+        const { duration, frequency } = channel;
+
+        const getDelay = (delayDiff: number, minDelay: number, freqDelay: number): number =>
+            Math.random() * (delayDiff + minDelay) + freqDelay;
+
+        const maxDelay = 30000;
+        let minDelay = maxDelay / 4;
+
+        if (!Number.isNaN(duration)) {
+            if (maxDelay / 4 < duration) minDelay = duration + 100;
+        }
+
+        const delayDiff = maxDelay - minDelay;
+
+        const freqDelay = 120000 - (Math.random() + 0.1 * 120000 * frequency);
+
+        const delay = getDelay(delayDiff, minDelay, freqDelay);
+        console.log({ delay: delay / 1000 + 's' });
+        return delay;
+    }
+
     function startScenario() {
         console.log('starting scenario');
 
         Object.keys(soundChannels).forEach((slug: string) => {
-            const { type, duration, isPlaying, area } = soundChannels[slug];
+            const { type, isPlaying, area } = soundChannels[slug];
 
             if (type === soundTypes.background) {
                 console.log(`Playing ${slug}`);
 
                 if (!isPlaying) play(slug);
             } else {
-                const maxDelay = 30000;
-                let minDelay = maxDelay / 4;
-
-                if (!Number.isNaN(duration)) {
-                    if (maxDelay / 4 < duration) minDelay = duration + 100;
-                }
-
-                const delayDiff = maxDelay - minDelay;
-
                 const event = () => {
                     console.log(`Playing ${slug}`);
                     clearTimeout(timers[slug] as NodeJS.Timer);
                     if (!isPlaying) play(slug, getPosition(area) as Vector3);
-                    timers[slug] = setTimeout(event, Math.random() * delayDiff + minDelay);
+                    timers[slug] = setTimeout(event, getNewDelay(soundChannels[slug]));
                 };
-
                 console.log(`start ${slug}`);
-                timers[slug] = setTimeout(event, Math.random() * delayDiff + minDelay);
+                timers[slug] = setTimeout(event, getNewDelay(soundChannels[slug]));
             }
         });
     }
