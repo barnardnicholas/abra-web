@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Vector3 } from 'three';
 import scenarios from '../../constants/scenarios';
 import { Scenario, Sound, SoundChannel, soundTypes, soundTypeValues } from '../../types/Scenario';
-import { isEmpty, usePrevious, getRandomBetween } from '../../utils/utils';
+import { isEmpty, usePrevious, getRandomBetween, trimFreq, clamp } from '../../utils/utils';
 
 const timers: Record<string, NodeJS.Timer | number> = {};
 
@@ -85,24 +85,46 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
     }
 
     function getNewDelay(channel: SoundChannel): number {
-        // TODO - buggy
         const { duration, frequency } = channel;
+        // Duration in ms
+        // Frequency between 0 and 1 - 0 is never, 1 is always
 
+        // If frequency is 0 or 1, it breaks everything, so trim 30ms off it
+        const trimmedFreq = trimFreq(frequency, 0.03);
+
+        // Set hard bounds for the delay and calculate range between them
         const hardMin = duration + 5000; // sound duration + 5 seconds
-        const hardMax = duration + 100000; // sound duration + 10 minutes
-
+        const hardMax = duration + 30000; // sound duration +  30 seconds
         const hardDiff = hardMax - hardMin;
 
-        const thisMin = hardMin + hardDiff * frequency;
-        const thisMax = hardDiff - hardDiff * frequency;
+        // Get the opposite of the frequency, so that the lower the frequency, the higher the delay
+        const inverseFrequency = 1 - trimmedFreq;
 
-        const delay = getRandomBetween(thisMin, thisMax);
+        // Establish seed point based on the inverse frequency and the range
+        const seedPoint = hardMin + hardDiff * inverseFrequency;
 
-        console.log({
-            thisMin: thisMin / 1000 + 's',
-            thisMax: thisMax / 1000 + 's',
-            delay: delay / 1000 + 's',
-        });
+        // Generate random number between +1 and -1
+        const seed = Math.random() * 2 - 1;
+
+        // Deviate from the seed point by 10% of the range * the seed
+        const deviation = (hardDiff / 10) * seed;
+
+        // Calculate delay based on seed point and deviation - clamp to hard bounds
+        let delay = clamp(seedPoint + deviation, hardMin, hardMax);
+
+        // If frequency is very high, delay is too low, so make some of the low ones higher by adding duration
+        if (delay <= hardMin && Math.random() < 0.5) delay += duration;
+
+        // console.log({
+        //     hardMin: hardMin / 1000 + 's',
+        //     hardMax: hardMax / 1000 + 's',
+        //     seedPoint: seedPoint / 1000 + 's',
+        //     seed,
+        //     deviation: deviation / 1000 + 's',
+        //     delay: delay / 1000 + 's',
+        // });
+
+        console.log((delay / 1000).toFixed(2) + 's');
 
         return delay;
     }
