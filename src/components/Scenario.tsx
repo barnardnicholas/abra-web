@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useRef, useState } from 'react';
-import { Canvas as ThreeCanvas, useThree } from 'react-three-fiber';
+import { Canvas as ThreeCanvas, useFrame, useThree } from 'react-three-fiber';
 import LoopingSound from './LoopingSound';
 import SingleSound from './SingleSound';
 import Controls from './Controls';
@@ -10,6 +10,7 @@ import GroundPlane from './GroundPlane';
 import { SoundChannel, soundTypes } from '../types/Scenario';
 import Debug from './Debug';
 import { isEmpty, usePrevious } from '../utils/utils';
+import CameraRig from './CameraRig';
 
 const sphereScale = new Vector3(0.25, 0.25, 0.25);
 
@@ -112,7 +113,8 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario }) => {
 
                 <GroundPlane />
             </Suspense>
-            <Controls />
+            {/* <Controls /> */}
+            <CameraRig />
         </>
     );
 };
