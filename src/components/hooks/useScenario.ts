@@ -1,10 +1,8 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Vector3 } from 'three';
 import scenarios from '../../constants/scenarios';
 import { Scenario, Sound, SoundChannel, soundTypes, soundTypeValues } from '../../types/Scenario';
 import { isEmpty, usePrevious } from '../../utils/utils';
-
-let timer: NodeJS.Timer;
 
 const useScenario = (scenarioName: string): UseScenarioProps => {
     const scenario: Scenario = scenarios[scenarioName];
@@ -13,7 +11,17 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
     const [soundPool, setSoundPool] = useState<string[]>([]);
     const [lastSound, setLastSound] = useState<string | null>(null);
 
+    let masterTimer = useRef<ReturnType<typeof setTimeout>>(setTimeout(() => {}, 1));
+
     const prevProps = usePrevious({ soundChannels, isPlaying });
+
+    useEffect(() => {
+        masterTimer.current = setTimeout(() => {}, 1);
+
+        return () => {
+            clearTimeout(masterTimer.current);
+        };
+    }, []);
 
     useEffect(() => {
         const channels: Record<string, SoundChannel> = {};
@@ -86,7 +94,6 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
     }
 
     function stop(slug: string) {
-        clearInterval(timer);
         setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
             return {
                 ...prevSoundChannels,
@@ -171,21 +178,23 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
             }
         }); // Play all background sounds
 
-        const tick = () => {
-            clearTimeout(timer); // Clear out old timer
+        function tick() {
+            clearTimeout(masterTimer.current); // Clear out old timer
             const slug: string = getRandomSound(); // Get new sound slug from pool
             const channelToPlay: SoundChannel = soundChannels[slug];
             console.log(`Playing ${slug}`); // Play
             const { isPlaying, area } = channelToPlay;
             if (!isPlaying) play(slug, getPosition(area) as Vector3);
             setLastSound(slug);
-            timer = setTimeout(tick, getNewTimerDelay()); // Set new timer
-        };
-        timer = setTimeout(tick, getNewTimerDelay()); // Set first timer
+            masterTimer.current = setTimeout(tick, getNewTimerDelay()); // Set new timer
+        }
+
+        masterTimer.current = setTimeout(tick, getNewTimerDelay()); // Set first timer
     }
 
     function stopScenario() {
         console.log('stopping scenario');
+        global.clearTimeout(masterTimer.current);
         const newSoundChannels: Record<string, SoundChannel> = { ...soundChannels };
         Object.keys(soundChannels).forEach((slug: string) => {
             console.log(`Stopping ${slug}`);
