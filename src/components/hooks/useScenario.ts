@@ -2,9 +2,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Vector3 } from 'three';
 import scenarios from '../../constants/scenarios';
 import { Scenario, Sound, SoundChannel, soundTypes, soundTypeValues } from '../../types/Scenario';
-import { isEmpty, usePrevious, getRandomBetween, trimFreq, clamp } from '../../utils/utils';
+import { isEmpty, usePrevious } from '../../utils/utils';
 
-const timers: Record<string, NodeJS.Timer | number> = {};
 let timer: NodeJS.Timer;
 
 const useScenario = (scenarioName: string): UseScenarioProps => {
@@ -45,13 +44,13 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
     }, [soundChannels, prevProps, isPlaying]);
 
     function buildSoundPool(sounds: Record<string, Sound>) {
-        const soundFreqs = Object.keys(sounds).reduce(
-            (acc: Record<string, number>, curr: string) => {
-                acc[curr] = Math.round(sounds[curr].frequency * 100);
-                return acc;
-            },
-            {},
-        ); // Get workable numbers from frequencies
+        const filteredSounds = Object.keys(sounds).filter(slug => {
+            return scenario.sounds[slug].type === soundTypes.random;
+        }); // Filter out background sounds
+        const soundFreqs = filteredSounds.reduce((acc: Record<string, number>, curr: string) => {
+            acc[curr] = Math.round(sounds[curr].frequency * 100);
+            return acc;
+        }, {}); // Get workable numbers from frequencies
         const result = Object.keys(soundFreqs).reduce((acc: string[], curr: string) => {
             const newItems = new Array(soundFreqs[curr]).fill(curr);
             return acc.concat(newItems);
@@ -177,7 +176,7 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
             const slug: string = getRandomSound(); // Get new sound slug from pool
             const channelToPlay: SoundChannel = soundChannels[slug];
             console.log(`Playing ${slug}`); // Play
-            const { type, isPlaying, area } = channelToPlay;
+            const { isPlaying, area } = channelToPlay;
             if (!isPlaying) play(slug, getPosition(area) as Vector3);
             setLastSound(slug);
             timer = setTimeout(tick, getNewTimerDelay()); // Set new timer
