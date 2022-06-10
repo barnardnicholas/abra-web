@@ -3,7 +3,7 @@ import { SoundChannel, soundTypes } from '../types/Scenario';
 import { UseScenarioProps } from './hooks/useScenario';
 
 const ChannelDebug: React.FC<ChannelProps> = ({ channel }) => {
-    const { id, name, slug, position, isPlaying, duration, type, path, frequency, tick } = channel;
+    const { id, name, slug, position, isPlaying, duration, type, path, frequency } = channel;
     return (
         <>
             <div>

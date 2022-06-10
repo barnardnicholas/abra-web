@@ -29,7 +29,6 @@ export interface SoundChannel {
     type: soundTypes;
     path: string;
     frequency: number;
-    tick: NodeJS.Timer | null | undefined;
     area: [number[], number[]];
     volume: number;
 }
