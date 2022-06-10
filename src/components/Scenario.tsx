@@ -11,6 +11,7 @@ import { SoundChannel, soundTypes } from '../types/Scenario';
 import Debug from './Debug';
 import { isEmpty, usePrevious } from '../utils/utils';
 import CameraRig from './CameraRig';
+import Loading from './Loading';
 
 const sphereScale = new Vector3(0.25, 0.25, 0.25);
 
@@ -39,7 +40,7 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario }) => {
 
     return (
         <>
-            <Suspense fallback={<></>}>
+            <Suspense fallback={<Loading />}>
                 <color attach="background" args={['#000000']} />
                 {/* <fog attach="fog" args={['#000000', 5, 20]} /> */}
                 <ambientLight />
