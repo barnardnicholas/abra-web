@@ -1,5 +1,6 @@
 import React from 'react';
 import { SoundChannel, soundTypes } from '../types/Scenario';
+import { isEmpty } from '../utils/utils';
 import { UseScenarioProps } from './hooks/useScenario';
 
 const ChannelDebug: React.FC<ChannelProps> = ({ channel }) => {
@@ -26,7 +27,7 @@ const Debug: React.FC<Props> = ({ scenario }) => {
                 <div>{`Scenario isPlaying: ${scenario.isPlaying}`}</div>
                 <br />
             </div>
-            {Object.values(scenario.soundChannels).map((channel: SoundChannel, i: number) => (
+            {!isEmpty(scenario.soundChannels) && Object.values(scenario.soundChannels).map((channel: SoundChannel, i: number) => (
                 <ChannelDebug key={i} channel={channel} />
             ))}
         </div>

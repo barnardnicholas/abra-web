@@ -143,7 +143,7 @@ const Canvas: React.FC = () => {
                     {scenario.isPlaying ? 'Stop' : 'Play'}
                 </button>
             </div>
-            {!isEmpty(scenario.soundChannels) && <Debug scenario={scenario} />}
+            {debug && <Debug scenario={scenario} />}
         </>
     );
 };
