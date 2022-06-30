@@ -5,9 +5,10 @@ import ModelTests from './components/ModelTests';
 
 function App() {
     const [showAudio, setShowAudio] = useState(false);
+
     return (
         <div className="App">
-            {showAudio && <Scenario />}
+            {showAudio && <Scenario/>}
             {/* <ModelTests /> */}
             <div className="floating-header">
                 <h1>Three Tests</h1>
