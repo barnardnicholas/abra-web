@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import './fonts.css'
 import './_styles/App.scss';
 import Scenario from './components/Scenario';
 import { useSelector } from 'react-redux';

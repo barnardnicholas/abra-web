@@ -1,12 +1,12 @@
 @mixin bodyText() {
-    font-family: 'trispacethin';
+    font-family: 'Trispace', sans-serif;
     letter-spacing: -0.05em;
-    font-weight: 800;
+    font-weight: 400;
 }
 
 @mixin titleText() {
-    font-family: 'heeboregular';
-    font-weight: 800;
+    font-family: 'Heebo', sans-serif;
+    font-weight: 900;
     line-height: 1em;
 }
 
