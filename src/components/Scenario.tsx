@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useRef, useState } from 'react';
+import React, { Fragment, Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas as ThreeCanvas, useFrame, useThree } from 'react-three-fiber';
 import LoopingSound from './LoopingSound';
 import SingleSound from './SingleSound';
@@ -12,6 +12,8 @@ import Debug from './Debug';
 import { isEmpty, usePrevious } from '../utils/utils';
 import CameraRig from './CameraRig';
 import Loading from './Loading';
+import { useSelector } from 'react-redux';
+import { getDebug } from '../redux/selectors/debug';
 
 const sphereScale = new Vector3(0.25, 0.25, 0.25);
 
@@ -19,9 +21,10 @@ const colors = ['green', 'red', 'yellow', 'purple', 'orange'];
 
 interface CanvasContentProps {
     scenario: UseScenarioProps;
+    debug: boolean;
 }
 
-const CanvasContent: React.FC<CanvasContentProps> = ({ scenario }) => {
+const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug }) => {
     const { soundChannels, reportDuration } = scenario;
     const [listener] = useState(() => new AudioListener());
 
@@ -65,28 +68,30 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario }) => {
                 {Object.values(soundChannels).map((channel: SoundChannel, i: number) => {
                     if (channel.type === soundTypes.background)
                         return (
-                            <SphereMesh
-                                key={i}
-                                color={colors[i]}
-                                scale={sphereScale}
-                                position={
-                                    new Vector3(
-                                        channel.area[0][0],
-                                        channel.area[0][1],
-                                        channel.area[0][2],
-                                    )
-                                }
-                            >
-                                <LoopingSound
-                                    slug={channel.slug}
-                                    duration={channel.duration}
-                                    reportDuration={reportDuration}
-                                    soundFile={channel.path}
-                                    listener={listener}
-                                    isPlaying={channel.isPlaying}
-                                    volume={channel.volume}
-                                />
-                            </SphereMesh>
+                            <Fragment key={i}>
+                                    <SphereMesh
+                                        // key={i}
+                                        color={colors[i]}
+                                        scale={sphereScale}
+                                        position={
+                                            new Vector3(
+                                                channel.area[0][0],
+                                                channel.area[0][1],
+                                                channel.area[0][2],
+                                            )
+                                        }
+                                    >
+                                        <LoopingSound
+                                            slug={channel.slug}
+                                            duration={channel.duration}
+                                            reportDuration={reportDuration}
+                                            soundFile={channel.path}
+                                            listener={listener}
+                                            isPlaying={channel.isPlaying}
+                                            volume={channel.volume}
+                                        />
+                                    </SphereMesh>
+                            </Fragment>
                         );
                     else if (channel.type === soundTypes.random)
                         return (
@@ -123,8 +128,10 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario }) => {
 const Canvas: React.FC = () => {
     const scenario = useScenario('ocean');
 
+    const debug = useSelector(getDebug);
+    
     const canvasProps = { camera: { fov: 75, position: new Vector3(0, 0, 4) } };
-    const contentProps = { scenario };
+    const contentProps = { scenario, debug };
 
     return (
         <>
