@@ -2,14 +2,13 @@ import React, { Fragment, Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas as ThreeCanvas, useFrame, useThree } from 'react-three-fiber';
 import LoopingSound from './LoopingSound';
 import SingleSound from './SingleSound';
-import Controls from './Controls';
 import SphereMesh from './SphereMesh';
 import useScenario, { UseScenarioProps } from './hooks/useScenario';
 import { Vector3, AudioListener, Mesh, MeshLambertMaterial } from 'three';
 import GroundPlane from './GroundPlane';
 import { SoundChannel, soundTypes } from '../types/Scenario';
 import Debug from './Debug';
-import { isEmpty, usePrevious } from '../utils/utils';
+import { usePrevious } from '../utils/utils';
 import CameraRig from './CameraRig';
 import Loading from './Loading';
 import { useSelector } from 'react-redux';
@@ -61,6 +60,7 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug }) => {
                     scale={sphereScale}
                     material={new MeshLambertMaterial({ color: 'purple' })}
                     castShadow
+                    visible={debug}
                 >
                     <sphereBufferGeometry attach="geometry" />
                 </mesh>
@@ -80,6 +80,7 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug }) => {
                                                 channel.area[0][2],
                                             )
                                         }
+                                        visible={debug}
                                     >
                                         <LoopingSound
                                             slug={channel.slug}
@@ -100,7 +101,7 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug }) => {
                                 scale={sphereScale}
                                 position={channel.position}
                                 color={colors[i % colors.length]}
-                                visible={channel.isPlaying}
+                                visible={debug && channel.isPlaying}
                             >
                                 <SingleSound
                                     slug={channel.slug}
@@ -114,12 +115,11 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug }) => {
                                 />
                             </SphereMesh>
                         );
-                    else return <React.Fragment key={i} />;
+                    else return <Fragment key={i} />;
                 })}
 
-                <GroundPlane />
+                <GroundPlane visible={debug}/>
             </Suspense>
-            {/* <Controls /> */}
             <CameraRig />
         </>
     );
