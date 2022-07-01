@@ -29,7 +29,7 @@ header {
         @include headerItemTransition();
 
         &.logo {
-            top: calc(50% - 12rem)
+            top: calc(50% - 12rem);
         }
         &.title {
             top: calc(50% - 2rem);
@@ -43,8 +43,20 @@ header {
             top: calc(50% + 2rem);
             height: 2rem;
         }
+
+        &.settings {
+            width: 4rem;
+            height: 4rem;
+            top: 0;
+            left: calc(100% - 4rem);
+            transform: scale(0%);
+
+            i {
+                font-size: 1.5rem;
+            }
+        }
     }
-    
+
     &.compact {
         height: 4rem;
         flex-direction: row;
@@ -53,7 +65,6 @@ header {
         .header-item {
             height: 4rem;
             top: 0;
-
 
             &.logo {
                 left: 1rem;
@@ -69,6 +80,10 @@ header {
             }
             &.chooser {
                 left: calc(50% - 5rem);
+            }
+
+            &.settings {
+                transform: scale(100%);
             }
         }
     }

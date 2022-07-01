@@ -15,7 +15,7 @@ function Header() {
             <div className="header-item chooser" onClick={() => setCompactHeader(!compactHeader)}>
                 Scenario chooser
             </div>
-            <div className="header-item">
+            <div className="header-item settings">
                 <i className="settings-button fa fa-cog" />
             </div>
         </header>
