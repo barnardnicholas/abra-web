@@ -27,9 +27,9 @@ function App() {
             </div> */}
             {/* <StyleGuide /> */}
             <header className={compactHeader ? 'compact' : ''}>
-                <div className="item first" onClick={() => setCompactHeader(!compactHeader)}>ITEM 1</div>
-                <div className="item second" onClick={() => setCompactHeader(!compactHeader)}>ITEM 2</div>
-                <div className="item third" onClick={() => setCompactHeader(!compactHeader)}>ITEM 3</div>
+                <div className="header-item logo" onClick={() => setCompactHeader(!compactHeader)}><MainLogo/></div>
+                <div className="header-item title" onClick={() => setCompactHeader(!compactHeader)}><h1>ABRA</h1></div>
+                <div className="header-item chooser" onClick={() => setCompactHeader(!compactHeader)}>Scenario chooser</div>
             </header>
         </div>
     );

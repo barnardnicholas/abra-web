@@ -1,51 +1,73 @@
+@mixin headerTransition() {
+    transition: all 1s ease;
+}
+
+@mixin headerItemTransition() {
+    transition: all 0.66s ease-in;
+}
+
 header {
-    border: 1px solid;
+    // border: 1px solid;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transition: all 1s ease;
+    @include headerTransition();
     position: relative;
 
     height: 100vh;
 
-    .item {
-        width: 10vmin;
-        height: 10vmin;
-        border: solid 1px;
+    .header-item {
+        width: 10rem;
+        height: 10rem;
+        // border: solid 1px;
         display: flex;
         justify-content: center;
         align-items: center;
         position: absolute;
-        left: calc(50% - 5vmin);
-        transition: all 1s ease;
+        left: calc(50% - 5rem);
+        @include headerItemTransition();
 
-        &.first {
-            top: 0;
+        &.logo {
+            top: calc(50% - 12rem)
         }
-        &.second {
-            top: calc(50% - 5vmin);
+        &.title {
+            top: calc(50% - 2rem);
+            height: 4rem;
+
+            h1 {
+                @include headerItemTransition();
+            }
         }
-        &.third {
-            top: calc(100% - 10vmin);
+        &.chooser {
+            top: calc(50% + 2rem);
+            height: 2rem;
         }
     }
     
     &.compact {
-        height: 10vmin;
+        height: 4rem;
         flex-direction: row;
         justify-content: space-between;
 
-        .item {
+        .header-item {
+            height: 4rem;
             top: 0;
-            &.first {
-                left: 0;
+
+            &.logo {
+                left: 1rem;
+                width: 3rem;
             }
-            &.second {
-                left: calc(50% - 5vmin);
+            &.title {
+                left: 4rem;
+                width: 6rem;
+
+                h1 {
+                    font-size: 2rem;
+                }
             }
-            &.third {
-                left: calc(100% - 10vmin);
+            &.chooser {
+                left: calc(50% - 5rem);
             }
         }
     }
