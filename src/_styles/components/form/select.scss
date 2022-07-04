@@ -31,6 +31,7 @@
     justify-content: space-between;
     align-items: center;
     cursor: default;
+    min-width: 15rem;
 
     .arrow {
         padding-top: 4px;
@@ -108,10 +109,10 @@
 .form-select-options {
     position: absolute;
     width: 100%;
-    min-width: 400px;
+    min-width: 15rem;
     top: 100%;
     margin-top: 5px;
-    background-color: white;
+    background-color: #222222;
     border: 1px solid #666666;
     border-radius: 0.5rem;
     z-index: 9999;
@@ -138,7 +139,7 @@
             cursor: pointer;
 
             &:hover, &.active {
-                background-color: #eee;
+                background-color: #333333;
             }
         }
     }
