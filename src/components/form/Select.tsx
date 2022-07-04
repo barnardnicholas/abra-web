@@ -70,7 +70,7 @@ const Select: React.FC<SelectProps> = ({
                 </div>
 
                 
-                    <div className={`form-select-options ${isOpen ? 'open' : ''}`}>
+                    <div className={`form-select-options ${isOpen ? 'open' : ''} ${disabled ? 'disabled' : ''}`}>
                         {search && !!options.length && (
                             <div className="search" onClick={e => e.stopPropagation()}>
                                 <input
