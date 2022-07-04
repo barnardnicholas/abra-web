@@ -30,6 +30,11 @@ header {
 
         &.logo {
             top: calc(50% - 12rem);
+
+             .main-logo {
+                width: 100%;
+                height: auto;
+             }
         }
         &.title {
             top: calc(50% - 2rem);
@@ -39,8 +44,8 @@ header {
                 @include headerItemTransition();
             }
         }
-        &.chooser {
-            top: calc(50% + 2rem);
+        &.picker {
+            top: calc(50% + 3rem);
             height: 2rem;
         }
 
@@ -69,6 +74,7 @@ header {
             &.logo {
                 left: 1rem;
                 width: 2.8rem;
+                height: 4rem;
             }
             &.title {
                 left: 4rem;
@@ -78,8 +84,12 @@ header {
                     font-size: 2rem;
                 }
             }
-            &.chooser {
+            &.picker {
                 left: calc(50% - 5rem);
+
+                .form-select-options {
+                    top: calc(100% - 0.66rem);
+                }
             }
 
             &.settings {

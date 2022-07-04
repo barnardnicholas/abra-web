@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getDebug } from '../redux/selectors/debug';
+import { getSelectedScenario } from '../redux/selectors/scenarios';
 import Select from './form/Select';
 import MainLogo from './MainLogo';
 import ScenarioPicker from './ScenarioPicker';
 
 function Header() {
-    const [compactHeader, setCompactHeader] = useState(false);
+    const selectedScenario = useSelector(getSelectedScenario);
     const debug = useSelector(getDebug);
     return (
-        <header className={compactHeader ? 'compact' : ''}>
+        <header className={selectedScenario ? 'compact' : ''}>
             {debug && <>
             <div className="guide-vertical"/>
             <div className="guide-horizontal"/>
@@ -20,8 +21,8 @@ function Header() {
             <div className="header-item title">
                 <h1>ABRA</h1>
             </div>
-            <div className="header-item chooser">
-                <ScenarioPicker setCompactHeader={setCompactHeader}/>
+            <div className="header-item picker">
+                <ScenarioPicker/>
             </div>
             <div className="header-item settings">
                 <i className="settings-button fa fa-cog" />

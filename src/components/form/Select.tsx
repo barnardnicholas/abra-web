@@ -69,8 +69,8 @@ const Select: React.FC<SelectProps> = ({
                     <i className="arrow fal fa-angle-down" />
                 </div>
 
-                {isOpen && (
-                    <div className="form-select-options">
+                
+                    <div className={`form-select-options ${isOpen ? 'open' : ''}`}>
                         {search && !!options.length && (
                             <div className="search" onClick={e => e.stopPropagation()}>
                                 <input
@@ -99,7 +99,7 @@ const Select: React.FC<SelectProps> = ({
                             ))}
                         </div>
                     </div>
-                )}
+                    
             </div>
     );
 
