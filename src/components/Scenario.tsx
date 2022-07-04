@@ -13,6 +13,7 @@ import CameraRig from './CameraRig';
 import Loading from './Loading';
 import { useSelector } from 'react-redux';
 import { getDebug } from '../redux/selectors/debug';
+import { getSelectedScenario } from '../redux/selectors/scenarios';
 
 const sphereScale = new Vector3(0.25, 0.25, 0.25);
 
@@ -126,7 +127,8 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug }) => {
 };
 
 const Canvas: React.FC = () => {
-    const scenario = useScenario('ocean');
+    const selectedScenario = useSelector(getSelectedScenario) || '';
+    const scenario = useScenario(selectedScenario as string);
 
     const debug = useSelector(getDebug);
     
@@ -134,7 +136,7 @@ const Canvas: React.FC = () => {
     const contentProps = { scenario, debug };
 
     return (
-        <>
+        <div className="three-container">
             <ThreeCanvas {...canvasProps} shadows dpr={[1, 2]}>
                 <CanvasContent {...contentProps} />
             </ThreeCanvas>
@@ -144,7 +146,7 @@ const Canvas: React.FC = () => {
                 </button>
             </div>
             {debug && <Debug scenario={scenario} />}
-        </>
+        </div>
     );
 };
 
