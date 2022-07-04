@@ -12,17 +12,23 @@ const scenarioOptions: DropdownOption<string>[] = [
     { label: 'Rainstorm', value: 'rainstorm'},
 ]
 
-const ScenarioPicker = () => {
+interface ScenarioPickerProps {
+    stopScenario: () => void;
+    isPlaying: boolean;
+}
+
+const ScenarioPicker:React.FC<ScenarioPickerProps> = ({stopScenario, isPlaying}) => {
     const dispatch = useDispatch();
 
     const selectedScenario = useSelector(getSelectedScenario)
 
     const handleChange = (_: string, value: string | number | null) => {
+        stopScenario();
         dispatch(setScenario(null))
-        setTimeout(() =>  dispatch(setScenario(value)), 100);
+        setTimeout(() =>  dispatch(setScenario(value)), 10);
     }
 
-    return <Select name="scenarioPicker" value={selectedScenario} options={scenarioOptions} onChange={handleChange} placeholder="Choose scenario"/>
+    return <Select name="scenarioPicker" value={selectedScenario} options={scenarioOptions} onChange={handleChange} placeholder="Choose scenario" disabled={isPlaying}/>
 }
 
 export default ScenarioPicker;
