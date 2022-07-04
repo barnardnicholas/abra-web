@@ -13,19 +13,46 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
 
     let masterTimer = useRef<ReturnType<typeof setTimeout>>(setTimeout(() => {}, 1));
 
-    const prevProps = usePrevious({ soundChannels, isPlaying });
+    const prevProps = usePrevious({ scenarioName, soundChannels, isPlaying });
 
     useEffect(() => {
         masterTimer.current = setTimeout(() => {}, 1);
 
         return () => {
+            stopScenario();
             clearTimeout(masterTimer.current);
         };
     }, []);
 
     useEffect(() => {
+        stopScenario();
         const channels: Record<string, SoundChannel> = {};
+        
+        Object.values(scenario.sounds).forEach((sound: Sound) => {
+            channels[sound.slug] = {
+                id: sound.id,
+                name: sound.name,
+                slug: sound.slug,
+                position: new Vector3(0, 0, 0),
+                isPlaying: false,
+                duration: 0,
+                type: sound.type,
+                path: `/audio/${soundTypeValues[sound.type]}/${sound.path}`,
+                frequency: sound.frequency,
+                area: sound.area,
+                volume: sound.volume,
+            };
+        });
+        
+        setSoundPool(buildSoundPool(scenario.sounds));
+        setSoundChannels(channels);
+    }, []);
 
+    useEffect(() => {
+        if (scenarioName !== prevProps.scenarioName) {
+            stopScenario();
+            console.log('Rebuilding...')
+            const channels: Record<string, SoundChannel> = {};
         Object.values(scenario.sounds).forEach((sound: Sound) => {
             channels[sound.slug] = {
                 id: sound.id,
@@ -44,7 +71,8 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
 
         setSoundPool(buildSoundPool(scenario.sounds));
         setSoundChannels(channels);
-    }, []);
+    }
+    }, [scenarioName, prevProps.scenarioName]);
 
     useEffect(() => {
         if (!isEmpty(soundChannels) && isPlaying && !prevProps.isPlaying) startScenario();
@@ -201,6 +229,7 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
             newSoundChannels[slug] = { ...newSoundChannels[slug], isPlaying: false };
         });
         setSoundChannels(newSoundChannels);
+        setIsPlaying(false);
     }
 
     return {
