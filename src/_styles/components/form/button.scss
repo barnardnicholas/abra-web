@@ -1,17 +1,19 @@
 .button {
-	box-shadow:inset 0px 1px 3px 0px #91b8b3;
-	background-color:#272730;
-	padding: 0.5rem 1rem;
+	background-color:transparent;
+	padding: 0.5rem 2rem;
     line-height: 1.5rem;
 	display:inline-block;
 	cursor:pointer;
 	color:#f7f7f7;
 	font-size: 1rem;
 	text-decoration:none;
+    @include bodyText();
+    border: 1px solid #f7f7f7;
+    border-bottom-width: 6px;
 }
 .button:hover {
-	background:linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
 	background-color:#f7f7f7;
+    color: #272730;
 }
 .button:active {
 	position:relative;
