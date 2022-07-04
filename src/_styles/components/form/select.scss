@@ -1,0 +1,150 @@
+.form-select {
+    padding: 12px 15px;
+    font-size: 13px;
+    line-height: 24px;
+    color: #f7f7f7;
+    background-color: #222222;
+    border: 1px solid #f7f7f7;
+    border-radius: 0.5rem;
+
+    &:disabled, &.disabled {
+        cursor: not-allowed;
+        background-color: #666666;
+    }
+
+    &.error {
+        border-color: red;
+    }
+
+    // mini version
+    &.mini {
+        padding: {
+            top: 7px;
+            bottom: 7px;
+        }
+    }
+}
+
+// select
+.form-select {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: default;
+
+    .arrow {
+        padding-top: 4px;
+        margin-left: 10px;
+        padding-left: 10px;
+        font-size: 22px;
+        border-left: 1px solid #ccc;
+    }
+
+    p {
+        flex: 1;
+
+        &.placeholder {
+            color: #999;
+        }
+    }
+
+    .remove {
+        margin-top: 2px;
+        background-color: transparent;
+        outline: none;
+
+        i {
+            font-size: 16px;
+        }
+    }
+
+    // multi select
+    &.multi-select {
+        padding: 3px 15px 3px 5px;
+
+        .selected {
+            display: flex;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .placeholder {
+            padding: 10px;
+            padding-right: 0;
+        }
+
+        .option {
+            display: flex;
+            margin: 5px;
+            padding: 5px 10px;
+            background-color: #222222;
+            border-radius: 0.5rem;
+
+            .remove {
+                margin-left: 5px;
+
+                i {
+                    font-size: 14px;
+                }
+            }
+        }
+
+        &.disabled {
+            .option {
+                background-color: #222222;
+            }
+        }
+    }
+
+    // mini version
+    &.mini {
+        .arrow {
+            margin-left: 30px;
+        }
+    }
+}
+
+// select options & search
+.form-select-options {
+    position: absolute;
+    width: 100%;
+    min-width: 400px;
+    top: 100%;
+    margin-top: 5px;
+    background-color: white;
+    border: 1px solid #666666;
+    border-radius: 0.5rem;
+    z-index: 9999;
+
+    .search {
+        padding: 15px;
+
+        input {
+            width: 100%;
+            padding: 5px 15px;
+        }
+    }
+
+    .options-list {
+        max-height: 175px;
+        overflow: auto;
+
+        p {
+            padding: 8px 15px;
+        }
+
+        .option {
+            font-size: 13px;
+            cursor: pointer;
+
+            &:hover, &.active {
+                background-color: #eee;
+            }
+        }
+    }
+
+    // mini version
+    &.mini {
+        min-width: 200px;
+    }
+}
