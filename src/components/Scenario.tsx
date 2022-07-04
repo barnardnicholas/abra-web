@@ -44,7 +44,7 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug }) => {
     return (
         <>
             <Suspense fallback={<Loading />}>
-                <color attach="background" args={['#000000']} />
+                <color attach="background" args={['#272730']} />
                 {/* <fog attach="fog" args={['#000000', 5, 20]} /> */}
                 <ambientLight />
                 <spotLight
@@ -127,24 +127,31 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug }) => {
 };
 
 const Canvas: React.FC = () => {
-    const selectedScenario = useSelector(getSelectedScenario) || '';
+    const selectedScenario = useSelector(getSelectedScenario) || 'none';
     const scenario = useScenario(selectedScenario as string);
 
     const debug = useSelector(getDebug);
     
-    const canvasProps = { camera: { fov: 75, position: new Vector3(0, 0, 4) } };
+    const canvasProps = { camera: { fov: 75, position: new Vector3(0, 0, 4) }, alpha: true };
     const contentProps = { scenario, debug };
+
+    useEffect(() => {
+        return () => {
+            scenario.stopScenario();
+        };
+    }, []);
 
     return (
         <div className="three-container">
-            <ThreeCanvas {...canvasProps} shadows dpr={[1, 2]}>
+            <ThreeCanvas {...canvasProps} shadows dpr={[1, 2]} onCreated={state => state.gl.setClearColor('#272730')}>
                 <CanvasContent {...contentProps} />
             </ThreeCanvas>
-            <div className="floating-controls">
-                <button onClick={() => scenario.setIsPlaying(!scenario.isPlaying)}>
+            {selectedScenario !== 'none' && <div className="floating-controls">
+                <button className="button" onClick={() => scenario.setIsPlaying(!scenario.isPlaying)}>
                     {scenario.isPlaying ? 'Stop' : 'Play'}
                 </button>
             </div>
+            }
             {debug && <Debug scenario={scenario} />}
         </div>
     );
