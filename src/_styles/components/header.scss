@@ -68,7 +68,7 @@ header {
 
             &.logo {
                 left: 1rem;
-                width: 3rem;
+                width: 2.8rem;
             }
             &.title {
                 left: 4rem;
@@ -86,5 +86,22 @@ header {
                 transform: scale(100%);
             }
         }
+    }
+
+    .guide-vertical, .guide-horizontal {
+        background-color: #666666;
+        position: absolute;
+    }
+    .guide-vertical {
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 1px;
+    }
+    .guide-horizontal {
+        left: 0;
+        right: 0;
+        top: 50%;
+        height: 1px;
     }
 }
