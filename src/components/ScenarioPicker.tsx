@@ -18,7 +18,8 @@ const ScenarioPicker = () => {
     const selectedScenario = useSelector(getSelectedScenario)
 
     const handleChange = (_: string, value: string | number | null) => {
-        dispatch(setScenario(value));
+        dispatch(setScenario(null))
+        setTimeout(() =>  dispatch(setScenario(value)), 100);
     }
 
     return <Select name="scenarioPicker" value={selectedScenario} options={scenarioOptions} onChange={handleChange} placeholder="Choose scenario"/>
