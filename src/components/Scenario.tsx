@@ -3,7 +3,6 @@ import { Canvas as ThreeCanvas, useFrame, useThree } from 'react-three-fiber';
 import LoopingSound from './LoopingSound';
 import SingleSound from './SingleSound';
 import SphereMesh from './SphereMesh';
-import useScenario, { UseScenarioProps } from './hooks/useScenario';
 import { Vector3, AudioListener, Mesh, MeshLambertMaterial } from 'three';
 import GroundPlane from './GroundPlane';
 import { SoundChannel, soundTypes } from '../types/Scenario';
@@ -13,7 +12,7 @@ import CameraRig from './CameraRig';
 import Loading from './Loading';
 import { useSelector } from 'react-redux';
 import { getDebug } from '../redux/selectors/debug';
-import { getSelectedScenario } from '../redux/selectors/scenarios';
+import { UseScenarioProps } from './hooks/useScenario';
 
 const sphereScale = new Vector3(0.25, 0.25, 0.25);
 
@@ -126,9 +125,12 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug }) => {
     );
 };
 
-const Canvas: React.FC = () => {
-    const selectedScenario = useSelector(getSelectedScenario) || 'none';
-    const scenario = useScenario(selectedScenario as string);
+interface CanvasProps {
+    scenario: UseScenarioProps;
+    selectedScenario: string;
+}
+
+const Canvas: React.FC<CanvasProps> = ({scenario, selectedScenario}) => {
 
     const debug = useSelector(getDebug);
     
@@ -143,7 +145,7 @@ const Canvas: React.FC = () => {
 
     return (
         <div className="three-container">
-            <ThreeCanvas {...canvasProps} shadows dpr={[1, 2]} onCreated={state => state.gl.setClearColor('#272730')}>
+            <ThreeCanvas {...canvasProps} shadows dpr={[1, 2]}>
                 <CanvasContent {...contentProps} />
             </ThreeCanvas>
             {selectedScenario !== 'none' && <div className="floating-controls">
