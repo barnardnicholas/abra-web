@@ -1,0 +1,19 @@
+.button {
+	box-shadow:inset 0px 1px 3px 0px #91b8b3;
+	background-color:#272730;
+	padding: 0.5rem 1rem;
+    line-height: 1.5rem;
+	display:inline-block;
+	cursor:pointer;
+	color:#f7f7f7;
+	font-size: 1rem;
+	text-decoration:none;
+}
+.button:hover {
+	background:linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
+	background-color:#f7f7f7;
+}
+.button:active {
+	position:relative;
+	top:1px;
+}
