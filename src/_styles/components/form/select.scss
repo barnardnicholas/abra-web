@@ -7,7 +7,8 @@
 
     &:disabled, &.disabled {
         cursor: not-allowed;
-        background-color: #666666;
+        color: #666666;
+        border: 1px solid #666666;
     }
 
     &.error {
@@ -31,6 +32,14 @@
     cursor: default;
     min-width: 15rem;
     @include bodyText();
+
+    &:disabled, &.disabled {
+        color: #666666;
+
+        p, .arrow {
+            color: #666666;
+            }
+    }
 
     .arrow {
         padding-top: 4px;
@@ -110,7 +119,7 @@
     min-width: 15rem;
     top: calc(100% + 0.26rem);
     background-color: #272730;
-    border: 1px solid #f7f7f7;
+    border: 1px solid;
     border-top-width: 0;
     border-bottom-width: 6px;
     z-index: 9999;
@@ -123,6 +132,10 @@
         max-height: unset;
         height: fit-content;
         transition: all 1s ease;
+    }
+
+    &.disabled {
+        color: #666666;
     }
 
     .search {
