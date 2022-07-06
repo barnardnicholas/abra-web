@@ -1,4 +1,5 @@
 import React, { Fragment, Suspense, useEffect, useRef, useState } from 'react';
+import * as THREE from 'three';
 import { Canvas as ThreeCanvas, useFrame, useThree } from '@react-three/fiber';
 import LoopingSound from './LoopingSound';
 import SingleSound from './SingleSound';
@@ -26,6 +27,7 @@ interface CanvasContentProps {
 const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug }) => {
     const { soundChannels, reportDuration } = scenario;
     const [listener] = useState(() => new AudioListener());
+    const bgColor = new THREE.Color(0x272730);
 
     const cameraTarget = useRef<Mesh>(null!);
 
@@ -42,7 +44,7 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug }) => {
 
     return (
         <>
-            <color attach="background" args={['#272730']} />
+            <color attach="background" args={['rgb(39, 39, 48)']} />
             <Suspense fallback={<></>}>
                 {/* <fog attach="fog" args={['#000000', 5, 20]} /> */}
                 <ambientLight />
@@ -133,7 +135,11 @@ interface CanvasProps {
 const Canvas: React.FC<CanvasProps> = ({ scenario, selectedScenario }) => {
     const debug = useSelector(getDebug);
 
-    const canvasProps = { camera: { fov: 75, position: new Vector3(0, 0, 4) } };
+    const canvasProps = {
+        camera: { fov: 75, position: new Vector3(0, 0, 4) },
+        legacy: true,
+        shadows: true,
+    };
     const contentProps = { scenario, debug };
 
     useEffect(() => {
@@ -144,7 +150,7 @@ const Canvas: React.FC<CanvasProps> = ({ scenario, selectedScenario }) => {
 
     return (
         <div className="three-container">
-            <ThreeCanvas {...canvasProps} shadows dpr={[1, 2]} style={{ background: '#272730' }}>
+            <ThreeCanvas {...canvasProps} dpr={[1, 2]} style={{ background: '#272730' }}>
                 <CanvasContent {...contentProps} />
             </ThreeCanvas>
             {selectedScenario !== 'none' && (
