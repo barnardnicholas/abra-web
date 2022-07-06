@@ -17,8 +17,8 @@ function App() {
     <div className={`App ${isDarkMode ? '' : 'theme-light'}`}>
       <Scenario scenario={scenario} selectedScenario={selectedScenario} />
       {/* <StyleGuide /> */}
-      <Settings />
       <Header stopScenario={scenario.stopScenario} isPlaying={scenario.isPlaying} />
+      <Settings />
     </div>
   );
 }
