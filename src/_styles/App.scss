@@ -16,25 +16,43 @@ canvas {
 
 body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif; // Fallback
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+        'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; // Fallback
 
-      
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    
-    .App {
-        // text-align: center;
-        @include bodyText();
-        height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.App {
+    // text-align: center;
+    @include bodyText();
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    // max-width: 100vw;
+    // max-height: 100vh;
+    // overflow: hidden;
 }
 
 h1 {
     // color: f7f7f7;
     @include titleText();
     @include h1Title();
+}
+h2 {
+    // color: f7f7f7;
+    @include titleText();
+    @include h2Title();
+}
+h3 {
+    // color: f7f7f7;
+    @include titleText();
+    @include h3Title();
+}
+h4 {
+    // color: f7f7f7;
+    @include titleText();
+    @include h4Title();
 }
 
 .floating-controls {
@@ -69,5 +87,3 @@ h1 {
     font-size: 66%;
     overflow-y: auto;
 }
-
-

@@ -6,15 +6,17 @@ import StyleGuide from './components/StyleGuide';
 import { useSelector } from 'react-redux';
 import { getSelectedScenario } from './redux/selectors/scenarios';
 import useScenario from './components/hooks/useScenario';
+import Settings from './components/settings/Settings';
 
 function App() {
     const selectedScenario = useSelector(getSelectedScenario) || 'none';
     const scenario = useScenario(selectedScenario as string);
     return (
         <div className="App">
-            <Scenario scenario={scenario} selectedScenario={selectedScenario}/>
+            <Scenario scenario={scenario} selectedScenario={selectedScenario} />
             {/* <StyleGuide /> */}
-            <Header stopScenario={scenario.stopScenario} isPlaying={scenario.isPlaying}/>
+            <Settings />
+            <Header stopScenario={scenario.stopScenario} isPlaying={scenario.isPlaying} />
         </div>
     );
 }
