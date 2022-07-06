@@ -1,5 +1,8 @@
-@mixin settingsMenuTransition() {
+@mixin slowTransition() {
     transition: all 1s ease;
+}
+@mixin fastTransition() {
+    transition: all 0.5s ease;
 }
 
 .settings-container {
@@ -8,8 +11,9 @@
     bottom: 4rem;
     right: 0;
     overflow: hidden;
+    width: 0;
     max-width: 0;
-    @include settingsMenuTransition();
+    @include slowTransition();
     border: 1px solid;
     transform: translateX(2px);
 
@@ -17,7 +21,7 @@
         width: 30rem;
         max-width: 100vw;
         transform: translateX(0);
-        @include settingsMenuTransition();
+        @include fastTransition();
 
         .settings {
             left: 0;
