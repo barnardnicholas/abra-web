@@ -3,17 +3,17 @@ import { createReducer, PayloadAction } from '@reduxjs/toolkit';
 import { toggleDarkMode } from '../actions/darkMode';
 
 const initialState = {
-    darkMode: false,
+  darkMode: true,
 };
 
 interface DarkModeState {
-    darkMode: boolean;
+  darkMode: boolean;
 }
 
 export default createReducer(initialState, {
-    [toggleDarkMode.type]: handleToggleDarkMode,
+  [toggleDarkMode.type]: handleToggleDarkMode,
 });
 
 function handleToggleDarkMode(state: DarkModeState, action: PayloadAction<boolean>) {
-    state.darkMode = action.payload;
+  state.darkMode = action.payload;
 }

@@ -1,31 +1,33 @@
 @mixin bodyText() {
-    font-family: 'Trispace', sans-serif;
-    letter-spacing: -0.05em;
-    font-weight: 300;
+  font-family: 'Trispace', sans-serif;
+  letter-spacing: -0.05em;
+  font-weight: 300;
+  color: var(--main-typography);
 }
 
 @mixin titleText() {
-    font-family: 'Heebo', sans-serif;
-    font-weight: 900;
-    line-height: 1em;
+  font-family: 'Heebo', sans-serif;
+  font-weight: 900;
+  line-height: 1em;
+  color: var(--main-typography);
 }
 
 @mixin h1Title() {
-    font-size: 3.5rem;
+  font-size: 3.5rem;
 }
 
 @mixin h2Title() {
-    font-size: 2.5rem;
+  font-size: 2.5rem;
 }
 
 @mixin h3Title() {
-    font-size: 2rem;
+  font-size: 2rem;
 }
 
 @mixin h3Title() {
-    font-size: 1.75rem;
+  font-size: 1.75rem;
 }
 
 @mixin h4Title() {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }

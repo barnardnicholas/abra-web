@@ -1,0 +1,12 @@
+// Standard Theme
+@mixin themeColors() {
+  .App {
+    --main-background: #272730;
+    --main-typography: #f7f7f7;
+
+    &.theme-light {
+      --main-background: #f7f7f7;
+      --main-typography: #272730;
+    }
+  }
+}

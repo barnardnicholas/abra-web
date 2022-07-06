@@ -1,21 +1,21 @@
 .button {
-	background-color:transparent;
-	padding: 0.5rem 2rem;
-    line-height: 1.5rem;
-	display:inline-block;
-	cursor:pointer;
-	color:#f7f7f7;
-	font-size: 1rem;
-	text-decoration:none;
-    @include bodyText();
-    border: 1px solid #f7f7f7;
-    border-bottom-width: 6px;
+  background-color: transparent;
+  padding: 0.5rem 2rem;
+  line-height: 1.5rem;
+  display: inline-block;
+  cursor: pointer;
+  color: var(--main-typography);
+  font-size: 1rem;
+  text-decoration: none;
+  @include bodyText();
+  border: 1px solid var(--main-typography);
+  border-bottom-width: 6px;
 }
 .button:hover {
-	background-color:#f7f7f7;
-    color: #272730;
+  background-color: var(--main-typography);
+  color: var(--main-background);
 }
 .button:active {
-	position:relative;
-	top:1px;
+  position: relative;
+  top: 1px;
 }
