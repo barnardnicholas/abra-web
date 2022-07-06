@@ -138,6 +138,10 @@ button,
 [type='reset'],
 [type='submit'] {
   -webkit-appearance: button;
+  background-color: transparent;
+  border: none;
+  text-decoration: none;
+  display: inline-block;
 }
 
 /**
