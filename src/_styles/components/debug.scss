@@ -5,10 +5,18 @@
   width: 25vw;
   height: calc(100% - (4rem * 2));
   z-index: 1;
-  text-shadow: var(--main-background) 0 0 2px;
+  text-shadow: var(--main-background) 0 0 8px;
   text-align: left;
   padding: 1em;
   font-size: 66%;
   overflow-y: auto;
   color: var(--main-typography);
+  pointer-events: none;
+  line-height: 1rem;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
