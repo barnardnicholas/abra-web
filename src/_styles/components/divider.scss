@@ -1,0 +1,14 @@
+.divider {
+    display: block;
+    height: 1px;
+    min-height: 1px;
+    background-color: #f7f7f7;
+    margin: 1rem 0;
+
+    &.no-margin-top {
+        margin-top: 0;
+    }
+    &.no-margin-bottom {
+        margin-bottom: 0;
+    }
+}
