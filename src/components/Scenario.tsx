@@ -42,8 +42,8 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug }) => {
 
     return (
         <>
+            <color attach="background" args={['#272730']} />
             <Suspense fallback={<Loading />}>
-                <color attach="background" args={['#272730']} />
                 {/* <fog attach="fog" args={['#000000', 5, 20]} /> */}
                 <ambientLight />
                 <spotLight
@@ -145,7 +145,7 @@ const Canvas: React.FC<CanvasProps> = ({scenario, selectedScenario}) => {
 
     return (
         <div className="three-container">
-            <ThreeCanvas {...canvasProps} shadows dpr={[1, 2]} style={{backgroundColor: '#272730'}}>
+            <ThreeCanvas {...canvasProps} shadows dpr={[1, 2]} style={{ backgroundColor: '#272730', background: '#272730' }}>
                 <CanvasContent {...contentProps} />
             </ThreeCanvas>
             {selectedScenario !== 'none' && <div className="floating-controls">

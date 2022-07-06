@@ -6,6 +6,27 @@
     transition: all 0.5s ease;
 }
 
+@keyframes pulsate {
+    0% {
+        transform: scale(80%);
+    }
+    11% {
+        transform: scale(85%);
+    }
+    15% {
+        transform: scale(90%);
+    }
+    19% {
+        transform: scale(85%);
+    }
+    30% {
+        transform: scale(80%);
+    }
+    100% {
+        transform: scale(80%);
+    }
+}
+
 header {
     // border: 1px solid;
     display: flex;
@@ -16,6 +37,28 @@ header {
     position: relative;
 
     height: 100vh;
+
+    &.loading {
+        .header-item {
+            &.logo {
+                top: calc(50% - 4rem);
+                transform: scale(66%);
+                animation: pulsate 1s ease infinite;
+            }
+            &.title {
+                top: calc(50% + 2rem);
+                transform: scale(0%);
+            }
+            &.picker {
+                top: calc(50% + 7rem);
+                transform: scale(0%);
+            }
+
+            &.settings {
+                transform: scale(0%);
+            }
+        }
+    }
 
     .header-item {
         width: 10rem;
@@ -31,10 +74,10 @@ header {
         &.logo {
             top: calc(50% - 12rem);
 
-             .main-logo {
+            .main-logo {
                 width: 100%;
                 height: auto;
-             }
+            }
         }
         &.title {
             top: calc(50% - 2rem);
@@ -98,7 +141,8 @@ header {
         }
     }
 
-    .guide-vertical, .guide-horizontal {
+    .guide-vertical,
+    .guide-horizontal {
         background-color: #666666;
         position: absolute;
     }
