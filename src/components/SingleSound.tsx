@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { useLoader } from 'react-three-fiber';
+import { useLoader } from '@react-three/fiber';
 import { usePrevious } from '../utils/utils';
 import { PositionalAudio, AudioListener, AudioLoader } from 'three';
 

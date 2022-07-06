@@ -6,9 +6,10 @@ const SphereMesh: React.FC<Props> = ({
     castShadow = true,
     visible = true,
     position = new Vector3(0, 0, 0),
+    color,
+    children,
     ...props
 }) => {
-    const { color, children } = props;
 
     const material = new THREE.MeshLambertMaterial({ color });
 
@@ -33,6 +34,7 @@ interface Props {
     visible?: boolean;
     position?: Vector3;
     ref?: React.Ref<THREE.Mesh>;
+    children?: JSX.Element;
 }
 
 export default SphereMesh;

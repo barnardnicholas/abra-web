@@ -1,5 +1,5 @@
 import React, { Fragment, Suspense, useEffect, useRef, useState } from 'react';
-import { Canvas as ThreeCanvas, useFrame, useThree } from 'react-three-fiber';
+import { Canvas as ThreeCanvas, useFrame, useThree } from '@react-three/fiber';
 import LoopingSound from './LoopingSound';
 import SingleSound from './SingleSound';
 import SphereMesh from './SphereMesh';
@@ -134,7 +134,7 @@ const Canvas: React.FC<CanvasProps> = ({scenario, selectedScenario}) => {
 
     const debug = useSelector(getDebug);
     
-    const canvasProps = { camera: { fov: 75, position: new Vector3(0, 0, 4) }, alpha: true };
+    const canvasProps = { camera: { fov: 75, position: new Vector3(0, 0, 4) } };
     const contentProps = { scenario, debug };
 
     useEffect(() => {
@@ -145,7 +145,7 @@ const Canvas: React.FC<CanvasProps> = ({scenario, selectedScenario}) => {
 
     return (
         <div className="three-container">
-            <ThreeCanvas {...canvasProps} shadows dpr={[1, 2]}>
+            <ThreeCanvas {...canvasProps} shadows dpr={[1, 2]} style={{backgroundColor: '#272730'}}>
                 <CanvasContent {...contentProps} />
             </ThreeCanvas>
             {selectedScenario !== 'none' && <div className="floating-controls">
