@@ -15,7 +15,7 @@ function App() {
   const scenario = useScenario(selectedScenario as string);
   return (
     <div className={`App ${isDarkMode ? '' : 'theme-light'}`}>
-      <Scenario scenario={scenario} selectedScenario={selectedScenario} />
+      {/* <Scenario scenario={scenario} selectedScenario={selectedScenario} /> */}
       {/* <StyleGuide /> */}
       <Settings />
       <Header stopScenario={scenario.stopScenario} isPlaying={scenario.isPlaying} />

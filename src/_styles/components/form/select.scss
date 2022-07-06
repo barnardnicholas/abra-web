@@ -5,6 +5,7 @@
   color: var(--main-typography);
   background-color: var(--main-background);
   border: 1px solid var(--main-typography);
+  @include transitionColors();
 
   &:disabled,
   &.disabled {
@@ -90,7 +91,6 @@
       margin: 5px;
       padding: 5px 10px;
       background-color: var(--main-background);
-      border-radius: 0.5rem;
 
       .remove {
         margin-left: 5px;
@@ -128,7 +128,7 @@
   border-top-width: 0;
   border-bottom-width: 6px;
   z-index: 9999;
-  transition: top 0.5s ease;
+  //   transition: top 0.5s ease;
   height: 0;
   max-height: 0;
   overflow: hidden;
@@ -136,7 +136,7 @@
   &.open {
     max-height: unset;
     height: fit-content;
-    transition: all 1s ease;
+    // transition: top 1s ease;
   }
 
   &.disabled {

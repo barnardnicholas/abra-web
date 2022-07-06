@@ -4,10 +4,19 @@ import LogoDark from '../assets/logos/ABRA-Logo-Grey-WO.svg';
 import LogoLight from '../assets/logos/ABRA-Logo-Grey.svg';
 import { getDarkMode } from '../redux/selectors/darkMode';
 
-const MainLogo = () => {
+interface MainLogoProps {
+  forceDarkTheme?: boolean;
+}
+
+const MainLogo: React.FC<MainLogoProps> = ({ forceDarkTheme = false }) => {
   const isDarkMode = useSelector(getDarkMode);
   return (
-    <img src={isDarkMode ? LogoDark : LogoLight} className="main-logo" width={300} height="auto" />
+    <img
+      src={isDarkMode || forceDarkTheme ? LogoDark : LogoLight}
+      className="main-logo"
+      width={300}
+      height="auto"
+    />
   );
 };
 
