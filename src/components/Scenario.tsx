@@ -134,7 +134,7 @@ const Canvas: React.FC<CanvasProps> = ({scenario, selectedScenario}) => {
 
     const debug = useSelector(getDebug);
     
-    const canvasProps = { camera: { fov: 75, position: new Vector3(0, 0, 4) }, alpha: true };
+    const canvasProps = { camera: { fov: 75, position: new Vector3(0, 0, 4) } };
     const contentProps = { scenario, debug };
 
     useEffect(() => {
@@ -145,7 +145,7 @@ const Canvas: React.FC<CanvasProps> = ({scenario, selectedScenario}) => {
 
     return (
         <div className="three-container">
-            <ThreeCanvas {...canvasProps} shadows dpr={[1, 2]}>
+            <ThreeCanvas {...canvasProps} shadows dpr={[1, 2]} style={{backgroundColor: '#272730'}}>
                 <CanvasContent {...contentProps} />
             </ThreeCanvas>
             {selectedScenario !== 'none' && <div className="floating-controls">
