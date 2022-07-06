@@ -3,7 +3,7 @@ import { TextureLoader } from 'three';
 import * as THREE from 'three';
 
 const Loading: React.FC = () => {
-    const spriteRef = useRef<THREE.Sprite>();
+    const spriteRef = useRef<THREE.Sprite>(null);
     const loader = new TextureLoader();
     const texture = loader.load('sprites/loading.gif');
 

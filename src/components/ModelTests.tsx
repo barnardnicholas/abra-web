@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Canvas as ThreeCanvas, useLoader } from 'react-three-fiber';
+import { Canvas as ThreeCanvas, useLoader } from '@react-three/fiber';
 import Controls from './Controls';
 import { Vector3, MeshLambertMaterial } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';

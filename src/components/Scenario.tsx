@@ -1,5 +1,5 @@
 import React, { Fragment, Suspense, useEffect, useRef, useState } from 'react';
-import { Canvas as ThreeCanvas, useFrame, useThree } from 'react-three-fiber';
+import { Canvas as ThreeCanvas, useFrame, useThree } from '@react-three/fiber';
 import LoopingSound from './LoopingSound';
 import SingleSound from './SingleSound';
 import SphereMesh from './SphereMesh';
