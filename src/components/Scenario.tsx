@@ -43,7 +43,7 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug }) => {
     return (
         <>
             <color attach="background" args={['#272730']} />
-            <Suspense fallback={<Loading />}>
+            <Suspense fallback={<></>}>
                 {/* <fog attach="fog" args={['#000000', 5, 20]} /> */}
                 <ambientLight />
                 <spotLight
@@ -69,29 +69,29 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug }) => {
                     if (channel.type === soundTypes.background)
                         return (
                             <Fragment key={i}>
-                                    <SphereMesh
-                                        // key={i}
-                                        color={colors[i]}
-                                        scale={sphereScale}
-                                        position={
-                                            new Vector3(
-                                                channel.area[0][0],
-                                                channel.area[0][1],
-                                                channel.area[0][2],
-                                            )
-                                        }
-                                        visible={debug}
-                                    >
-                                        <LoopingSound
-                                            slug={channel.slug}
-                                            duration={channel.duration}
-                                            reportDuration={reportDuration}
-                                            soundFile={channel.path}
-                                            listener={listener}
-                                            isPlaying={channel.isPlaying}
-                                            volume={channel.volume}
-                                        />
-                                    </SphereMesh>
+                                <SphereMesh
+                                    // key={i}
+                                    color={colors[i]}
+                                    scale={sphereScale}
+                                    position={
+                                        new Vector3(
+                                            channel.area[0][0],
+                                            channel.area[0][1],
+                                            channel.area[0][2],
+                                        )
+                                    }
+                                    visible={debug}
+                                >
+                                    <LoopingSound
+                                        slug={channel.slug}
+                                        duration={channel.duration}
+                                        reportDuration={reportDuration}
+                                        soundFile={channel.path}
+                                        listener={listener}
+                                        isPlaying={channel.isPlaying}
+                                        volume={channel.volume}
+                                    />
+                                </SphereMesh>
                             </Fragment>
                         );
                     else if (channel.type === soundTypes.random)
@@ -118,7 +118,7 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug }) => {
                     else return <Fragment key={i} />;
                 })}
 
-                <GroundPlane visible={debug}/>
+                <GroundPlane visible={debug} />
             </Suspense>
             <CameraRig />
         </>
@@ -130,10 +130,9 @@ interface CanvasProps {
     selectedScenario: string;
 }
 
-const Canvas: React.FC<CanvasProps> = ({scenario, selectedScenario}) => {
-
+const Canvas: React.FC<CanvasProps> = ({ scenario, selectedScenario }) => {
     const debug = useSelector(getDebug);
-    
+
     const canvasProps = { camera: { fov: 75, position: new Vector3(0, 0, 4) } };
     const contentProps = { scenario, debug };
 
@@ -145,15 +144,19 @@ const Canvas: React.FC<CanvasProps> = ({scenario, selectedScenario}) => {
 
     return (
         <div className="three-container">
-            <ThreeCanvas {...canvasProps} shadows dpr={[1, 2]} style={{ backgroundColor: '#272730', background: '#272730' }}>
+            <ThreeCanvas {...canvasProps} shadows dpr={[1, 2]} style={{ background: '#272730' }}>
                 <CanvasContent {...contentProps} />
             </ThreeCanvas>
-            {selectedScenario !== 'none' && <div className="floating-controls">
-                <button className="button" onClick={() => scenario.setIsPlaying(!scenario.isPlaying)}>
-                    {scenario.isPlaying ? 'Stop' : 'Play'}
-                </button>
-            </div>
-            }
+            {selectedScenario !== 'none' && (
+                <div className="floating-controls">
+                    <button
+                        className="button"
+                        onClick={() => scenario.setIsPlaying(!scenario.isPlaying)}
+                    >
+                        {scenario.isPlaying ? 'Stop' : 'Play'}
+                    </button>
+                </div>
+            )}
             {debug && <Debug scenario={scenario} />}
         </div>
     );
