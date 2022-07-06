@@ -28,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({ stopScenario, isPlaying, isLoading }) =
   }, []);
 
   useEffect(() => {
-    if (!selectedScenario && prevProps.selectedScenario) {
+    if (selectedScenario !== prevProps.selectedScenario) {
       dispatch(toggleSettings(false));
     }
   }, [selectedScenario, prevProps.selectedScenario]);
