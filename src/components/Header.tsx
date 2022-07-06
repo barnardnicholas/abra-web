@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { toggleSettings } from '../redux/actions/settings';
+import { toggleSettings, toggleShowSettings } from '../redux/actions/settings';
 import { getDebug } from '../redux/selectors/debug';
 import { getSelectedScenario } from '../redux/selectors/scenarios';
 import { getShowSettings } from '../redux/selectors/settings';
+import { usePrevious } from '../utils/utils';
 import Select from './form/Select';
 import MainLogo from './MainLogo';
 import ScenarioPicker from './ScenarioPicker';
+import SettingsButton from './settings/SettingsButton';
 
 interface HeaderProps {
   stopScenario: () => void;
@@ -18,12 +20,18 @@ const Header: React.FC<HeaderProps> = ({ stopScenario, isPlaying, isLoading }) =
   const dispatch = useDispatch();
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
   const selectedScenario = useSelector(getSelectedScenario);
-  const showSettings = useSelector(getShowSettings);
   const debug = useSelector(getDebug);
+  const prevProps = usePrevious({ selectedScenario });
 
   useEffect(() => {
     setTimeout(() => setFirstLoad(false), 500);
   }, []);
+
+  useEffect(() => {
+    if (!selectedScenario && prevProps.selectedScenario) {
+      dispatch(toggleSettings(false));
+    }
+  }, [selectedScenario, prevProps.selectedScenario]);
 
   return (
     <header
@@ -44,8 +52,8 @@ const Header: React.FC<HeaderProps> = ({ stopScenario, isPlaying, isLoading }) =
       <div className="header-item picker">
         <ScenarioPicker stopScenario={stopScenario} isPlaying={isPlaying} />
       </div>
-      <div className="header-item settings" onClick={() => dispatch(toggleSettings(!showSettings))}>
-        <i className="settings-button fa fa-cog" />
+      <div className="header-item settings">
+        <SettingsButton />
       </div>
     </header>
   );

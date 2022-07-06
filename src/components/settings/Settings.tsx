@@ -24,6 +24,7 @@ const Settings = () => {
         <SettingsItem label="Debug mode">
           <div onClick={() => dispatch(toggleDebug(!isDebug))}>{isDebug ? '[X]' : '[ ]'}</div>
         </SettingsItem>
+        <Divider />
         <SettingsItem label="Dark theme">
           <div onClick={() => dispatch(toggleDarkMode(!isDarkMode))}>
             {isDarkMode ? '[X]' : '[ ]'}
