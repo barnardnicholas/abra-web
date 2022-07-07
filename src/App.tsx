@@ -8,6 +8,7 @@ import { getSelectedScenario } from './redux/selectors/scenarios';
 import useScenario from './components/hooks/useScenario';
 import Settings from './components/settings/Settings';
 import { getDarkMode } from './redux/selectors/darkMode';
+import Mixer from './components/mixer/Mixer';
 
 function App() {
   const selectedScenario = useSelector(getSelectedScenario) || 'none';
@@ -18,6 +19,7 @@ function App() {
       <Scenario scenario={scenario} selectedScenario={selectedScenario} />
       {/* <StyleGuide /> */}
       <Header stopScenario={scenario.stopScenario} isPlaying={scenario.isPlaying} />
+      <Mixer />
       <Settings />
     </div>
   );
