@@ -4,50 +4,55 @@ import { usePrevious } from '../utils/utils';
 import { PositionalAudio, AudioListener, AudioLoader } from 'three';
 
 const SingleSound: React.FC<Props> = ({
-    duration,
-    slug,
-    soundFile,
-    isPlaying,
-    onPlaybackEnd = () => {},
-    listener,
-    reportDuration = () => {},
-    volume = 0.5,
+  duration,
+  slug,
+  soundFile,
+  isPlaying,
+  onPlaybackEnd = () => {},
+  listener,
+  reportDuration = () => {},
+  volume = 0.5,
 }) => {
-    const sound = useRef<PositionalAudio>(null!);
-    const buffer = useLoader(AudioLoader, soundFile);
-    const prevProps = usePrevious({ isPlaying, sound });
+  const sound = useRef<PositionalAudio>(null!);
+  const buffer = useLoader(AudioLoader, soundFile);
+  const prevProps = usePrevious({ isPlaying, sound });
 
-    useEffect(() => {
-        sound.current.setBuffer(buffer);
-        sound.current.setVolume(volume);
-        sound.current.setRefDistance(2);
-    }, []);
+  useEffect(() => {
+    sound.current.setBuffer(buffer);
+    sound.current.setVolume(volume);
+    sound.current.setRefDistance(2);
+  }, []);
 
-    useEffect(() => {
-        if (!prevProps.isPlaying && isPlaying && !!sound.current) {
-            sound.current.play();
-            let duration = 5;
-            if (sound.current.buffer) duration = sound.current.buffer.duration;
-            setTimeout(onPlaybackEnd, duration * 1000 + 100);
-        } else if (prevProps.isPlaying && !isPlaying && !!sound.current) sound.current.stop();
-    }, [isPlaying, prevProps.isPlaying, sound, onPlaybackEnd, slug]);
+  useEffect(() => {
+    if (!prevProps.isPlaying && isPlaying && !!sound.current) {
+      sound.current.play();
+      let duration = 5;
+      if (sound.current.buffer) duration = sound.current.buffer.duration;
+      setTimeout(onPlaybackEnd, duration * 1000 + 100);
+    } else if (prevProps.isPlaying && !isPlaying && !!sound.current) {
+      sound.current.stop();
+    } else if (prevProps.volume !== volume) {
+      sound.current.setVolume(volume);
+      console.log(sound.current);
+    }
+  }, [isPlaying, prevProps.isPlaying, sound, onPlaybackEnd, slug, volume]);
 
-    useEffect(() => {
-        if (sound.current.buffer && !duration)
-            reportDuration(slug, sound.current.buffer.duration * 1000);
-    }, [sound, reportDuration, duration, slug]);
+  useEffect(() => {
+    if (sound.current.buffer && !duration)
+      reportDuration(slug, sound.current.buffer.duration * 1000);
+  }, [sound, reportDuration, duration, slug]);
 
-    return <positionalAudio ref={sound} args={[listener]} />;
+  return <positionalAudio ref={sound} args={[listener]} />;
 };
 
 interface Props {
-    slug: string;
-    soundFile: string;
-    isPlaying: boolean;
-    onPlaybackEnd?: () => void;
-    listener: AudioListener;
-    reportDuration?: (slug: string, duration: number) => void;
-    duration: number | null;
-    volume: number;
+  slug: string;
+  soundFile: string;
+  isPlaying: boolean;
+  onPlaybackEnd?: () => void;
+  listener: AudioListener;
+  reportDuration?: (slug: string, duration: number) => void;
+  duration: number | null;
+  volume: number;
 }
 export default SingleSound;
