@@ -20,7 +20,7 @@
       + label,
       + input + label {
         .outer {
-          background-color: var(--main-border);
+          background-color: var(--secondary-border);
         }
 
         .inner {
@@ -42,9 +42,12 @@
     display: inline-block;
     width: 2.5rem;
     height: calc(1rem + 0.4rem);
-    border-radius: 20px;
-    background-color: var(--secondary-border);
+    background-color: var(--main-background);
     transition: background-color 0.2s;
+    border: 1px solid var(--main-typography);
+    border-bottom-width: 6px;
+    box-sizing: content-box;
+    margin-bottom: -5px;
   }
 
   .inner {
@@ -54,7 +57,7 @@
     width: 1rem;
     height: 1rem;
     background-color: var(--main-typography);
-    border-radius: 50%;
+    // border-radius: 50%;
     transition: left 0.2s;
   }
 
