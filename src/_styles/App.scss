@@ -34,21 +34,25 @@ h1 {
   // color: f7f7f7;
   @include titleText();
   @include h1Title();
+  @include transitionColors();
 }
 h2 {
   // color: f7f7f7;
   @include titleText();
   @include h2Title();
+  @include transitionColors();
 }
 h3 {
   // color: f7f7f7;
   @include titleText();
   @include h3Title();
+  @include transitionColors();
 }
 h4 {
   // color: f7f7f7;
   @include titleText();
   @include h4Title();
+  @include transitionColors();
 }
 
 p,
@@ -59,6 +63,7 @@ em,
 .fa,
 .fal {
   color: var(--main-typography);
+  @include transitionColors();
 }
 
 .floating-controls {
