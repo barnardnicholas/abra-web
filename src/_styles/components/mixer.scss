@@ -76,4 +76,8 @@
       transform: scale(90%);
     }
   }
+
+  @include screenSize(lgMobile) {
+    top: 3.5rem;
+  }
 }
