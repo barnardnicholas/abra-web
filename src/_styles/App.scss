@@ -92,4 +92,8 @@ em,
     opacity: 0;
     transition: opacity 0.5s ease, background-color 0.5s ease;
   }
+
+  &.semi-hidden {
+    opacity: 0.75;
+  }
 }
