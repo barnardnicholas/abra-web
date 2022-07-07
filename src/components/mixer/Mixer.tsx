@@ -22,7 +22,12 @@ const Mixer: React.FC<MixerProps> = ({ scenario }) => {
         <h3>Mixer</h3>
         <Divider />
         {Object.values(scenario.soundChannels).map((channel: SoundChannel, i: number) => (
-          <MixerChannel key={i} channel={channel} setVolume={scenario.setVolume} />
+          <MixerChannel
+            key={i}
+            channel={channel}
+            setVolume={scenario.setVolume}
+            setFrequency={scenario.setFrequency}
+          />
         ))}
       </div>
     </div>

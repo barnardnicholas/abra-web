@@ -139,6 +139,15 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
     });
   }
 
+  function setFrequency(slug: string, frequency: number) {
+    setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
+      return {
+        ...prevSoundChannels,
+        [slug]: { ...prevSoundChannels[slug], frequency },
+      };
+    });
+  }
+
   function reportDuration(slug: string, duration: number) {
     setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
       return { ...prevSoundChannels, [slug]: { ...prevSoundChannels[slug], duration } };
@@ -247,6 +256,7 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
     play,
     stop,
     setVolume,
+    setFrequency,
     reportDuration,
     startScenario,
     isPlaying,
@@ -261,6 +271,7 @@ export interface UseScenarioProps {
   play: (slug: string, position?: Vector3) => void;
   stop: (slug: string) => void;
   setVolume: (slug: string, volume: number) => void;
+  setFrequency: (slug: string, frequency: number) => void;
   reportDuration: (slug: string, duration: number) => void;
   startScenario: () => void;
   stopScenario: () => void;
