@@ -168,15 +168,13 @@ const Canvas: React.FC<CanvasProps> = ({ scenario, selectedScenario }) => {
         <CanvasContent {...contentProps} />
       </ThreeCanvas>
       <div className={`background-blocker ${showBackgroundBlocker ? '' : 'hidden'}`} />
-      {selectedScenario !== 'none' && (
-        <div className="floating-controls">
-          <button className="button" onClick={() => scenario.setIsPlaying(!scenario.isPlaying)}>
-            {scenario.isPlaying ? 'Stop' : 'Play'}
-          </button>
-        </div>
-      )}
       {debug && <Debug scenario={scenario} />}
       <div className={`background-blocker ${isShowingSettings ? 'semi-hidden' : ''}`} />
+      <div className={`floating-controls ${selectedScenario === 'none' ? 'hidden' : ''}`}>
+        <button className="button" onClick={() => scenario.setIsPlaying(!scenario.isPlaying)}>
+          {scenario.isPlaying ? 'Stop' : 'Play'}
+        </button>
+      </div>
     </div>
   );
 };
