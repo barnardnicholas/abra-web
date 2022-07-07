@@ -52,6 +52,9 @@ header {
         top: calc(50% + 2rem);
         transform: scale(0%);
       }
+      &.mixer {
+        transform: scale(0%);
+      }
       &.picker {
         top: calc(50% + 7rem);
         transform: scale(0%);
@@ -89,6 +92,11 @@ header {
       h1 {
         @include headerItemTransition();
       }
+    }
+    &.mixer {
+      top: calc(50% - 0.5rem);
+      height: 1rem;
+      transform: scale(0%);
     }
     &.picker {
       top: calc(50% + 3rem);
@@ -128,6 +136,12 @@ header {
         h1 {
           font-size: 2rem;
         }
+      }
+      &.mixer {
+        top: calc(2rem - 0.5rem);
+        left: 6rem;
+        height: 1rem;
+        transform: scale(100%);
       }
       &.picker {
         left: calc(50% - 5rem);

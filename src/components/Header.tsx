@@ -8,6 +8,7 @@ import { getShowSettings } from '../redux/selectors/settings';
 import { usePrevious } from '../utils/utils';
 import Select from './form/Select';
 import MainLogo from './MainLogo';
+import MixerButton from './mixer/MixerButton';
 import ScenarioPicker from './ScenarioPicker';
 import SettingsButton from './settings/SettingsButton';
 
@@ -49,6 +50,10 @@ const Header: React.FC<HeaderProps> = ({ stopScenario, isPlaying, isLoading }) =
       <div className="header-item title">
         <h1>ABRA</h1>
       </div>
+      <div className="header-item mixer">
+        <MixerButton />
+      </div>
+
       <div className="header-item picker">
         <ScenarioPicker stopScenario={stopScenario} isPlaying={isPlaying} />
       </div>
