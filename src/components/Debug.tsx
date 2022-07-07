@@ -4,42 +4,42 @@ import { isEmpty } from '../utils/utils';
 import { UseScenarioProps } from './hooks/useScenario';
 
 const ChannelDebug: React.FC<ChannelProps> = ({ channel }) => {
-    const { id, name, slug, position, isPlaying, duration, type, path, frequency } = channel;
-    return (
-        <>
-            <div>
-                <strong>{`Channel: ${name} (${soundTypes[type]})`}</strong>
-                <div>{`slug: ${slug}`}</div>
-                <div>{`isPlaying: ${isPlaying}`}</div>
-                <div>{`duration: ${duration}`}</div>
-                <div>{`path: ${path}`}</div>
-                <div>{`frequency: ${frequency}`}</div>
-                <br />
-            </div>
-        </>
-    );
+  const { id, name, slug, position, isPlaying, duration, type, path, frequency, volume } = channel;
+  return (
+    <>
+      <div>
+        <strong>{`${soundTypes[type]} Channel: ${name} (${slug})`}</strong>
+        <div>{`isPlaying: ${isPlaying}`}</div>
+        <div>{`duration: ${duration}`}</div>
+        <div>{`frequency: ${frequency}`}</div>
+        <div>{`vol: ${volume}`}</div>
+        <br />
+      </div>
+    </>
+  );
 };
 
 const Debug: React.FC<Props> = ({ scenario }) => {
-    return (
-        <div className="debug">
-            <div>
-                <div>{`Scenario isPlaying: ${scenario.isPlaying}`}</div>
-                <br />
-            </div>
-            {!isEmpty(scenario.soundChannels) && Object.values(scenario.soundChannels).map((channel: SoundChannel, i: number) => (
-                <ChannelDebug key={i} channel={channel} />
-            ))}
-        </div>
-    );
+  return (
+    <div className="debug">
+      <div>
+        <div>{`Scenario isPlaying: ${scenario.isPlaying}`}</div>
+        <br />
+      </div>
+      {!isEmpty(scenario.soundChannels) &&
+        Object.values(scenario.soundChannels).map((channel: SoundChannel, i: number) => (
+          <ChannelDebug key={i} channel={channel} />
+        ))}
+    </div>
+  );
 };
 
 interface Props {
-    scenario: UseScenarioProps;
+  scenario: UseScenarioProps;
 }
 
 interface ChannelProps {
-    channel: SoundChannel;
+  channel: SoundChannel;
 }
 
 export default Debug;
