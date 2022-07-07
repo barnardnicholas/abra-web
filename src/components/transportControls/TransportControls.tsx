@@ -8,8 +8,13 @@ interface TransportControlsProps {
 }
 const TransportControls: React.FC<TransportControlsProps> = ({ scenario }) => {
   const selectedScenario = useSelector(getSelectedScenario);
+
   return (
-    <div className={`transport-controls ${selectedScenario === 'none' ? 'hidden' : ''}`}>
+    <div
+      className={`transport-controls ${
+        !selectedScenario || selectedScenario === 'none' ? 'hidden' : ''
+      }`}
+    >
       <button className="button" onClick={() => scenario.setIsPlaying(!scenario.isPlaying)}>
         {scenario.isPlaying ? 'Stop' : 'Play'}
       </button>
