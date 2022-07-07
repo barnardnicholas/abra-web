@@ -41,6 +41,7 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
         frequency: sound.frequency,
         area: sound.area,
         volume: sound.volume,
+        mute: sound.mute,
       };
     });
 
@@ -66,6 +67,7 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
           frequency: sound.frequency,
           area: sound.area,
           volume: sound.volume,
+          mute: sound.mute,
         };
       });
 
@@ -108,6 +110,7 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
   }
 
   function play(slug: string, position?: Vector3) {
+    if (soundChannels[slug].mute) return;
     if (!!position) {
       const duration = soundChannels[slug].duration ? soundChannels[slug].duration : 5000;
       setTimeout(() => {
@@ -144,6 +147,24 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
       return {
         ...prevSoundChannels,
         [slug]: { ...prevSoundChannels[slug], frequency },
+      };
+    });
+  }
+
+  function setMute(slug: string, mute: boolean) {
+    setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
+      const newChannel = { ...prevSoundChannels[slug], mute };
+      if (prevSoundChannels[slug].isPlaying && mute) newChannel.isPlaying = false;
+      else if (
+        prevSoundChannels[slug].type === soundTypes.background &&
+        isPlaying &&
+        !prevSoundChannels[slug].isPlaying &&
+        !mute
+      )
+        newChannel.isPlaying = true;
+      return {
+        ...prevSoundChannels,
+        [slug]: newChannel,
       };
     });
   }
@@ -257,6 +278,7 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
     stop,
     setVolume,
     setFrequency,
+    setMute,
     reportDuration,
     startScenario,
     isPlaying,
@@ -272,6 +294,7 @@ export interface UseScenarioProps {
   stop: (slug: string) => void;
   setVolume: (slug: string, volume: number) => void;
   setFrequency: (slug: string, frequency: number) => void;
+  setMute: (slug: string, mute: boolean) => void;
   reportDuration: (slug: string, duration: number) => void;
   startScenario: () => void;
   stopScenario: () => void;
