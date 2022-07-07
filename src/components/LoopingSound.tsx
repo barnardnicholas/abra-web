@@ -24,18 +24,25 @@ const LoopingSound: React.FC<Props> = ({
   }, []);
 
   useEffect(() => {
+    if (!!sound.current && prevProps.volume !== volume) {
+      if (isPlaying) sound.current.pause();
+      sound.current.setVolume(volume);
+      if (isPlaying) sound.current.play();
+    }
+  }, [volume, prevProps.volume]);
+
+  useEffect(() => {
     if (sound.current.buffer && !duration)
       reportDuration(slug, sound.current.buffer.duration * 1000);
   }, [sound, reportDuration, duration, slug]);
 
   useEffect(() => {
-    if (!prevProps.isPlaying && isPlaying && !!sound.current) {
-      sound.current.play();
-    } else if (prevProps.isPlaying && !isPlaying && !!sound.current) {
-      sound.current.stop();
-    } else if (prevProps.volume !== volume) {
-      console.log({ slug, volume });
-      sound.current.setVolume(volume);
+    if (!!sound.current) {
+      if (!prevProps.isPlaying && isPlaying && !!sound.current) {
+        sound.current.play();
+      } else if (prevProps.isPlaying && !isPlaying && !!sound.current) {
+        sound.current.stop();
+      }
     }
   }, [isPlaying, prevProps.isPlaying, sound, slug]);
 

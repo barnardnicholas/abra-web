@@ -15,13 +15,21 @@ const SingleSound: React.FC<Props> = ({
 }) => {
   const sound = useRef<PositionalAudio>(null!);
   const buffer = useLoader(AudioLoader, soundFile);
-  const prevProps = usePrevious({ isPlaying, sound });
+  const prevProps = usePrevious({ isPlaying, sound, volume });
 
   useEffect(() => {
     sound.current.setBuffer(buffer);
     sound.current.setVolume(volume);
     sound.current.setRefDistance(2);
   }, []);
+
+  useEffect(() => {
+    if (!!sound.current && prevProps.volume !== volume) {
+      if (isPlaying) sound.current.pause();
+      sound.current.setVolume(volume);
+      if (isPlaying) sound.current.play();
+    }
+  }, [volume, prevProps.volume]);
 
   useEffect(() => {
     if (!prevProps.isPlaying && isPlaying && !!sound.current) {
@@ -33,7 +41,6 @@ const SingleSound: React.FC<Props> = ({
       sound.current.stop();
     } else if (prevProps.volume !== volume) {
       sound.current.setVolume(volume);
-      console.log(sound.current);
     }
   }, [isPlaying, prevProps.isPlaying, sound, onPlaybackEnd, slug, volume]);
 
