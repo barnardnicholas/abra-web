@@ -3,17 +3,17 @@ import { createReducer, PayloadAction } from '@reduxjs/toolkit';
 import { setSelectedScenario } from '../actions/scenario';
 
 const initialState = {
-    selectedScenario: null,
+  selectedScenario: null,
 };
 
 interface ScenarioState {
-    selectedScenario: string | null;
+  selectedScenario: string | null;
 }
 
 export default createReducer(initialState, {
-    [setSelectedScenario.type]: handleSetScenario,
+  [setSelectedScenario.type]: handleSetScenario,
 });
 
 function handleSetScenario(state: ScenarioState, action: PayloadAction<string | null>) {
-    state.selectedScenario = action.payload;
+  state.selectedScenario = action.payload;
 }
