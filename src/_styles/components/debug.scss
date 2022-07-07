@@ -18,4 +18,9 @@
   &::-webkit-scrollbar {
     display: none;
   }
+
+  @include screenSize(mdMobile) {
+    width: 75vw;
+    left: calc(50% - 37.5vw);
+  }
 }
