@@ -72,3 +72,19 @@ em,
   box-sizing: border-box;
   text-align: center;
 }
+
+.background-blocker {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease, background-color 0.5s ease;
+  background-color: var(--main-background);
+
+  &.hidden {
+    opacity: 0;
+    transition: opacity 0.5s ease, background-color 0.5s ease;
+  }
+}

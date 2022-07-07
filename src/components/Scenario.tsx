@@ -23,13 +23,13 @@ const colors = ['green', 'red', 'yellow', 'purple', 'orange'];
 interface CanvasContentProps {
   scenario: UseScenarioProps;
   debug: boolean;
-  isDarkMode: boolean;
+  isDarkBackground: boolean;
 }
 
-const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug, isDarkMode }) => {
+const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug, isDarkBackground }) => {
   const { soundChannels, reportDuration } = scenario;
   const [listener] = useState(() => new AudioListener());
-  const bgColor = new THREE.Color(isDarkMode ? '#272730' : '#f7f7f7');
+  const bgColor = new THREE.Color(isDarkBackground ? '#272730' : '#f7f7f7');
 
   const cameraTarget = useRef<Mesh>(null!);
 
@@ -131,13 +131,9 @@ interface CanvasProps {
 const Canvas: React.FC<CanvasProps> = ({ scenario, selectedScenario }) => {
   const debug = useSelector(getDebug);
   const isDarkMode = useSelector(getDarkMode);
-
-  const canvasProps = {
-    camera: { fov: 75, position: new Vector3(0, 0, 4) },
-    legacy: true,
-    shadows: true,
-  };
-  const contentProps = { scenario, debug, isDarkMode };
+  const prevIsDarkMode = usePrevious(isDarkMode);
+  const [isDarkBackground, setIsDarkBackground] = useState<boolean>(isDarkMode);
+  const [showBackgroundBlocker, setShowBackgroundBlocker] = useState<boolean>(false);
 
   useEffect(() => {
     return () => {
@@ -145,15 +141,31 @@ const Canvas: React.FC<CanvasProps> = ({ scenario, selectedScenario }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (isDarkMode !== prevIsDarkMode) {
+      setShowBackgroundBlocker(true);
+      setTimeout(() => setIsDarkBackground(isDarkMode), 510);
+      setTimeout(() => setShowBackgroundBlocker(false), 520);
+    }
+  }, [isDarkMode, prevIsDarkMode]);
+
+  const canvasProps = {
+    camera: { fov: 75, position: new Vector3(0, 0, 4) },
+    legacy: true,
+    shadows: true,
+  };
+  const contentProps = { scenario, debug, isDarkBackground };
+
   return (
     <div className="three-container">
       <ThreeCanvas
         {...canvasProps}
         dpr={[1, 2]}
-        style={{ background: isDarkMode ? '#272730' : '#f7f7f7' }}
+        style={{ background: isDarkBackground ? '#272730' : '#f7f7f7' }}
       >
         <CanvasContent {...contentProps} />
       </ThreeCanvas>
+      <div className={`background-blocker ${showBackgroundBlocker ? '' : 'hidden'}`} />
       {selectedScenario !== 'none' && (
         <div className="floating-controls">
           <button className="button" onClick={() => scenario.setIsPlaying(!scenario.isPlaying)}>
