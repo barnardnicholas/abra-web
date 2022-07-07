@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { toggleDarkMode } from '../../redux/actions/darkMode';
@@ -7,6 +7,7 @@ import { getDarkMode } from '../../redux/selectors/darkMode';
 import { getDebug } from '../../redux/selectors/debug';
 import { getShowSettings } from '../../redux/selectors/settings';
 import Divider from '../common/Divider';
+import ToggleSwitch from '../form/ToggleSwitch';
 import SettingsItem from './SettingsItem';
 
 const Settings = () => {
@@ -14,6 +15,7 @@ const Settings = () => {
   const showSettings = useSelector(getShowSettings);
   const isDebug = useSelector(getDebug);
   const isDarkMode = useSelector(getDarkMode);
+  const [isChecked, setIsChecked] = useState<boolean>(false);
 
   //   const handleSwitchTheme = () => {};
   return (
@@ -21,15 +23,19 @@ const Settings = () => {
       <div className="settings">
         <h3>Settings</h3>
         <Divider />
-        <SettingsItem label="Debug mode">
-          <div onClick={() => dispatch(toggleDebug(!isDebug))}>{isDebug ? '[X]' : '[ ]'}</div>
-        </SettingsItem>
+        <ToggleSwitch
+          label="Debug"
+          value={isDebug}
+          name="debug"
+          onChange={() => dispatch(toggleDebug(!isDebug))}
+        />
         <Divider />
-        <SettingsItem label="Dark theme">
-          <div onClick={() => dispatch(toggleDarkMode(!isDarkMode))}>
-            {isDarkMode ? '[X]' : '[ ]'}
-          </div>
-        </SettingsItem>
+        <ToggleSwitch
+          label="Dark theme"
+          value={isDarkMode}
+          name="darkMode"
+          onChange={() => dispatch(toggleDarkMode(!isDarkMode))}
+        />
         <Divider />
       </div>
     </div>
