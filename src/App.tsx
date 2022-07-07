@@ -28,7 +28,7 @@ function App() {
           isShowingSettings || isShowingMixer ? 'semi-hidden' : 'hidden'
         }`}
       />
-      <Mixer />
+      <Mixer scenario={scenario} />
       <Settings />
     </div>
   );
