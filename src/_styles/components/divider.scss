@@ -1,8 +1,6 @@
 .divider {
   display: block;
-  height: 1px;
-  min-height: 1px;
-  background-color: var(--main-typography);
+  border-bottom: 1px solid var(--main-typography);
   margin: 1rem 0;
 
   &.no-margin-top {
