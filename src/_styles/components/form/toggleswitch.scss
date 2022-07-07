@@ -1,5 +1,5 @@
 // Toggle select
-.checkbox {
+.toggle-switch {
   cursor: pointer;
   width: 100%;
   position: relative;
@@ -20,7 +20,7 @@
       + label,
       + input + label {
         .outer {
-          background-color: var(--secondary-typography);
+          background-color: var(--secondary-border);
         }
 
         .inner {

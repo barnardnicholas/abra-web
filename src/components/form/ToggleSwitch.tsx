@@ -11,7 +11,7 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
 }) => {
   return (
     <div
-      className={`checkbox ${disabled ? 'left grey-out' : ''} ${
+      className={`toggle-switch ${disabled ? 'left grey-out' : ''} ${
         hideDisabled && disabled ? 'hide' : ''
       } `}
     >
