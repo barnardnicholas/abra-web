@@ -27,6 +27,7 @@ canvas {
   position: fixed;
   background-color: var(--main-background);
   color: var(--main-typography);
+
   @include transitionColors();
 }
 
@@ -90,6 +91,7 @@ em,
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: 10;
   pointer-events: none;
   transition: opacity 0.5s ease, background-color 0.5s ease;
   background-color: var(--main-background);
