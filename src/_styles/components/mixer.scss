@@ -73,7 +73,6 @@
         max-width: 100%;
         white-space: no-wrap;
         text-overflow: ellipsis;
-        font-size: 0.8rem;
 
         @include screenSize(mdMobile) {
           min-width: 100%;
@@ -83,6 +82,7 @@
           color: var(--main-border);
           margin-right: 0.3rem;
           margin-top: 0.1rem;
+          font-size: 0.8rem;
 
           &.fa-play {
             color: var(--main-typography);

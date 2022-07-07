@@ -26,7 +26,10 @@ const MixerChannel: React.FC<MixerChannelProps> = ({
   return (
     <>
       <div className="mixer-channel">
-        <span className="channel-label">{channel.name}</span>
+        <span className="channel-label">
+          <i className={`play-indicator fa fa-${channel.isPlaying ? 'play' : 'stop'}`} />
+          {channel.name}
+        </span>
         <span className="channel-control">
           <i
             className={`fa mute-button fa-${getIconFromVolume()}`}
@@ -40,7 +43,7 @@ const MixerChannel: React.FC<MixerChannelProps> = ({
         </span>
         {channel.type !== soundTypes.background && (
           <span className="channel-control">
-            <i className={`fa fa-stopwatch`} />
+            <i className="fa fa-stopwatch" />
             <RangeInput
               name={`${channel.name}-vol`}
               value={channel.frequency}
