@@ -11,12 +11,14 @@
   @include bodyText();
   border: 1px solid var(--main-typography);
   border-bottom-width: 6px;
+  margin-bottom: -5px;
+  @include transitionColors();
 }
 .button:hover {
-  background-color: var(--main-typography);
-  color: var(--main-background);
+  background-color: var(--secondary-border);
 }
 .button:active {
   position: relative;
-  top: 1px;
+  top: 5px;
+  border-bottom-width: 1px;
 }
