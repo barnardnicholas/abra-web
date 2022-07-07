@@ -7,6 +7,7 @@ import Divider from '../common/Divider';
 import RangeInput from '../form/Range';
 import ToggleSwitch from '../form/ToggleSwitch';
 import { UseScenarioProps } from '../hooks/useScenario';
+import MixerChannel from './MixerChannel';
 
 interface MixerProps {
   scenario: UseScenarioProps;
@@ -21,17 +22,7 @@ const Mixer: React.FC<MixerProps> = ({ scenario }) => {
         <h3>Mixer</h3>
         <Divider />
         {Object.values(scenario.soundChannels).map((channel: SoundChannel, i: number) => (
-          <Fragment key={i}>
-            <div className="mixer-channel">
-              <span>{channel.name}</span>
-              <RangeInput
-                name={`${channel.name}-vol`}
-                value={channel.volume}
-                onChange={(_, value) => scenario.setVolume(channel.slug, value)}
-              />
-            </div>
-            <Divider />
-          </Fragment>
+          <MixerChannel key={i} channel={channel} setVolume={scenario.setVolume} />
         ))}
       </div>
     </div>
