@@ -13,9 +13,9 @@ import { Dispatch } from 'react';
 const middleware = [thunk];
 
 const persistConfig = {
-    key: 'root',
-    storage,
-    blacklist: ['scenariosReducer', 'settingsReducer'], // Don't persist these reducers
+  key: 'root',
+  storage,
+  blacklist: ['scenariosReducer', 'settingsReducer', 'mixerReducer'], // Don't persist these reducers
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -32,7 +32,7 @@ export const useAppDispatch = (): Dispatch<Action<any>> => useDispatch<AppDispat
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export default () => {
-    let persistor = persistStore(store);
-    return { store, persistor };
+  let persistor = persistStore(store);
+  return { store, persistor };
 };
 // export default store;
