@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { toggleMixer } from '../redux/actions/mixer';
-import { toggleSettings, toggleShowSettings } from '../redux/actions/settings';
+import { toggleSettings } from '../redux/actions/settings';
 import { getDebug } from '../redux/selectors/debug';
+import { getShowMixer } from '../redux/selectors/mixer';
 import { getSelectedScenario } from '../redux/selectors/scenarios';
 import { getShowSettings } from '../redux/selectors/settings';
 import { usePrevious } from '../utils/utils';
-import Select from './form/Select';
 import MainLogo from './MainLogo';
 import MixerButton from './mixer/MixerButton';
 import ScenarioPicker from './ScenarioPicker';
@@ -20,10 +20,14 @@ interface HeaderProps {
 }
 const Header: React.FC<HeaderProps> = ({ stopScenario, isPlaying, isLoading }) => {
   const dispatch = useDispatch();
+
+  const isScreenNarrow = window.innerWidth < 1000;
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
   const selectedScenario = useSelector(getSelectedScenario);
   const debug = useSelector(getDebug);
-  const prevProps = usePrevious({ selectedScenario });
+  const showSettings = useSelector(getShowSettings);
+  const showMixer = useSelector(getShowMixer);
+  const prevProps = usePrevious({ selectedScenario, showSettings, showMixer });
 
   useEffect(() => {
     setTimeout(() => setFirstLoad(false), 500);
@@ -34,7 +38,21 @@ const Header: React.FC<HeaderProps> = ({ stopScenario, isPlaying, isLoading }) =
       dispatch(toggleSettings(false));
       dispatch(toggleMixer(false));
     }
-  }, [selectedScenario, prevProps.selectedScenario]);
+    if (isScreenNarrow && showMixer && !prevProps.showMixer) {
+      dispatch(toggleSettings(false));
+    }
+    if (isScreenNarrow && showSettings && !prevProps.showSettings) {
+      dispatch(toggleMixer(false));
+    }
+  }, [
+    selectedScenario,
+    showMixer,
+    showSettings,
+    prevProps.selectedScenario,
+    prevProps.showMixer,
+    prevProps.showSettings,
+    isScreenNarrow,
+  ]);
 
   return (
     <header

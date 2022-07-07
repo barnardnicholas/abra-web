@@ -154,6 +154,25 @@ header {
       &.settings {
       }
     }
+
+    @include screenSize(lgMobile) {
+      .header-item {
+        &.logo {
+          transform: scale(0%);
+        }
+        &.title {
+          transform: scale(0%);
+        }
+        &.picker {
+          width: calc(100vw - 8rem);
+          left: calc(50% - ((100vw - 8rem) / 2));
+        }
+        &.mixer {
+          left: 1rem;
+          width: 2rem;
+        }
+      }
+    }
   }
 
   .guide-vertical,
