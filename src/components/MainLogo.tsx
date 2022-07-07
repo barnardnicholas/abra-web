@@ -11,12 +11,15 @@ interface MainLogoProps {
 const MainLogo: React.FC<MainLogoProps> = ({ forceDarkTheme = false }) => {
   const isDarkMode = useSelector(getDarkMode);
   return (
-    <img
-      src={isDarkMode || forceDarkTheme ? LogoDark : LogoLight}
-      className="main-logo"
-      width={300}
-      height="auto"
-    />
+    <>
+      <img src={LogoDark} className="main-logo" width={300} height="auto" />
+      <img
+        src={LogoLight}
+        className={`main-logo ${isDarkMode || forceDarkTheme ? 'hidden' : ''}`}
+        width={300}
+        height="auto"
+      />
+    </>
   );
 };
 
