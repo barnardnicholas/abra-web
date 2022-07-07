@@ -16,6 +16,7 @@ import { getDebug } from '../redux/selectors/debug';
 import { UseScenarioProps } from './hooks/useScenario';
 import { getDarkMode } from '../redux/selectors/darkMode';
 import { getShowSettings } from '../redux/selectors/settings';
+import { getShowMixer } from '../redux/selectors/mixer';
 
 const sphereScale = new Vector3(0.25, 0.25, 0.25);
 
@@ -132,6 +133,7 @@ interface CanvasProps {
 const Canvas: React.FC<CanvasProps> = ({ scenario, selectedScenario }) => {
   const debug = useSelector(getDebug);
   const isShowingSettings = useSelector(getShowSettings);
+  const isShowingMixer = useSelector(getShowMixer);
   const isDarkMode = useSelector(getDarkMode);
   const prevIsDarkMode = usePrevious(isDarkMode);
   const [isDarkBackground, setIsDarkBackground] = useState<boolean>(isDarkMode);
@@ -169,7 +171,11 @@ const Canvas: React.FC<CanvasProps> = ({ scenario, selectedScenario }) => {
       </ThreeCanvas>
       <div className={`background-blocker ${showBackgroundBlocker ? '' : 'hidden'}`} />
       {debug && <Debug scenario={scenario} />}
-      <div className={`background-blocker ${isShowingSettings ? 'semi-hidden' : ''}`} />
+      <div
+        className={`background-blocker ${
+          isShowingSettings || isShowingMixer ? 'semi-hidden' : 'hidden'
+        }`}
+      />
       <div className={`floating-controls ${selectedScenario === 'none' ? 'hidden' : ''}`}>
         <button className="button" onClick={() => scenario.setIsPlaying(!scenario.isPlaying)}>
           {scenario.isPlaying ? 'Stop' : 'Play'}
