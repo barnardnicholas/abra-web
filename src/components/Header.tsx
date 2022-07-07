@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import { toggleMixer } from '../redux/actions/mixer';
 import { toggleSettings, toggleShowSettings } from '../redux/actions/settings';
 import { getDebug } from '../redux/selectors/debug';
 import { getSelectedScenario } from '../redux/selectors/scenarios';
@@ -31,6 +32,7 @@ const Header: React.FC<HeaderProps> = ({ stopScenario, isPlaying, isLoading }) =
   useEffect(() => {
     if (selectedScenario !== prevProps.selectedScenario) {
       dispatch(toggleSettings(false));
+      dispatch(toggleMixer(false));
     }
   }, [selectedScenario, prevProps.selectedScenario]);
 
