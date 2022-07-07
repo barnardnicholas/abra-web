@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { toggleMixer } from '../redux/actions/mixer';
-import { toggleSettings } from '../redux/actions/settings';
-import { getDebug } from '../redux/selectors/debug';
-import { getShowMixer } from '../redux/selectors/mixer';
-import { getSelectedScenario } from '../redux/selectors/scenarios';
-import { getShowSettings } from '../redux/selectors/settings';
-import { usePrevious } from '../utils/utils';
+import { toggleMixer } from '../../redux/actions/mixer';
+import { toggleSettings } from '../../redux/actions/settings';
+import { getDebug } from '../../redux/selectors/debug';
+import { getShowMixer } from '../../redux/selectors/mixer';
+import { getSelectedScenario } from '../../redux/selectors/scenarios';
+import { getShowSettings } from '../../redux/selectors/settings';
+import { usePrevious } from '../../utils/utils';
 import MainLogo from './MainLogo';
-import MixerButton from './mixer/MixerButton';
+import MixerButton from '../mixer/MixerButton';
 import ScenarioPicker from './ScenarioPicker';
-import SettingsButton from './settings/SettingsButton';
+import SettingsButton from '../settings/SettingsButton';
 
 interface HeaderProps {
   stopScenario: () => void;

@@ -6,17 +6,15 @@ import SingleSound from './SingleSound';
 import SphereMesh from './SphereMesh';
 import { Vector3, AudioListener, Mesh, MeshLambertMaterial } from 'three';
 import GroundPlane from './GroundPlane';
-import { SoundChannel, soundTypes } from '../types/Scenario';
-import Debug from './Debug';
-import { usePrevious } from '../utils/utils';
+import { SoundChannel, soundTypes } from '../../types/Scenario';
+import Debug from '../debug/Debug';
+import { usePrevious } from '../../utils/utils';
 import CameraRig from './CameraRig';
-import Loading from './Loading';
+// import LoadingSprite from './LoadingSprite';
 import { useSelector } from 'react-redux';
-import { getDebug } from '../redux/selectors/debug';
-import { UseScenarioProps } from './hooks/useScenario';
-import { getDarkMode } from '../redux/selectors/darkMode';
-import { getShowSettings } from '../redux/selectors/settings';
-import { getShowMixer } from '../redux/selectors/mixer';
+import { getDebug } from '../../redux/selectors/debug';
+import { UseScenarioProps } from '../hooks/useScenario';
+import { getDarkMode } from '../../redux/selectors/darkMode';
 
 const sphereScale = new Vector3(0.25, 0.25, 0.25);
 

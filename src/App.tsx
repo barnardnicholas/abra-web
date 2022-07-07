@@ -1,7 +1,7 @@
 import React from 'react';
 import './_styles/App.scss';
-import Scenario from './components/Scenario';
-import Header from './components/Header';
+import Scenario from './components/scenario/Scenario';
+import Header from './components/header/Header';
 import StyleGuide from './components/StyleGuide';
 import { useSelector } from 'react-redux';
 import { getSelectedScenario } from './redux/selectors/scenarios';

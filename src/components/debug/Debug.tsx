@@ -1,7 +1,7 @@
 import React from 'react';
-import { SoundChannel, soundTypes } from '../types/Scenario';
-import { isEmpty } from '../utils/utils';
-import { UseScenarioProps } from './hooks/useScenario';
+import { SoundChannel, soundTypes } from '../../types/Scenario';
+import { isEmpty } from '../../utils/utils';
+import { UseScenarioProps } from '../hooks/useScenario';
 
 const ChannelDebug: React.FC<ChannelProps> = ({ channel }) => {
   const { id, name, slug, position, isPlaying, duration, type, path, frequency, volume } = channel;

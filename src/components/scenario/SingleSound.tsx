@@ -1,26 +1,26 @@
 import React, { useRef, useEffect } from 'react';
 import { useLoader } from '@react-three/fiber';
+import { usePrevious } from '../../utils/utils';
 import { PositionalAudio, AudioListener, AudioLoader } from 'three';
-import { usePrevious } from '../utils/utils';
 
-const LoopingSound: React.FC<Props> = ({
+const SingleSound: React.FC<Props> = ({
+  duration,
   slug,
   soundFile,
-  listener,
-  duration,
   isPlaying,
+  onPlaybackEnd = () => {},
+  listener,
   reportDuration = () => {},
-  volume = 0.66,
+  volume = 0.5,
 }) => {
   const sound = useRef<PositionalAudio>(null!);
   const buffer = useLoader(AudioLoader, soundFile);
-  const prevProps = usePrevious({ isPlaying, volume });
+  const prevProps = usePrevious({ isPlaying, sound, volume });
 
   useEffect(() => {
     sound.current.setBuffer(buffer);
-    sound.current.setRefDistance(2);
     sound.current.setVolume(volume);
-    sound.current.setLoop(true);
+    sound.current.setRefDistance(2);
   }, []);
 
   useEffect(() => {
@@ -32,19 +32,22 @@ const LoopingSound: React.FC<Props> = ({
   }, [volume, prevProps.volume]);
 
   useEffect(() => {
+    if (!prevProps.isPlaying && isPlaying && !!sound.current) {
+      sound.current.play();
+      let duration = 5;
+      if (sound.current.buffer) duration = sound.current.buffer.duration;
+      setTimeout(onPlaybackEnd, duration * 1000 + 100);
+    } else if (prevProps.isPlaying && !isPlaying && !!sound.current) {
+      sound.current.stop();
+    } else if (prevProps.volume !== volume) {
+      sound.current.setVolume(volume);
+    }
+  }, [isPlaying, prevProps.isPlaying, sound, onPlaybackEnd, slug, volume]);
+
+  useEffect(() => {
     if (sound.current.buffer && !duration)
       reportDuration(slug, sound.current.buffer.duration * 1000);
   }, [sound, reportDuration, duration, slug]);
-
-  useEffect(() => {
-    if (!!sound.current) {
-      if (!prevProps.isPlaying && isPlaying && !!sound.current) {
-        sound.current.play();
-      } else if (prevProps.isPlaying && !isPlaying && !!sound.current) {
-        sound.current.stop();
-      }
-    }
-  }, [isPlaying, prevProps.isPlaying, sound, slug]);
 
   return <positionalAudio ref={sound} args={[listener]} />;
 };
@@ -52,10 +55,11 @@ const LoopingSound: React.FC<Props> = ({
 interface Props {
   slug: string;
   soundFile: string;
+  isPlaying: boolean;
+  onPlaybackEnd?: () => void;
   listener: AudioListener;
   reportDuration?: (slug: string, duration: number) => void;
   duration: number | null;
-  isPlaying: boolean;
   volume: number;
 }
-export default LoopingSound;
+export default SingleSound;

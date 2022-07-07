@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import LogoDark from '../assets/logos/ABRA-Logo-Grey-WO.svg';
-import LogoLight from '../assets/logos/ABRA-Logo-Grey.svg';
-import { getDarkMode } from '../redux/selectors/darkMode';
+import LogoDark from '../../assets/logos/ABRA-Logo-Grey-WO.svg';
+import LogoLight from '../../assets/logos/ABRA-Logo-Grey.svg';
+import { getDarkMode } from '../../redux/selectors/darkMode';
 
 interface MainLogoProps {
   forceDarkTheme?: boolean;
