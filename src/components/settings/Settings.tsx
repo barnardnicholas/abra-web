@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { toggleDarkMode } from '../../redux/actions/darkMode';
@@ -8,16 +8,12 @@ import { getDebug } from '../../redux/selectors/debug';
 import { getShowSettings } from '../../redux/selectors/settings';
 import Divider from '../common/Divider';
 import ToggleSwitch from '../form/ToggleSwitch';
-import SettingsItem from './SettingsItem';
 
 const Settings = () => {
   const dispatch = useDispatch();
   const showSettings = useSelector(getShowSettings);
   const isDebug = useSelector(getDebug);
   const isDarkMode = useSelector(getDarkMode);
-  const [isChecked, setIsChecked] = useState<boolean>(false);
-
-  //   const handleSwitchTheme = () => {};
   return (
     <div className={`settings-container ${showSettings ? 'expanded' : ''}`}>
       <div className="settings">
