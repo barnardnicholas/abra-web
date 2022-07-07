@@ -11,6 +11,7 @@ import { getDarkMode } from './redux/selectors/darkMode';
 import Mixer from './components/mixer/Mixer';
 import { getShowSettings } from './redux/selectors/settings';
 import { getShowMixer } from './redux/selectors/mixer';
+import TransportControls from './components/transportControls/TransportControls';
 
 function App() {
   const selectedScenario = useSelector(getSelectedScenario) || 'none';
@@ -30,6 +31,7 @@ function App() {
       />
       <Mixer scenario={scenario} />
       <Settings />
+      <TransportControls scenario={scenario} />
     </div>
   );
 }

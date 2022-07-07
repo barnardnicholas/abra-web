@@ -67,24 +67,6 @@ em,
   @include transitionColors();
 }
 
-.floating-controls {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: auto;
-  z-index: 1;
-  padding: 1em;
-  box-sizing: border-box;
-  text-align: center;
-  transition: transform 0.5s ease;
-
-  &.hidden {
-    transform: scale(0%);
-    pointer-events: none;
-  }
-}
-
 .background-blocker {
   position: fixed;
   top: 0;
