@@ -1,7 +1,7 @@
-import { createAction, Dispatch } from '@reduxjs/toolkit';
+import { createAction } from '@reduxjs/toolkit';
 
 export const setSelectedScenario = createAction<string | null>('setSelectedScenario');
 
 export const setScenario = (slug: string | number | null) => {
-    return setSelectedScenario(slug as string | null);
+  return setSelectedScenario(slug as string | null);
 };
