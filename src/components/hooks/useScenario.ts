@@ -1,12 +1,10 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Vector3 } from 'three';
-import scenarios from '../../constants/scenarios';
-import { Scenario, Sound, SoundChannel, soundTypes, soundTypeValues } from '../../types/Scenario';
+import { Sound, SoundChannel, soundTypes, soundTypeValues } from '../../types/Scenario';
 import { isEmpty, usePrevious } from '../../utils/utils';
 import useSavedAndPresetScenarios from './useSavedAndPresetScenarios';
 
 const useScenario = (scenarioSlug: string): UseScenarioProps => {
-  // const currentScenario: Scenario = scenarios[scenarioSlug];
   const { currentScenario } = useSavedAndPresetScenarios(scenarioSlug);
   const [soundChannels, setSoundChannels] = useState<Record<string, SoundChannel>>({});
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
