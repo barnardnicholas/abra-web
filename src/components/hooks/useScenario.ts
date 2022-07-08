@@ -1,15 +1,36 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Vector3 } from 'three';
 import scenarios from '../../constants/scenarios';
+import {
+  setIsPlaying,
+  setLastSound,
+  setSoundChannels,
+  setSoundPool,
+} from '../../redux/actions/currentScenario';
+import {
+  getIsPlaying,
+  getLastSound,
+  getSoundChannels,
+  getSoundPool,
+} from '../../redux/selectors/currentScenario';
 import { Scenario, Sound, SoundChannel, soundTypes, soundTypeValues } from '../../types/Scenario';
 import { isEmpty, usePrevious } from '../../utils/utils';
 
 const useScenario = (scenarioName: string): UseScenarioProps => {
+  const dispatch = useDispatch();
+
+  const soundChannels = useSelector(getSoundChannels);
+  const isPlaying = useSelector(getIsPlaying);
+  const soundPool = useSelector(getSoundPool);
+  const lastSound = useSelector(getLastSound);
+
   const scenario: Scenario = scenarios[scenarioName];
-  const [soundChannels, setSoundChannels] = useState<Record<string, SoundChannel>>({});
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [soundPool, setSoundPool] = useState<string[]>([]);
-  const [lastSound, setLastSound] = useState<string | null>(null);
+  // const [soundChannels, setSoundChannels] = useState<Record<string, SoundChannel>>({});
+  // const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  // const [soundPool, setSoundPool] = useState<string[]>([]);
+  // const [lastSound, setLastSound] = useState<string | null>(null);
 
   let masterTimer = useRef<ReturnType<typeof setTimeout>>(setTimeout(() => {}, 1));
 
@@ -45,8 +66,8 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
       };
     });
 
-    setSoundPool(buildSoundPool(scenario.sounds));
-    setSoundChannels(channels);
+    dispatch(setSoundPool(buildSoundPool(scenario.sounds)));
+    dispatch(setSoundChannels(channels));
   }, []);
 
   useEffect(() => {
@@ -71,8 +92,8 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
         };
       });
 
-      setSoundPool(buildSoundPool(scenario.sounds));
-      setSoundChannels(channels);
+      dispatch(setSoundPool(buildSoundPool(scenario.sounds)));
+      dispatch(setSoundChannels(channels));
     }
   }, [scenarioName, prevProps.scenarioName]);
 
@@ -104,9 +125,7 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
   } // Pull random sound from pool - cannot be the same as lastSound
 
   function setPosition(slug: string, position: Vector3) {
-    setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
-      return { ...prevSoundChannels, [slug]: { ...prevSoundChannels[slug], position } };
-    });
+    dispatch(setSoundChannels({ ...soundChannels, [slug]: { ...soundChannels[slug], position } }));
   }
 
   function play(slug: string, position?: Vector3) {
@@ -117,62 +136,60 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
         stop(slug);
       }, (duration as number) + 100);
     }
-    setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
-      const newChannel = { ...prevSoundChannels[slug], isPlaying: true };
-      if (!!position) newChannel.position = position;
-      return { ...prevSoundChannels, [slug]: newChannel };
-    });
+    const prevSoundChannels = { ...soundChannels };
+    const newChannel = { ...prevSoundChannels[slug], isPlaying: true };
+    if (!!position) newChannel.position = position;
+    dispatch(setSoundChannels({ ...soundChannels, [slug]: newChannel }));
   }
 
   function stop(slug: string) {
-    setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
-      return {
-        ...prevSoundChannels,
-        [slug]: { ...prevSoundChannels[slug], isPlaying: false },
-      };
-    });
+    dispatch(
+      setSoundChannels({
+        ...soundChannels,
+        [slug]: { ...soundChannels[slug], isPlaying: false },
+      }),
+    );
   }
 
   function setVolume(slug: string, volume: number) {
-    setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
-      return {
-        ...prevSoundChannels,
-        [slug]: { ...prevSoundChannels[slug], volume },
-      };
-    });
+    dispatch(
+      setSoundChannels({
+        ...soundChannels,
+        [slug]: { ...soundChannels[slug], volume },
+      }),
+    );
   }
 
   function setFrequency(slug: string, frequency: number) {
-    setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
-      return {
-        ...prevSoundChannels,
-        [slug]: { ...prevSoundChannels[slug], frequency },
-      };
-    });
+    dispatch(
+      setSoundChannels({
+        ...soundChannels,
+        [slug]: { ...soundChannels[slug], frequency },
+      }),
+    );
   }
 
   function setMute(slug: string, mute: boolean) {
-    setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
-      const newChannel = { ...prevSoundChannels[slug], mute };
-      if (prevSoundChannels[slug].isPlaying && mute) newChannel.isPlaying = false;
-      else if (
-        prevSoundChannels[slug].type === soundTypes.background &&
-        isPlaying &&
-        !prevSoundChannels[slug].isPlaying &&
-        !mute
-      )
-        newChannel.isPlaying = true;
-      return {
+    const prevSoundChannels = { ...soundChannels };
+    const newChannel = { ...prevSoundChannels[slug], mute };
+    if (prevSoundChannels[slug].isPlaying && mute) newChannel.isPlaying = false;
+    else if (
+      prevSoundChannels[slug].type === soundTypes.background &&
+      isPlaying &&
+      !prevSoundChannels[slug].isPlaying &&
+      !mute
+    )
+      newChannel.isPlaying = true;
+    dispatch(
+      setSoundChannels({
         ...prevSoundChannels,
         [slug]: newChannel,
-      };
-    });
+      }),
+    );
   }
 
   function reportDuration(slug: string, duration: number) {
-    setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
-      return { ...prevSoundChannels, [slug]: { ...prevSoundChannels[slug], duration } };
-    });
+    dispatch(setSoundChannels({ ...soundChannels, [slug]: { ...soundChannels[slug], duration } }));
   }
 
   function getPosition(area: [number[], number[]]): Vector3 {
@@ -252,7 +269,7 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
       console.log(`Playing ${slug}`); // Play
       const { isPlaying, area } = channelToPlay;
       if (!isPlaying) play(slug, getPosition(area) as Vector3);
-      setLastSound(slug);
+      dispatch(setLastSound(slug));
       masterTimer.current = setTimeout(tick, getNewTimerDelay()); // Set new timer
     }
 
@@ -267,8 +284,8 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
       console.log(`Stopping ${slug}`);
       newSoundChannels[slug] = { ...newSoundChannels[slug], isPlaying: false };
     });
-    setSoundChannels(newSoundChannels);
-    setIsPlaying(false);
+    dispatch(setSoundChannels(newSoundChannels));
+    dispatch(setIsPlaying(false));
   }
 
   return {
@@ -282,7 +299,7 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
     reportDuration,
     startScenario,
     isPlaying,
-    setIsPlaying,
+    // setIsPlaying,
     stopScenario,
   };
 };
@@ -299,7 +316,7 @@ export interface UseScenarioProps {
   startScenario: () => void;
   stopScenario: () => void;
   isPlaying: boolean;
-  setIsPlaying: Dispatch<SetStateAction<boolean>>;
+  // setIsPlaying: Dispatch<SetStateAction<boolean>>;
 }
 
 export default useScenario;
