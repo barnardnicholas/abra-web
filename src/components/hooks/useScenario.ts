@@ -3,9 +3,11 @@ import { Vector3 } from 'three';
 import scenarios from '../../constants/scenarios';
 import { Scenario, Sound, SoundChannel, soundTypes, soundTypeValues } from '../../types/Scenario';
 import { isEmpty, usePrevious } from '../../utils/utils';
+import useSavedAndPresetScenarios from './useSavedAndPresetScenarios';
 
-const useScenario = (scenarioName: string): UseScenarioProps => {
-  const scenario: Scenario = scenarios[scenarioName];
+const useScenario = (scenarioSlug: string): UseScenarioProps => {
+  // const currentScenario: Scenario = scenarios[scenarioSlug];
+  const { currentScenario } = useSavedAndPresetScenarios(scenarioSlug);
   const [soundChannels, setSoundChannels] = useState<Record<string, SoundChannel>>({});
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [soundPool, setSoundPool] = useState<string[]>([]);
@@ -13,7 +15,7 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
 
   let masterTimer = useRef<ReturnType<typeof setTimeout>>(setTimeout(() => {}, 1));
 
-  const prevProps = usePrevious({ scenarioName, soundChannels, isPlaying });
+  const prevProps = usePrevious({ scenarioName: scenarioSlug, soundChannels, isPlaying });
 
   useEffect(() => {
     masterTimer.current = setTimeout(() => {}, 1);
@@ -28,7 +30,7 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
     stopScenario();
     const channels: Record<string, SoundChannel> = {};
 
-    Object.values(scenario.sounds).forEach((sound: Sound) => {
+    Object.values(currentScenario.sounds).forEach((sound: Sound) => {
       channels[sound.slug] = {
         id: sound.id,
         name: sound.name,
@@ -45,16 +47,16 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
       };
     });
 
-    setSoundPool(buildSoundPool(scenario.sounds));
+    setSoundPool(buildSoundPool(currentScenario.sounds));
     setSoundChannels(channels);
   }, []);
 
   useEffect(() => {
-    if (scenarioName !== prevProps.scenarioName) {
+    if (scenarioSlug !== prevProps.scenarioName) {
       stopScenario();
       console.log('Rebuilding...');
       const channels: Record<string, SoundChannel> = {};
-      Object.values(scenario.sounds).forEach((sound: Sound) => {
+      Object.values(currentScenario.sounds).forEach((sound: Sound) => {
         channels[sound.slug] = {
           id: sound.id,
           name: sound.name,
@@ -71,10 +73,10 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
         };
       });
 
-      setSoundPool(buildSoundPool(scenario.sounds));
+      setSoundPool(buildSoundPool(currentScenario.sounds));
       setSoundChannels(channels);
     }
-  }, [scenarioName, prevProps.scenarioName]);
+  }, [scenarioSlug, prevProps.scenarioName]);
 
   useEffect(() => {
     if (!isEmpty(soundChannels) && isPlaying && !prevProps.isPlaying) startScenario();
@@ -83,7 +85,7 @@ const useScenario = (scenarioName: string): UseScenarioProps => {
 
   function buildSoundPool(sounds: Record<string, Sound>) {
     const filteredSounds = Object.keys(sounds).filter(slug => {
-      return scenario.sounds[slug].type === soundTypes.random;
+      return currentScenario.sounds[slug].type === soundTypes.random;
     }); // Filter out background sounds
     const soundFreqs = filteredSounds.reduce((acc: Record<string, number>, curr: string) => {
       acc[curr] = Math.round(sounds[curr].frequency * 100);
