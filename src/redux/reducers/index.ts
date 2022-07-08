@@ -5,6 +5,7 @@ import debugReducer from './debug';
 import scenariosReducer from './scenarios';
 import settingsReducer from './settings';
 import mixerReducer from './mixer';
+import userDataReducer from './userData';
 
 const rootReducer = combineReducers({
   darkModeReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   scenariosReducer,
   settingsReducer,
   mixerReducer,
+  userDataReducer,
 });
 
 export default rootReducer;
