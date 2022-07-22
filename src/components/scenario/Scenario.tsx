@@ -77,7 +77,7 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug, isDarkBa
                 color={colors[i]}
                 scale={sphereScale}
                 position={new Vector3(channel.area[0][0], channel.area[0][1], channel.area[0][2])}
-                visible={debug && channel.isPlaying[channel.paths[0]]}
+                visible={debug && channel.isPlaying[channel.paths[0]] && scenario.isPlaying}
               >
                 <LoopingSound
                   slug={channel.slug}
@@ -97,7 +97,12 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug, isDarkBa
                 scale={sphereScale}
                 position={channel.position}
                 color={colors[i % colors.length]}
-                visible={debug && channel.isPlaying[path] && channel.currentPath === path}
+                visible={
+                  debug &&
+                  channel.isPlaying[path] &&
+                  channel.currentPath === path &&
+                  scenario.isPlaying
+                }
               >
                 <SingleSound
                   slug={channel.slug}
