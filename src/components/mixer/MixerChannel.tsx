@@ -43,7 +43,7 @@ const MixerChannel: React.FC<MixerChannelProps> = ({
           />
         </span>
         {channel.type !== soundTypes.background && (
-          <span className="channel-control">
+          <span className="channel-control freq">
             <i className="fa fa-stopwatch" />
             <RangeInput
               name={`${channel.name}-vol`}
