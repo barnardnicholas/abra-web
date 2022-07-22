@@ -16,16 +16,16 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
   const prevProps = usePrevious({ scenarioName: scenarioSlug, soundChannels, isPlaying });
 
   useEffect(() => {
-    masterTimer.current = setTimeout(() => {}, 1);
+    masterTimer.current = setTimeout(() => {}, 1); // Init master timer on mount
 
     return () => {
-      stopScenario();
-      clearTimeout(masterTimer.current);
+      stopScenario(); // Stop scenario on unmount
+      clearTimeout(masterTimer.current); // Clear master timer on unmount
     };
   }, []);
 
   useEffect(() => {
-    stopScenario();
+    stopScenario(); // Stop scenario on load (precaution)
     const channels: Record<string, SoundChannel> = {};
 
     Object.values(currentScenario.sounds).forEach((sound: Sound) => {
@@ -45,7 +45,7 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
       };
     });
 
-    setSoundPool(buildSoundPool(currentScenario.sounds));
+    setSoundPool(buildSoundPool(channels));
     setSoundChannels(channels);
   }, []);
 
@@ -71,7 +71,7 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
         };
       });
 
-      setSoundPool(buildSoundPool(currentScenario.sounds));
+      setSoundPool(buildSoundPool(channels));
       setSoundChannels(channels);
     }
   }, [scenarioSlug, prevProps.scenarioName]);
@@ -79,9 +79,19 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
   useEffect(() => {
     if (!isEmpty(soundChannels) && isPlaying && !prevProps.isPlaying) startScenario();
     else if (!isEmpty(soundChannels) && !isPlaying && prevProps.isPlaying) stopScenario();
+
+    const channelFreqs: string = Object.values(soundChannels)
+      .map((c: SoundChannel) => c.frequency.toFixed(2))
+      .join('');
+    const prevChannelFreqs: string = Object.values(
+      prevProps.soundChannels as Record<string, SoundChannel>,
+    )
+      .map((c: SoundChannel) => c.frequency.toFixed(2))
+      .join('');
+    if (prevChannelFreqs !== channelFreqs) setSoundPool(buildSoundPool(soundChannels)); // Rebuild soundPool on freq changes
   }, [soundChannels, prevProps, isPlaying]);
 
-  function buildSoundPool(sounds: Record<string, Sound>) {
+  function buildSoundPool(sounds: Record<string, SoundChannel>) {
     const filteredSounds = Object.keys(sounds).filter(slug => {
       return currentScenario.sounds[slug].type === soundTypes.random;
     }); // Filter out background sounds
@@ -99,9 +109,10 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
   function getRandomSound(): string {
     const aRandomSound: SoundChannel =
       soundChannels[soundPool[Math.floor(Math.random() * soundPool.length)]];
-    if (aRandomSound.slug === lastSound) return getRandomSound();
+    if (aRandomSound.slug === lastSound && Object.keys(soundChannels).length > 1)
+      return getRandomSound();
     return aRandomSound.slug;
-  } // Pull random sound from pool - cannot be the same as lastSound
+  } // Pull random sound from pool - cannot be the same as lastSound6
 
   function setPosition(slug: string, position: Vector3) {
     setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
