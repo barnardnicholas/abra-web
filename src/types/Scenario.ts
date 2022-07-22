@@ -38,11 +38,9 @@ export interface SoundChannel {
 export enum soundTypes {
   background = 1,
   random = 2,
-  randomGroup = 3,
 }
 
 export const soundTypeValues = {
   [soundTypes.background]: 'background',
   [soundTypes.random]: 'random',
-  [soundTypes.randomGroup]: 'randomGroup',
 };
