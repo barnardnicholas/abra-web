@@ -26,25 +26,7 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
 
   useEffect(() => {
     stopScenario(); // Stop scenario on load (precaution)
-    const channels: Record<string, SoundChannel> = {};
-
-    Object.values(currentScenario.sounds).forEach((sound: Sound) => {
-      channels[sound.slug] = {
-        id: sound.id,
-        name: sound.name,
-        slug: sound.slug,
-        position: new Vector3(0, 0, 0),
-        isPlaying: false,
-        duration: 0,
-        type: sound.type,
-        path: `/audio/${soundTypeValues[sound.type]}/${sound.path}`,
-        frequency: sound.frequency,
-        area: sound.area,
-        volume: sound.volume,
-        mute: sound.mute,
-      };
-    });
-
+    const channels: Record<string, SoundChannel> = buildSoundChannels(currentScenario.sounds);
     setSoundPool(buildSoundPool(channels));
     setSoundChannels(channels);
   }, []);
@@ -53,24 +35,7 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
     if (scenarioSlug !== prevProps.scenarioName) {
       stopScenario();
       console.log('Rebuilding...');
-      const channels: Record<string, SoundChannel> = {};
-      Object.values(currentScenario.sounds).forEach((sound: Sound) => {
-        channels[sound.slug] = {
-          id: sound.id,
-          name: sound.name,
-          slug: sound.slug,
-          position: new Vector3(0, 0, 0),
-          isPlaying: false,
-          duration: 0,
-          type: sound.type,
-          path: `/audio/${soundTypeValues[sound.type]}/${sound.path}`,
-          frequency: sound.frequency,
-          area: sound.area,
-          volume: sound.volume,
-          mute: sound.mute,
-        };
-      });
-
+      const channels: Record<string, SoundChannel> = buildSoundChannels(currentScenario.sounds);
       setSoundPool(buildSoundPool(channels));
       setSoundChannels(channels);
     }
@@ -90,6 +55,27 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
       .join('');
     if (prevChannelFreqs !== channelFreqs) setSoundPool(buildSoundPool(soundChannels)); // Rebuild soundPool on freq changes
   }, [soundChannels, prevProps, isPlaying]);
+
+  function buildSoundChannels(sounds: Record<string, Sound>): Record<string, SoundChannel> {
+    const channels: Record<string, SoundChannel> = {};
+    Object.values(sounds).forEach((sound: Sound) => {
+      channels[sound.slug] = {
+        id: sound.id,
+        name: sound.name,
+        slug: sound.slug,
+        position: new Vector3(0, 0, 0),
+        isPlaying: false,
+        duration: 0,
+        type: sound.type,
+        path: `/audio/${soundTypeValues[sound.type]}/${sound.path}`,
+        frequency: sound.frequency,
+        area: sound.area,
+        volume: sound.volume,
+        mute: sound.mute,
+      };
+    });
+    return channels;
+  }
 
   function buildSoundPool(sounds: Record<string, SoundChannel>) {
     const filteredSounds = Object.keys(sounds).filter(slug => {
@@ -112,7 +98,7 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
     if (aRandomSound.slug === lastSound && Object.keys(soundChannels).length > 1)
       return getRandomSound();
     return aRandomSound.slug;
-  } // Pull random sound from pool - cannot be the same as lastSound6
+  } // Pull random sound from pool - cannot be the same as lastSound
 
   function setPosition(slug: string, position: Vector3) {
     setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
