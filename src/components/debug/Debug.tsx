@@ -7,11 +7,12 @@ const ChannelDebug: React.FC<ChannelProps> = ({ channel, index }) => {
   const { id, name, slug, position, isPlaying, durations, type, paths, frequency, volume } =
     channel;
   const duration = Array.isArray(durations) && !Number.isNaN(index) ? durations.toString() : '-';
+  const _isPlaying = Object.values(isPlaying).toString();
   return (
     <>
       <div>
         <strong>{`${soundTypes[type]} Channel: ${name} (${slug})`}</strong>
-        <div>{`isPlaying: ${isPlaying}`}</div>
+        <div>{`isPlaying: ${_isPlaying}`}</div>
         <div>{`durations: ${durations}`}</div>
         <div>{`frequency: ${frequency}`}</div>
         <div>{`vol: ${volume}`}</div>

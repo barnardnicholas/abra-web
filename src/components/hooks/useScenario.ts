@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Vector3 } from 'three';
 import { Sound, SoundChannel, soundTypes, soundTypeValues } from '../../types/Scenario';
-import { isEmpty, usePrevious } from '../../utils/utils';
+import { isChannelPlaying, isEmpty, usePrevious } from '../../utils/utils';
 import useSavedAndPresetScenarios from './useSavedAndPresetScenarios';
 
 const useScenario = (scenarioSlug: string): UseScenarioProps => {
@@ -61,13 +61,17 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
   function buildSoundChannels(sounds: Record<string, Sound>): Record<string, SoundChannel> {
     const channels: Record<string, SoundChannel> = {};
     Object.values(sounds).forEach((sound: Sound) => {
-      console.log(new Array(sound.paths.length).fill(0));
+      const isPlaying = sound.paths.reduce(
+        (acc: Record<string, boolean>, curr: string) => ({ ...acc, [curr]: false }),
+        {},
+      );
+
       channels[sound.slug] = {
         id: sound.id,
         name: sound.name,
         slug: sound.slug,
         position: new Vector3(0, 0, 0),
-        isPlaying: false,
+        isPlaying,
         durations: new Array(sound.paths.length).fill(0),
         type: sound.type,
         paths: sound.paths.map((path: string) => `/audio/${soundTypeValues[sound.type]}/${path}`),
@@ -126,9 +130,9 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
       stop(slug);
     }, (duration as number) + 100);
     setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
-      const newChannel = {
+      const newChannel: SoundChannel = {
         ...prevSoundChannels[slug],
-        isPlaying: true,
+        isPlaying: { ...prevSoundChannels[slug].isPlaying, [_path]: true },
         currentPath: path ? path : prevSoundChannels[slug].paths[0],
       };
       if (!!position) newChannel.position = position;
@@ -138,9 +142,12 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
 
   function stop(slug: string) {
     setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
+      const isPlaying: Record<string, boolean> = Object.keys(
+        prevSoundChannels[slug].isPlaying,
+      ).reduce((acc: Record<string, boolean>, curr: string) => ({ ...acc, [curr]: false }), {});
       return {
         ...prevSoundChannels,
-        [slug]: { ...prevSoundChannels[slug], isPlaying: false },
+        [slug]: { ...prevSoundChannels[slug], isPlaying },
       };
     });
   }
@@ -166,14 +173,24 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
   function setMute(slug: string, mute: boolean) {
     setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
       const newChannel = { ...prevSoundChannels[slug], mute };
-      if (prevSoundChannels[slug].isPlaying && mute) newChannel.isPlaying = false;
-      else if (
+      if (isChannelPlaying(prevSoundChannels[slug]) && mute) {
+        const isPlaying = prevSoundChannels[slug].paths.reduce(
+          (acc: Record<string, boolean>, curr: string) => ({ ...acc, [curr]: false }),
+          {},
+        );
+        newChannel.isPlaying = isPlaying;
+      } else if (
         prevSoundChannels[slug].type === soundTypes.background &&
         isPlaying &&
-        !prevSoundChannels[slug].isPlaying &&
+        !isChannelPlaying(prevSoundChannels[slug]) &&
         !mute
-      )
-        newChannel.isPlaying = true;
+      ) {
+        const isPlaying = prevSoundChannels[slug].paths.reduce(
+          (acc: Record<string, boolean>, curr: string) => ({ ...acc, [curr]: false }),
+          {},
+        );
+        newChannel.isPlaying = isPlaying;
+      }
       return {
         ...prevSoundChannels,
         [slug]: newChannel,
@@ -258,12 +275,12 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
     console.log('starting scenario');
 
     Object.keys(soundChannels).forEach((slug: string) => {
-      const { type, isPlaying } = soundChannels[slug];
+      const { type } = soundChannels[slug];
 
       if (type === soundTypes.background) {
         console.log(`Playing ${slug}`);
 
-        if (!isPlaying) play(slug);
+        if (!isChannelPlaying(soundChannels[slug])) play(slug);
       }
     }); // Play all background sounds
 
@@ -272,8 +289,8 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
       const slug: string = getRandomSound(); // Get new sound slug from pool
       const channelToPlay: SoundChannel = soundChannels[slug];
       console.log(`Playing ${slug}`); // Play
-      const { isPlaying, area } = channelToPlay;
-      if (!isPlaying) play(slug, getPosition(area) as Vector3, getRandomPath(channelToPlay));
+      if (!isChannelPlaying(channelToPlay))
+        play(slug, getPosition(channelToPlay.area) as Vector3, getRandomPath(channelToPlay));
       setLastSound(slug);
       masterTimer.current = setTimeout(tick, getNewTimerDelay()); // Set new timer
     }
@@ -287,7 +304,11 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
     const newSoundChannels: Record<string, SoundChannel> = { ...soundChannels };
     Object.keys(soundChannels).forEach((slug: string) => {
       console.log(`Stopping ${slug}`);
-      newSoundChannels[slug] = { ...newSoundChannels[slug], isPlaying: false };
+      const isPlaying = newSoundChannels[slug].paths.reduce(
+        (acc: Record<string, boolean>, curr: string) => ({ ...acc, [curr]: false }),
+        {},
+      );
+      newSoundChannels[slug] = { ...newSoundChannels[slug], isPlaying };
     });
     setSoundChannels(newSoundChannels);
     setIsPlaying(false);

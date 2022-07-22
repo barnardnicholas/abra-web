@@ -1,5 +1,6 @@
 import React from 'react';
 import { SoundChannel, soundTypes } from '../../types/Scenario';
+import { isChannelPlaying } from '../../utils/utils';
 import Divider from '../common/Divider';
 import RangeInput from '../form/Range';
 import ToggleSwitch from '../form/ToggleSwitch';
@@ -27,7 +28,7 @@ const MixerChannel: React.FC<MixerChannelProps> = ({
     <>
       <div className="mixer-channel">
         <span className="channel-label">
-          <i className={`play-indicator fa fa-${channel.isPlaying ? 'play' : 'stop'}`} />
+          <i className={`play-indicator fa fa-${isChannelPlaying(channel) ? 'play' : 'stop'}`} />
           {channel.name}
         </span>
         <span className="channel-control">

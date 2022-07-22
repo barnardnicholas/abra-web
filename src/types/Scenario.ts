@@ -25,7 +25,7 @@ export interface SoundChannel {
   name: string;
   slug: string;
   position: Vector3;
-  isPlaying: boolean;
+  isPlaying: Record<string, boolean>;
   durations: number[];
   type: soundTypes;
   paths: string[];

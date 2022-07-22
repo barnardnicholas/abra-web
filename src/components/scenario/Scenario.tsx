@@ -77,7 +77,7 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug, isDarkBa
                 color={colors[i]}
                 scale={sphereScale}
                 position={new Vector3(channel.area[0][0], channel.area[0][1], channel.area[0][2])}
-                visible={debug}
+                visible={debug && channel.isPlaying[channel.paths[0]]}
               >
                 <LoopingSound
                   slug={channel.slug}
@@ -85,7 +85,7 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug, isDarkBa
                   reportDuration={reportDuration}
                   soundFile={channel.paths[0]}
                   listener={listener}
-                  isPlaying={channel.isPlaying}
+                  isPlaying={channel.isPlaying[channel.paths[0]]}
                   volume={channel.volume}
                 />
               </SphereMesh>
@@ -97,14 +97,14 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug, isDarkBa
                 scale={sphereScale}
                 position={channel.position}
                 color={colors[i % colors.length]}
-                visible={debug && channel.isPlaying && channel.currentPath === path}
+                visible={debug && channel.isPlaying[path] && channel.currentPath === path}
               >
                 <SingleSound
                   slug={channel.slug}
                   duration={channel.durations[i]}
                   reportDuration={reportDuration}
                   soundFile={path}
-                  isPlaying={channel.isPlaying && channel.currentPath === path}
+                  isPlaying={channel.isPlaying[path] && channel.currentPath === path}
                   onPlaybackEnd={() => {}}
                   listener={listener}
                   volume={channel.volume}
