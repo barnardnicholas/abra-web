@@ -4,6 +4,8 @@ import { Sound, SoundChannel, soundTypes, soundTypeValues } from '../../types/Sc
 import { isChannelPlaying, isEmpty, usePrevious } from '../../utils/utils';
 import useSavedAndPresetScenarios from './useSavedAndPresetScenarios';
 
+let timers: ReturnType<typeof setTimeout>[] = []; // Keep refs to timeouts here - gets cleared on stop
+
 const useScenario = (scenarioSlug: string): UseScenarioProps => {
   const { currentScenario } = useSavedAndPresetScenarios(scenarioSlug);
   const [soundChannels, setSoundChannels] = useState<Record<string, SoundChannel>>({});
@@ -11,7 +13,7 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
   const [soundPool, setSoundPool] = useState<string[]>([]);
   const [lastSound, setLastSound] = useState<string | null>(null);
 
-  let masterTimer = useRef<ReturnType<typeof setTimeout>>(setTimeout(() => {}, 1));
+  let masterTimer = useRef<ReturnType<typeof setTimeout>>(setTimeout(() => {}, 1)); // Main tick for triggering sounds
 
   const prevProps = usePrevious({ scenarioName: scenarioSlug, soundChannels, isPlaying });
 
@@ -130,10 +132,15 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
       ? soundChannels[slug].durations[soundChannels[slug].paths.indexOf(_path)]
       : 5000;
 
-    if (soundChannels[slug].type === soundTypes.random)
-      setTimeout(() => {
-        stop(slug);
-      }, (duration as number) + 100);
+    const _timer = setTimeout(() => {
+      if (soundChannels[slug].type === soundTypes.random)
+        try {
+          stop(slug);
+        } catch (e) {
+          console.warn(`Failed to stop ${slug} in setTimeout`);
+        }
+    }, (duration as number) + 100);
+    timers.push(_timer);
 
     setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
       const newChannel: SoundChannel = {
@@ -308,6 +315,7 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
   function stopScenario() {
     console.log('stopping scenario');
     global.clearTimeout(masterTimer.current);
+    timers.forEach(t => clearTimeout(t));
     const newSoundChannels: Record<string, SoundChannel> = { ...soundChannels };
     Object.keys(soundChannels).forEach((slug: string) => {
       console.log(`Stopping ${slug}`);
