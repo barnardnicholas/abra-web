@@ -48,34 +48,6 @@ const rainstorm: Scenario = {
       ],
       mute: false,
     },
-    // thunder2: {
-    //   id: 3,
-    //   slug: 'thunder2',
-    //   name: 'Thunder 2',
-    //   type: soundTypes.random,
-    //   paths: ['thunder/thunder-2.mp3'],
-    //   volume: 0.75,
-    //   frequency: 0.75,
-    //   area: [
-    //     [0, 1, -2],
-    //     [2, 2, 2],
-    //   ],
-    //   mute: false,
-    // },
-    // thunder3: {
-    //   id: 4,
-    //   slug: 'thunder3',
-    //   name: 'Thunder 3',
-    //   type: soundTypes.random,
-    //   paths: ['thunder/thunder-3.mp3'],
-    //   volume: 0.75,
-    //   frequency: 0.75,
-    //   area: [
-    //     [-2, 1, -2],
-    //     [0, 2, 2],
-    //   ],
-    //   mute: false,
-    // },
   },
 };
 
