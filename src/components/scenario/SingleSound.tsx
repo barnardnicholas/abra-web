@@ -12,6 +12,7 @@ const SingleSound: React.FC<Props> = ({
   listener,
   reportDuration = () => {},
   volume = 0.5,
+  index,
 }) => {
   const sound = useRef<PositionalAudio>(null!);
   const buffer = useLoader(AudioLoader, soundFile);
@@ -46,7 +47,7 @@ const SingleSound: React.FC<Props> = ({
 
   useEffect(() => {
     if (sound.current.buffer && !duration)
-      reportDuration(slug, sound.current.buffer.duration * 1000);
+      reportDuration(slug, sound.current.buffer.duration * 1000, index);
   }, [sound, reportDuration, duration, slug]);
 
   return <positionalAudio ref={sound} args={[listener]} />;
@@ -58,8 +59,9 @@ interface Props {
   isPlaying: boolean;
   onPlaybackEnd?: () => void;
   listener: AudioListener;
-  reportDuration?: (slug: string, duration: number) => void;
+  reportDuration?: (slug: string, duration: number, index?: number) => void;
   duration: number | null;
   volume: number;
+  index: number;
 }
 export default SingleSound;

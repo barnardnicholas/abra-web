@@ -45,35 +45,40 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
     if (!isEmpty(soundChannels) && isPlaying && !prevProps.isPlaying) startScenario();
     else if (!isEmpty(soundChannels) && !isPlaying && prevProps.isPlaying) stopScenario();
 
-    const channelFreqs: string = Object.values(soundChannels)
-      .map((c: SoundChannel) => c.frequency.toFixed(2))
-      .join('');
-    const prevChannelFreqs: string = Object.values(
-      prevProps.soundChannels as Record<string, SoundChannel>,
-    )
-      .map((c: SoundChannel) => c.frequency.toFixed(2))
-      .join('');
-    if (prevChannelFreqs !== channelFreqs) setSoundPool(buildSoundPool(soundChannels)); // Rebuild soundPool on freq changes
+    if (!isEmpty(soundChannels)) {
+      const channelFreqs: string = Object.values(soundChannels)
+        .map((c: SoundChannel) => c.frequency)
+        .join('');
+      const prevChannelFreqs: string = Object.values(
+        prevProps.soundChannels as Record<string, SoundChannel>,
+      )
+        .map((c: SoundChannel) => c.frequency)
+        .join('');
+      if (prevChannelFreqs !== channelFreqs) setSoundPool(buildSoundPool(soundChannels)); // Rebuild soundPool on freq changes
+    }
   }, [soundChannels, prevProps, isPlaying]);
 
   function buildSoundChannels(sounds: Record<string, Sound>): Record<string, SoundChannel> {
     const channels: Record<string, SoundChannel> = {};
     Object.values(sounds).forEach((sound: Sound) => {
+      console.log(new Array(sound.paths.length).fill(0));
       channels[sound.slug] = {
         id: sound.id,
         name: sound.name,
         slug: sound.slug,
         position: new Vector3(0, 0, 0),
         isPlaying: false,
-        duration: 0,
+        durations: new Array(sound.paths.length).fill(0),
         type: sound.type,
-        path: `/audio/${soundTypeValues[sound.type]}/${sound.path}`,
+        paths: sound.paths.map((path: string) => `/audio/${soundTypeValues[sound.type]}/${path}`),
+        currentPath: sound.paths[Math.floor(Math.random() * sound.paths.length)] || sound.paths[0],
         frequency: sound.frequency,
         area: sound.area,
         volume: sound.volume,
         mute: sound.mute,
       };
     });
+    console.log(channels);
     return channels;
   }
 
@@ -95,8 +100,8 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
   function getRandomSound(): string {
     const aRandomSound: SoundChannel =
       soundChannels[soundPool[Math.floor(Math.random() * soundPool.length)]];
-    if (aRandomSound.slug === lastSound && Object.keys(soundChannels).length > 1)
-      return getRandomSound();
+    // if (aRandomSound.slug === lastSound && Object.keys(soundChannels).length > 1)
+    //   return getRandomSound();
     return aRandomSound.slug;
   } // Pull random sound from pool - cannot be the same as lastSound
 
@@ -106,16 +111,26 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
     });
   }
 
-  function play(slug: string, position?: Vector3) {
+  function play(slug: string, position?: Vector3, path?: string) {
     if (soundChannels[slug].mute) return;
-    if (!!position) {
-      const duration = soundChannels[slug].duration ? soundChannels[slug].duration : 5000;
-      setTimeout(() => {
-        stop(slug);
-      }, (duration as number) + 100);
-    }
+
+    let _path: string = soundChannels[slug].paths[0]; // Fallback
+    if (path) _path = path;
+
+    const duration = soundChannels[slug].durations
+      ? soundChannels[slug].durations[soundChannels[slug].paths.indexOf(_path)]
+      : 5000;
+    console.log(`Playing ${slug} with duration ${duration}`);
+
+    setTimeout(() => {
+      stop(slug);
+    }, (duration as number) + 100);
     setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
-      const newChannel = { ...prevSoundChannels[slug], isPlaying: true };
+      const newChannel = {
+        ...prevSoundChannels[slug],
+        isPlaying: true,
+        currentPath: path ? path : prevSoundChannels[slug].paths[0],
+      };
       if (!!position) newChannel.position = position;
       return { ...prevSoundChannels, [slug]: newChannel };
     });
@@ -166,9 +181,12 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
     });
   }
 
-  function reportDuration(slug: string, duration: number) {
+  function reportDuration(slug: string, duration: number, index: number = 0) {
+    console.log('report duration ', duration);
     setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
-      return { ...prevSoundChannels, [slug]: { ...prevSoundChannels[slug], duration } };
+      const durations = prevSoundChannels[slug].durations;
+      durations[index] = duration;
+      return { ...prevSoundChannels, [slug]: { ...prevSoundChannels[slug], durations } };
     });
   }
 
@@ -178,6 +196,13 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
       return Math.random() * (area[1][i] - area[0][i]) + area[0][i];
     });
     return new Vector3(pos[0], pos[1], pos[2]);
+  }
+
+  function getRandomPath(channel: SoundChannel, prevPath?: string): string {
+    const newPath =
+      channel.paths[Math.floor(Math.random() * channel.paths.length)] || channel.paths[0];
+    if (prevPath && newPath === prevPath) return getRandomPath(channel, prevPath);
+    return newPath;
   }
 
   function getNewTimerDelay() {
@@ -248,7 +273,7 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
       const channelToPlay: SoundChannel = soundChannels[slug];
       console.log(`Playing ${slug}`); // Play
       const { isPlaying, area } = channelToPlay;
-      if (!isPlaying) play(slug, getPosition(area) as Vector3);
+      if (!isPlaying) play(slug, getPosition(area) as Vector3, getRandomPath(channelToPlay));
       setLastSound(slug);
       masterTimer.current = setTimeout(tick, getNewTimerDelay()); // Set new timer
     }

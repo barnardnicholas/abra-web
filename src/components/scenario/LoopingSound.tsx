@@ -53,7 +53,7 @@ interface Props {
   slug: string;
   soundFile: string;
   listener: AudioListener;
-  reportDuration?: (slug: string, duration: number) => void;
+  reportDuration?: (slug: string, duration: number, index?: number) => void;
   duration: number | null;
   isPlaying: boolean;
   volume: number;

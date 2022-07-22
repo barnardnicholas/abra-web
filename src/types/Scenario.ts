@@ -13,7 +13,7 @@ export interface Sound {
   slug: string;
   name: string;
   type: soundTypes;
-  path: string;
+  paths: string[];
   volume: number;
   frequency: number;
   area: [number[], number[]]; // [minX, minY, minZ], [maxX, maxY, maxZ]
@@ -26,9 +26,10 @@ export interface SoundChannel {
   slug: string;
   position: Vector3;
   isPlaying: boolean;
-  duration: number;
+  durations: number[];
   type: soundTypes;
-  path: string;
+  paths: string[];
+  currentPath: string | null;
   frequency: number;
   area: [number[], number[]];
   volume: number;

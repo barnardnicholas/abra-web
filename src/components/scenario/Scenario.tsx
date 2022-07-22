@@ -72,47 +72,46 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug, isDarkBa
         {Object.values(soundChannels).map((channel: SoundChannel, i: number) => {
           if (channel.type === soundTypes.background)
             return (
-              <Fragment key={i}>
-                <SphereMesh
-                  // key={i}
-                  color={colors[i]}
-                  scale={sphereScale}
-                  position={new Vector3(channel.area[0][0], channel.area[0][1], channel.area[0][2])}
-                  visible={debug}
-                >
-                  <LoopingSound
-                    slug={channel.slug}
-                    duration={channel.duration}
-                    reportDuration={reportDuration}
-                    soundFile={channel.path}
-                    listener={listener}
-                    isPlaying={channel.isPlaying}
-                    volume={channel.volume}
-                  />
-                </SphereMesh>
-              </Fragment>
+              <SphereMesh
+                key={i}
+                color={colors[i]}
+                scale={sphereScale}
+                position={new Vector3(channel.area[0][0], channel.area[0][1], channel.area[0][2])}
+                visible={debug}
+              >
+                <LoopingSound
+                  slug={channel.slug}
+                  duration={channel.durations[0]}
+                  reportDuration={reportDuration}
+                  soundFile={channel.paths[0]}
+                  listener={listener}
+                  isPlaying={channel.isPlaying}
+                  volume={channel.volume}
+                />
+              </SphereMesh>
             );
           else if (channel.type === soundTypes.random)
-            return (
+            return channel.paths.map((path: string, i: number) => (
               <SphereMesh
                 key={i}
                 scale={sphereScale}
                 position={channel.position}
                 color={colors[i % colors.length]}
-                visible={debug && channel.isPlaying}
+                visible={debug && channel.isPlaying && channel.currentPath === path}
               >
                 <SingleSound
                   slug={channel.slug}
-                  duration={channel.duration}
+                  duration={channel.durations[i]}
                   reportDuration={reportDuration}
-                  soundFile={channel.path}
-                  isPlaying={channel.isPlaying}
+                  soundFile={path}
+                  isPlaying={channel.isPlaying && channel.currentPath === path}
                   onPlaybackEnd={() => {}}
                   listener={listener}
                   volume={channel.volume}
+                  index={i}
                 />
               </SphereMesh>
-            );
+            ));
           else return <Fragment key={i} />;
         })}
 
