@@ -22,8 +22,9 @@ canvas {
 
 .App {
   @include bodyText();
-  height: 100vh;
   width: 100vw;
+  height: 100vh;
+  height: calc(var(--vh) * 100); // Dynamic vh unit
   position: fixed;
   background-color: var(--main-background);
   color: var(--main-typography);
