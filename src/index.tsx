@@ -23,4 +23,4 @@ root.render(
   </React.StrictMode>,
 );
 
-unregister();
+unregister(); // Clear browser cache (hosting fix)
