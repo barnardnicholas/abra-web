@@ -7,6 +7,7 @@ import store from './redux/store';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
 import LoadingHeader from './components/header/LoadingHeader';
+import { unregister } from './registerServiceWorker';
 
 const container = document.getElementById('root');
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript
@@ -21,3 +22,5 @@ root.render(
     </Provider>
   </React.StrictMode>,
 );
+
+unregister();
