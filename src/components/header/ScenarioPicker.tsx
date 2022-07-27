@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { setScenario } from '../../redux/actions/scenario';
 import { getSelectedScenario } from '../../redux/selectors/scenarios';
 import { DropdownOption } from '../../types/DropdownOption';
-import { usePrevious } from '../../utils/utils';
 import Select from '../form/Select';
 
 const scenarioOptions: DropdownOption<string>[] = [

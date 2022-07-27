@@ -119,7 +119,6 @@ const forest: Scenario = {
         'frog/frog-4.mp3',
         'frog/frog-5.mp3',
         'frog/frog-6.mp3',
-        // 'frog/frog-copes.mp3',
       ],
       volume: 0.25,
       frequency: 0.25,
