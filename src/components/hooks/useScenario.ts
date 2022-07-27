@@ -80,7 +80,7 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
         isPlaying,
         durations: new Array(sound.paths.length).fill(0),
         type: sound.type,
-        paths: sound.paths.map((path: string) => `/audio/${soundTypeValues[sound.type]}/${path}`),
+        paths: sound.paths.map((path: string) => `audio/${soundTypeValues[sound.type]}/${path}`),
         currentPath: sound.paths[Math.floor(Math.random() * sound.paths.length)] || sound.paths[0],
         frequency: sound.frequency,
         area: sound.area,

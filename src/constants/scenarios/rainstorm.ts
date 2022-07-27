@@ -11,7 +11,7 @@ const rainstorm: Scenario = {
       slug: 'rain1',
       name: 'Rain 1',
       type: soundTypes.background,
-      paths: ['rain-1.ogg'],
+      paths: ['rain-1.mp3'],
       volume: 0.75,
       frequency: 0,
       area: [
@@ -25,7 +25,7 @@ const rainstorm: Scenario = {
       slug: 'rain2',
       name: 'Rain 2',
       type: soundTypes.background,
-      paths: ['rain-2.ogg'],
+      paths: ['rain-2.mp3'],
       volume: 0.5,
       frequency: 0,
       area: [
@@ -39,7 +39,15 @@ const rainstorm: Scenario = {
       slug: 'thunder',
       name: 'Thunder',
       type: soundTypes.random,
-      paths: ['thunder/thunder-1.mp3', 'thunder/thunder-2.mp3', 'thunder/thunder-3.mp3'],
+      paths: [
+        'thunder/thunder-1.mp3',
+        'thunder/thunder-2.mp3',
+        'thunder/thunder-3.mp3',
+        'thunder/thunder-4.mp3',
+        'thunder/thunder-5.mp3',
+        'thunder/thunder-6.mp3',
+        'thunder/thunder-7.mp3',
+      ],
       volume: 0.75,
       frequency: 0.1,
       area: [
