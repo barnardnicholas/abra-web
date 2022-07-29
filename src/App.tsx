@@ -12,8 +12,6 @@ import Mixer from './components/mixer/Mixer';
 import { getShowSettings } from './redux/selectors/settings';
 import { getShowMixer } from './redux/selectors/mixer';
 import TransportControls from './components/transportControls/TransportControls';
-import useDynamicVH from './utils/useDynamicVH';
-import { getURL } from './utils/firebaseStorage'
 
 function App() {
   const selectedScenario = useSelector(getSelectedScenario) || 'none';
@@ -21,9 +19,6 @@ function App() {
   const isShowingSettings = useSelector(getShowSettings);
   const isShowingMixer = useSelector(getShowMixer);
   const scenario = useScenario(selectedScenario as string);
-
-  useDynamicVH();
-
   return (
     <div className={`App ${isDarkMode ? '' : 'theme-light'}`}>
       <Scenario scenario={scenario} selectedScenario={selectedScenario} />

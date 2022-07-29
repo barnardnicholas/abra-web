@@ -21,5 +21,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+<<<<<<< HEAD
 
 /src/_auth
+=======
+>>>>>>> parent of 049f218 (Merge pull request #3 from barnardnicholas/firebase-storage)

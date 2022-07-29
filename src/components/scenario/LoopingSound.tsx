@@ -1,8 +1,7 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useLoader } from '@react-three/fiber';
 import { PositionalAudio, AudioListener, AudioLoader } from 'three';
 import { usePrevious } from '../../utils/utils';
-import { getURL } from '../../utils/firebaseStorage';
 
 const LoopingSound: React.FC<Props> = ({
   slug,
@@ -13,12 +12,9 @@ const LoopingSound: React.FC<Props> = ({
   reportDuration = () => {},
   volume = 0.66,
 }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  getURL(soundFile, () => setIsLoading(false));
-
   const sound = useRef<PositionalAudio>(null!);
-  const prevProps = usePrevious({ isPlaying, volume });
   const buffer = useLoader(AudioLoader, soundFile);
+  const prevProps = usePrevious({ isPlaying, volume });
 
   useEffect(() => {
     sound.current.setBuffer(buffer);
@@ -50,7 +46,7 @@ const LoopingSound: React.FC<Props> = ({
     }
   }, [isPlaying, prevProps.isPlaying, sound, slug]);
 
-  return isLoading ? null : <positionalAudio ref={sound} args={[listener]} />;
+  return <positionalAudio ref={sound} args={[listener]} />;
 };
 
 interface Props {
