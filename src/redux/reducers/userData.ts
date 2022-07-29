@@ -11,10 +11,14 @@ const initialState = {
   savedScenarios: {},
 };
 
-export default createReducer(initialState, {
-  [saveScenario.type]: handleSaveScenario,
-});
+/* eslint-disable */
 
 function handleSaveScenario(state: UserDataState, action: PayloadAction<Scenario>) {
   state.savedScenarios[action.payload.slug] = action.payload;
 }
+
+/* eslint-enable */
+
+export default createReducer(initialState, {
+  [saveScenario.type]: handleSaveScenario,
+});

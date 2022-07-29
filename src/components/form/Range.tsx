@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { JsxElement } from 'typescript';
 
 interface RangeInputProps {
   name: string;
@@ -9,24 +8,37 @@ interface RangeInputProps {
   step?: number;
   onChange: (name: string, value: number) => void;
 }
-const RangeInput: React.FC<RangeInputProps> = ({
+function RangeInput({
   name,
   value = 0.5,
   min = 0,
   max = 1,
   step = 0.01,
   onChange,
-}) => {
-  const _handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+}: RangeInputProps) {
+  const handleChangeInternal = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     onChange(name, +e.target.value);
   };
 
   return (
     <span className="range-container">
-      <input type="range" min={min} max={max} step={step} value={value} onChange={_handleChange} />
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={handleChangeInternal}
+      />
     </span>
   );
+}
+
+RangeInput.defaultProps = {
+  min: 0,
+  max: 1,
+  step: 0.01,
 };
 
 export default RangeInput;

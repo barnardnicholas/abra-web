@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/types": "^7.18.9",
     "@react-three/fiber": "^8.0.27",
     "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/jest-dom": "^5.16.4",
@@ -25,7 +26,6 @@
     "redux-thunk": "^2.4.1",
     "sass": "^1.53.0",
     "three": "^0.142.0",
-    "typescript": "^4.7.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -53,6 +53,10 @@
     ]
   },
   "devDependencies": {
-    "@types/three": "^0.141.0"
+    "@types/three": "^0.141.0",
+    "eslint": "^8.20.0",
+    "eslint-config-airbnb-typescript-prettier": "^5.0.0",
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.4"
   }
 }

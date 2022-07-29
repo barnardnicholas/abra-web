@@ -1,1 +1,1 @@
-export * from './setScenario'
+export * from './setScenario';

@@ -5,7 +5,7 @@ interface GroundPlaneProps {
   visible?: boolean;
 }
 
-const GroundPlane: React.FC<GroundPlaneProps> = ({ visible = true }) => {
+function GroundPlane({ visible = true }: GroundPlaneProps) {
   const planeMaterial = new MeshPhongMaterial({ color: 'blue' });
 
   return (
@@ -20,6 +20,10 @@ const GroundPlane: React.FC<GroundPlaneProps> = ({ visible = true }) => {
       <planeGeometry attach="geometry" args={[15, 15]} />
     </mesh>
   );
+}
+
+GroundPlane.defaultProps = {
+  visible: true,
 };
 
 export default GroundPlane;

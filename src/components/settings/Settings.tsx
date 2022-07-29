@@ -1,6 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleDarkMode } from '../../redux/actions/darkMode';
 import { toggleDebug } from '../../redux/actions/debug';
 import { getDarkMode } from '../../redux/selectors/darkMode';
@@ -9,7 +8,7 @@ import { getShowSettings } from '../../redux/selectors/settings';
 import Divider from '../common/Divider';
 import ToggleSwitch from '../form/ToggleSwitch';
 
-const Settings = () => {
+function Settings() {
   const dispatch = useDispatch();
   const showSettings = useSelector(getShowSettings);
   const isDebug = useSelector(getDebug);
@@ -36,6 +35,6 @@ const Settings = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Settings;
