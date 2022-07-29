@@ -1,12 +1,12 @@
-import React from "react";
-import { MeshLambertMaterial, Euler } from "three";
+import React from 'react';
+import { MeshPhongMaterial, Euler } from 'three';
 
 interface GroundPlaneProps {
-  visible?: boolean
+  visible?: boolean;
 }
 
 const GroundPlane: React.FC<GroundPlaneProps> = ({ visible = true }) => {
-  const planeMaterial = new MeshLambertMaterial({ color: "blue" });
+  const planeMaterial = new MeshPhongMaterial({ color: 'blue' });
 
   return (
     <mesh

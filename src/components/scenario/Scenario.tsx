@@ -4,7 +4,7 @@ import { Canvas as ThreeCanvas, useFrame, useThree } from '@react-three/fiber';
 import LoopingSound from './LoopingSound';
 import SingleSound from './SingleSound';
 import SphereMesh from './SphereMesh';
-import { Vector3, AudioListener, Mesh, MeshLambertMaterial } from 'three';
+import { Vector3, AudioListener, Mesh, MeshPhongMaterial } from 'three';
 import GroundPlane from './GroundPlane';
 import { SoundChannel, soundTypes } from '../../types/Scenario';
 import Debug from '../debug/Debug';
@@ -62,7 +62,7 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug, isDarkBa
           ref={cameraTarget}
           position={new Vector3(0, 0.5, 0)}
           scale={sphereScale}
-          material={new MeshLambertMaterial({ color: 'purple' })}
+          material={new MeshPhongMaterial({ color: 'purple' })}
           castShadow
           visible={debug}
         >
