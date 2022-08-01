@@ -146,7 +146,9 @@ function Canvas({ scenario }: CanvasProps) {
     return () => {
       scenario.stopScenario();
     };
-  }, [scenario]);
+    /* eslint-disable */
+  }, []);
+  /* eslint-enable */
 
   useEffect(() => {
     if (isDarkMode !== prevIsDarkMode) {
