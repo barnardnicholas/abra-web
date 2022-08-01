@@ -23,4 +23,17 @@
     width: 75vw;
     left: calc(50% - 37.5vw);
   }
+
+  .debug-table {
+    width: 100%;
+    border: 1px solid var(--main-typography);
+
+    tr {
+      border-bottom: 1px solid var(--main-typography);
+
+      td {
+        border-right: 1px solid var(--main-typography);
+      }
+    }
+  }
 }
