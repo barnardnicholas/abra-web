@@ -1,7 +1,17 @@
 import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import { Vector3 } from 'three';
-import { Sound, SoundChannel, soundTypes, soundTypeValues } from '../../types/Scenario';
-import { isChannelPlaying, isEmpty, usePrevious } from '../../utils/utils';
+import { SoundChannel, soundTypes } from '../../types/Scenario';
+import {
+  buildSoundChannels,
+  buildSoundPool,
+  getNewTimerDelay,
+  getPosition,
+  getRandomPath,
+  getRandomSound,
+  isChannelPlaying,
+  isEmpty,
+  usePrevious,
+} from '../../utils/utils';
 import useSavedAndPresetScenarios from './useSavedAndPresetScenarios';
 
 /* eslint-disable */
@@ -19,65 +29,6 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
   /* eslint-enable */
 
   const prevProps = usePrevious({ scenarioName: scenarioSlug, soundChannels, isPlaying });
-
-  function buildSoundChannels(sounds: Record<string, Sound>): Record<string, SoundChannel> {
-    const channels: Record<string, SoundChannel> = {};
-    Object.values(sounds).forEach((sound: Sound) => {
-      console.log();
-      const isThisPlaying = sound.paths.reduce(
-        (acc: Record<string, boolean>, curr: string) => ({
-          ...acc,
-          [`/audio/${soundTypeValues[sound.type]}/${curr}`]: false,
-        }),
-        {},
-      );
-
-      channels[sound.slug] = {
-        id: sound.id,
-        name: sound.name,
-        slug: sound.slug,
-        position: new Vector3(0, 0, 0),
-        isPlaying: isThisPlaying,
-        durations: new Array(sound.paths.length).fill(0),
-        type: sound.type,
-        paths: sound.paths.map((path: string) => `/audio/${soundTypeValues[sound.type]}/${path}`),
-        currentPath: sound.paths[Math.floor(Math.random() * sound.paths.length)] || sound.paths[0],
-        frequency: sound.frequency,
-        area: sound.area,
-        volume: sound.volume,
-        mute: sound.mute,
-      };
-    });
-    return channels;
-  }
-
-  const buildSoundPool = useCallback(
-    (sounds: Record<string, SoundChannel>) => {
-      const filteredSounds = Object.keys(sounds).filter(slug => {
-        return (
-          !!currentScenario.sounds[slug] && currentScenario.sounds[slug].type === soundTypes.random
-        );
-      }); // Filter out background sounds
-      const soundFreqs = filteredSounds.reduce((acc: Record<string, number>, curr: string) => {
-        acc[curr] = Math.round(sounds[curr].frequency * 100);
-        return acc;
-      }, {}); // Get workable numbers from frequencies
-      const result = Object.keys(soundFreqs).reduce((acc: string[], curr: string) => {
-        const newItems = new Array(soundFreqs[curr]).fill(curr);
-        return acc.concat(newItems);
-      }, []); // Build array of proprtional amounts of each sound
-      return result;
-    },
-    [currentScenario.sounds],
-  ); // Build pool of sounds, weighted by frequency
-
-  const getRandomSound = useCallback(() => {
-    const aRandomSound: SoundChannel =
-      soundChannels[soundPool[Math.floor(Math.random() * soundPool.length)]];
-    // if (aRandomSound.slug === lastSound && Object.keys(soundChannels).length > 1)
-    //   return getRandomSound();
-    return aRandomSound.slug;
-  }, [soundChannels, soundPool]); // Pull random sound from pool - cannot be the same as lastSound
 
   function setPosition(slug: string, position: Vector3) {
     setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
@@ -190,25 +141,6 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
     });
   }
 
-  function getPosition(area: [number[], number[]]): Vector3 {
-    // area = [minX, minY, minZ], [maxX, maxY, maxZ]
-    const pos = [0, 0, 0].map((_, i: number) => {
-      return Math.random() * (area[1][i] - area[0][i]) + area[0][i];
-    });
-    return new Vector3(pos[0], pos[1], pos[2]);
-  }
-
-  const getRandomPath = useCallback((channel: SoundChannel, prevPath?: string): string => {
-    const newPath =
-      channel.paths[Math.floor(Math.random() * channel.paths.length)] || channel.paths[0];
-    if (prevPath && newPath === prevPath) return getRandomPath(channel, prevPath);
-    return newPath;
-  }, []);
-
-  function getNewTimerDelay() {
-    return Math.random() * 5000 + 1000;
-  }
-
   const startScenario = useCallback(() => {
     console.log('starting scenario');
 
@@ -224,7 +156,7 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
 
     function tick() {
       clearTimeout(masterTimer.current); // Clear out old timer
-      const slug: string = getRandomSound(); // Get new sound slug from pool
+      const slug: string = getRandomSound(soundChannels, soundPool); // Get new sound slug from pool
       const channelToPlay: SoundChannel = soundChannels[slug];
       console.log(`Playing ${slug}`); // Play
       if (!isChannelPlaying(channelToPlay))
@@ -233,7 +165,7 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
     }
 
     masterTimer.current = setTimeout(tick, getNewTimerDelay()); // Set first timer
-  }, [getRandomPath, getRandomSound, play, soundChannels]);
+  }, [play, soundChannels, soundPool]);
 
   /* eslint-disable */
   function stopScenario() {
@@ -270,7 +202,7 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
   useEffect(() => {
     stopScenario(); // Stop scenario on load (precaution)
     const channels: Record<string, SoundChannel> = buildSoundChannels(currentScenario.sounds);
-    setSoundPool(buildSoundPool(channels));
+    setSoundPool(buildSoundPool(channels, currentScenario));
     setSoundChannels(channels);
     /* eslint-disable */
   }, []);
@@ -281,7 +213,7 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
       stopScenario();
       console.log('Rebuilding...');
       const channels: Record<string, SoundChannel> = buildSoundChannels(currentScenario.sounds);
-      setSoundPool(buildSoundPool(channels));
+      setSoundPool(buildSoundPool(channels, currentScenario));
       setSoundChannels(channels);
     }
     /* eslint-disable */
@@ -301,7 +233,8 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
       )
         .map((c: SoundChannel) => c.frequency)
         .join('');
-      if (prevChannelFreqs !== channelFreqs) setSoundPool(buildSoundPool(soundChannels)); // Rebuild soundPool on freq changes
+      if (prevChannelFreqs !== channelFreqs)
+        setSoundPool(buildSoundPool(soundChannels, currentScenario)); // Rebuild soundPool on freq changes
     }
     /* eslint-disable */
   }, [soundChannels, prevProps, isPlaying]);
