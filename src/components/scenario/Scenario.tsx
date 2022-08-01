@@ -143,14 +143,6 @@ function Canvas({ scenario }: CanvasProps) {
   const [showBackgroundBlocker, setShowBackgroundBlocker] = useState<boolean>(false);
 
   useEffect(() => {
-    return () => {
-      scenario.stopScenario();
-    };
-    /* eslint-disable */
-  }, []);
-  /* eslint-enable */
-
-  useEffect(() => {
     if (isDarkMode !== prevIsDarkMode) {
       setShowBackgroundBlocker(true);
       setTimeout(() => setIsDarkBackground(isDarkMode), 510);

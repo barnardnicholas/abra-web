@@ -235,7 +235,8 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
     masterTimer.current = setTimeout(tick, getNewTimerDelay()); // Set first timer
   }, [getRandomPath, getRandomSound, play, soundChannels]);
 
-  const stopScenario = useCallback(() => {
+  /* eslint-disable */
+  const stopScenario = () => {
     console.log('stopping scenario');
     global.clearTimeout(masterTimer.current);
     timers.forEach(t => clearTimeout(t));
@@ -250,8 +251,7 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
     });
     setSoundChannels(newSoundChannels);
     setIsPlaying(false);
-    /* eslint-disable */
-  }, []);
+  };
   /* eslint-enable */
 
   useEffect(() => {
