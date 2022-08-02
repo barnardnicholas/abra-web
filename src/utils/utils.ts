@@ -39,8 +39,9 @@ export function areArraysEqual(arr1: any[], arr2: any[]): boolean {
   // Compare two non-nested arrays
   if (arr1.length !== arr2.length) return false;
   return arr1.reduce((acc: boolean, curr: any, i: number) => {
-    if (arr2[i] !== curr) acc = false;
-    return acc;
+    let localAcc = acc;
+    if (arr2[i] !== curr) localAcc = false;
+    return localAcc;
   }, true);
 }
 
@@ -143,4 +144,12 @@ export function getPlayPositionPercent(durationMs: number, lastPlayedMs: number 
   const dMs = now - lastPlayedMs;
   if (dMs > durationMs) return 100;
   return Math.floor(dMs / (durationMs / 100));
+}
+
+export function getMouseDistanceFromCenter(x: number, y: number): number {
+  let localX = x;
+  let localY = y;
+  if (localX < 0) localX *= -1;
+  if (localY < 0) localY *= -1;
+  return Math.sqrt(localX * localX + localY * localY);
 }
