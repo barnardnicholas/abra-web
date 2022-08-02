@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { LastPlayed, SoundsTally, SoundsTallyItem } from '../../types/Debug';
 import { SoundChannel, soundTypes } from '../../types/Scenario';
-import { LastPlayed, SoundsTally, SoundsTallyItem } from './Debug';
 import FileDebug from './FileDebug';
 
 interface ChannelProps {

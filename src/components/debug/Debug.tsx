@@ -2,18 +2,9 @@ import React from 'react';
 import { SoundChannel } from '../../types/Scenario';
 import { isEmpty } from '../../utils/utils';
 import { UseScenarioProps } from '../hooks/useScenario';
+/* eslint-disable */
 import ChannelDebug from './ChannelDebug';
-
-export interface SoundsTallyItem {
-  fullPath: string;
-  fileName: string;
-  isPlaying: boolean;
-  displayDuration: string;
-}
-
-export type SoundsTally = Record<string, SoundsTallyItem>;
-
-export type LastPlayed = Record<string, number | null>;
+/* eslint-enable */
 
 interface DebugProps {
   scenario: UseScenarioProps;

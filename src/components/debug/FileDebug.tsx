@@ -1,7 +1,7 @@
-import dayjs from 'dayjs';
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import dayjs from 'dayjs';
+import { LastPlayed, SoundsTallyItem } from '../../types/Debug';
 import { usePrevious } from '../../utils/utils';
-import { LastPlayed, SoundsTallyItem } from './Debug';
 
 interface FileProps {
   item: SoundsTallyItem;
