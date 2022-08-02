@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { useRef, useEffect } from 'react';
 import { Vector3 } from 'three';
 import { Scenario, Sound, SoundChannel, soundTypes, soundTypeValues } from '../types/Scenario';
@@ -32,6 +33,15 @@ export function isEmpty(item: any): boolean {
   if (typeof item === 'number') return false;
 
   return !item;
+}
+
+export function areArraysEqual(arr1: any[], arr2: any[]): boolean {
+  // Compare two non-nested arrays
+  if (arr1.length !== arr2.length) return false;
+  return arr1.reduce((acc: boolean, curr: any, i: number) => {
+    if (arr2[i] !== curr) acc = false;
+    return acc;
+  }, true);
 }
 
 export function getRandomBetween(min: number, max: number): number {
@@ -124,4 +134,13 @@ export function getRandomPath(channel: SoundChannel, prevPath?: string): string 
 
 export function getNewTimerDelay() {
   return Math.random() * 5000 + 1000;
+}
+
+export function getPlayPositionPercent(durationMs: number, lastPlayedMs: number | null): number {
+  if (!durationMs || !lastPlayedMs || Number.isNaN(lastPlayedMs) || Number.isNaN(durationMs))
+    return 0;
+  const now = dayjs().valueOf(); // MS now
+  const dMs = now - lastPlayedMs;
+  if (dMs > durationMs) return 100;
+  return Math.floor(dMs / (durationMs / 100));
 }
