@@ -1,8 +1,8 @@
 .debug {
   position: fixed;
   top: 4rem;
-  left: calc(50% - 12.5vw);
-  width: 25vw;
+  left: 1rem;
+  width: calc(100vw - 2rem);
   height: calc(100% - (4rem * 2));
   text-shadow: var(--main-background) 0 0 8px;
   text-align: left;
@@ -19,9 +19,25 @@
     display: none;
   }
 
+  .item-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
   @include screenSize(mdMobile) {
     width: 75vw;
     left: calc(50% - 37.5vw);
+  }
+
+  .debug-item {
+    width: 25vw;
+    padding: 0.5rem;
+
+    @include screenSize(mdMobile) {
+      width: calc(100vw - 2rem);
+    }
   }
 
   .debug-table {
@@ -33,6 +49,22 @@
 
       td {
         border-right: 1px solid var(--main-typography);
+        position: relative;
+
+        .play-indicator {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          max-width: 0;
+          background-color: transparent;
+
+          &.active {
+            max-width: 100%;
+            background-color: #88888844;
+          }
+        }
       }
     }
   }
