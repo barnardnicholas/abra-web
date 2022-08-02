@@ -44,6 +44,7 @@ function ChannelDebug({ channel }: ChannelProps) {
             {Object.values(soundsTally).map((item: SoundsTallyItem, i: number) => {
               return (
                 <FileDebug
+                  key={item.fileName}
                   item={item}
                   lastPlayed={lastPlayed[item.fullPath]}
                   duration={durations[i]}
