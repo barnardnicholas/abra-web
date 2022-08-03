@@ -121,7 +121,7 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
         !mute
       ) {
         const isThisPlaying = prevSoundChannels[slug].paths.reduce(
-          (acc: Record<string, boolean>, curr: string) => ({ ...acc, [curr]: false }),
+          (acc: Record<string, boolean>, curr: string) => ({ ...acc, [curr]: true }),
           {},
         );
         newChannel.isPlaying = isThisPlaying;
