@@ -20,7 +20,6 @@ function FileDebug({ item, lastPlayed, duration, setLastPlayed }: FileProps) {
 
   useEffect(() => {
     if (!prevProps.isPlaying && isPlaying) {
-      console.log('updating last played');
       setLastPlayed((prevLastPlayed: LastPlayed) => ({
         ...prevLastPlayed,
         [fullPath]: dayjs().valueOf(),
