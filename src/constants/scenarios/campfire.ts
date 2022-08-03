@@ -40,7 +40,7 @@ const campfire: Scenario = {
       name: 'Crickets',
       type: soundTypes.background,
       paths: ['crickets.mp3'],
-      volume: 0.1,
+      volume: 0.05,
       frequency: 0,
       area: [
         [0.5, 0, 0],
