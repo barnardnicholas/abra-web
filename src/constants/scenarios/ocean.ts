@@ -11,7 +11,7 @@ const ocean: Scenario = {
       slug: 'waves1',
       name: 'Waves 1',
       type: soundTypes.background,
-      paths: ['ocean-waves-1.ogg'],
+      paths: ['ocean-waves-1.mp3'],
       volume: 0.75,
       frequency: 0,
       area: [
@@ -25,7 +25,7 @@ const ocean: Scenario = {
       slug: 'waves2',
       name: 'Waves 2',
       type: soundTypes.background,
-      paths: ['ocean-waves-2.ogg'],
+      paths: ['ocean-waves-2.mp3'],
       volume: 0.75,
       frequency: 0,
       area: [
@@ -68,8 +68,8 @@ const ocean: Scenario = {
         'water-drops/water-drops-5.mp3',
         'water-drops/water-drops-6.mp3',
       ],
-      volume: 0.5,
-      frequency: 0.25,
+      volume: 0.7,
+      frequency: 0.5,
       area: [
         [-2, -2, -2],
         [2, 0, 2],
@@ -102,8 +102,8 @@ const ocean: Scenario = {
         'sail-flapping/sail-flapping-4.mp3',
         'sail-flapping/sail-flapping-5.mp3',
       ],
-      volume: 0.3,
-      frequency: 0.25,
+      volume: 0.2,
+      frequency: 0.1,
       area: [
         [-1, 1, -1],
         [2, 2, 2],

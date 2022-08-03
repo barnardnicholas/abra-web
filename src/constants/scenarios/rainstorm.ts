@@ -11,7 +11,7 @@ const rainstorm: Scenario = {
       slug: 'rain1',
       name: 'Rain 1',
       type: soundTypes.background,
-      paths: ['rain-1.ogg'],
+      paths: ['rain-1.mp3'],
       volume: 0.75,
       frequency: 0,
       area: [
@@ -25,7 +25,7 @@ const rainstorm: Scenario = {
       slug: 'rain2',
       name: 'Rain 2',
       type: soundTypes.background,
-      paths: ['rain-2.ogg'],
+      paths: ['rain-2.mp3'],
       volume: 0.5,
       frequency: 0,
       area: [
@@ -45,6 +45,27 @@ const rainstorm: Scenario = {
       area: [
         [-2, 1, -2],
         [2, 2, 2],
+      ],
+      mute: false,
+    },
+    waterDrops: {
+      id: 3,
+      slug: 'waterDrops',
+      name: 'Water Drops',
+      type: soundTypes.random,
+      paths: [
+        'water-drops/water-drops-1.mp3',
+        'water-drops/water-drops-2.mp3',
+        'water-drops/water-drops-3.mp3',
+        'water-drops/water-drops-4.mp3',
+        'water-drops/water-drops-5.mp3',
+        'water-drops/water-drops-6.mp3',
+      ],
+      volume: 0.5,
+      frequency: 0.25,
+      area: [
+        [-2, -2, -2],
+        [2, 0, 2],
       ],
       mute: false,
     },

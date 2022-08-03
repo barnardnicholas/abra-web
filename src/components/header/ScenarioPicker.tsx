@@ -10,6 +10,8 @@ const scenarioOptions: DropdownOption<string>[] = [
   { label: 'Rainstorm', value: 'rainstorm' },
   { label: 'Forest', value: 'forest' },
   { label: 'City', value: 'city' },
+  { label: 'Campfire', value: 'campfire' },
+  { label: 'Jungle', value: 'jungle' },
 ];
 
 interface ScenarioPickerProps {
