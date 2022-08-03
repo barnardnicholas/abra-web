@@ -49,7 +49,7 @@ const city: Scenario = {
       mute: false,
     },
     cyclist: {
-      id: 2,
+      id: 3,
       slug: 'cyclist',
       name: 'Cyclist',
       type: soundTypes.random,
@@ -63,7 +63,7 @@ const city: Scenario = {
       mute: false,
     },
     sirens: {
-      id: 2,
+      id: 4,
       slug: 'sirens',
       name: 'Sirens',
       type: soundTypes.random,
@@ -83,7 +83,7 @@ const city: Scenario = {
       mute: false,
     },
     cars: {
-      id: 2,
+      id: 5,
       slug: 'cars',
       name: 'Cars',
       type: soundTypes.random,
@@ -105,7 +105,7 @@ const city: Scenario = {
       mute: false,
     },
     heavyVehicles: {
-      id: 2,
+      id: 6,
       slug: 'heavyVehicles',
       name: 'Heavy Vehicles',
       type: soundTypes.random,
@@ -119,7 +119,7 @@ const city: Scenario = {
       mute: false,
     },
     motorcycles: {
-      id: 2,
+      id: 7,
       slug: 'motorcycles',
       name: 'Motorcycles',
       type: soundTypes.random,
@@ -140,7 +140,7 @@ const city: Scenario = {
       mute: false,
     },
     policeRadio: {
-      id: 2,
+      id: 8,
       slug: 'policeRadio',
       name: 'Police Radio',
       type: soundTypes.random,

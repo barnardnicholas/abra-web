@@ -10,10 +10,14 @@ interface DarkModeState {
   darkMode: boolean;
 }
 
-export default createReducer(initialState, {
-  [toggleDarkMode.type]: handleToggleDarkMode,
-});
+/* eslint-disable */
 
 function handleToggleDarkMode(state: DarkModeState, action: PayloadAction<boolean>) {
   state.darkMode = action.payload;
 }
+
+/* eslint-enable */
+
+export default createReducer(initialState, {
+  [toggleDarkMode.type]: handleToggleDarkMode,
+});

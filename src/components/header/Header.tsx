@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleMixer } from '../../redux/actions/mixer';
 import { toggleSettings } from '../../redux/actions/settings';
 import { getDebug } from '../../redux/selectors/debug';
@@ -18,7 +17,7 @@ interface HeaderProps {
   isPlaying: boolean;
   isLoading?: boolean;
 }
-const Header: React.FC<HeaderProps> = ({ stopScenario, isPlaying, isLoading }) => {
+function Header({ stopScenario, isPlaying, isLoading }: HeaderProps) {
   const dispatch = useDispatch();
 
   const isScreenNarrow = window.innerWidth < 1000;
@@ -45,6 +44,7 @@ const Header: React.FC<HeaderProps> = ({ stopScenario, isPlaying, isLoading }) =
       dispatch(toggleMixer(false));
     }
   }, [
+    dispatch,
     selectedScenario,
     showMixer,
     showSettings,
@@ -82,6 +82,10 @@ const Header: React.FC<HeaderProps> = ({ stopScenario, isPlaying, isLoading }) =
       </div>
     </header>
   );
+}
+
+Header.defaultProps = {
+  isLoading: false,
 };
 
 export default Header;

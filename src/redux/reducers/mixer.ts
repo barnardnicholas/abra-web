@@ -10,10 +10,14 @@ interface MixerState {
   showMixer: boolean;
 }
 
-export default createReducer(initialState, {
-  [toggleMixer.type]: handleToggleShowMixer,
-});
+/* eslint-disable */
 
 function handleToggleShowMixer(state: MixerState, action: PayloadAction<boolean>) {
   state.showMixer = action.payload;
 }
+
+/* eslint-enable */
+
+export default createReducer(initialState, {
+  [toggleMixer.type]: handleToggleShowMixer,
+});

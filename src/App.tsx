@@ -1,9 +1,9 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import './_styles/App.scss';
 import Scenario from './components/scenario/Scenario';
 import Header from './components/header/Header';
-import StyleGuide from './components/StyleGuide';
-import { useSelector } from 'react-redux';
+// import StyleGuide from './components/StyleGuide';
 import { getSelectedScenario } from './redux/selectors/scenarios';
 import useScenario from './components/hooks/useScenario';
 import Settings from './components/settings/Settings';
@@ -21,7 +21,7 @@ function App() {
   const scenario = useScenario(selectedScenario as string);
   return (
     <div className={`App ${isDarkMode ? '' : 'theme-light'}`}>
-      <Scenario scenario={scenario} selectedScenario={selectedScenario} />
+      <Scenario scenario={scenario} />
       {/* <StyleGuide /> */}
       <Header stopScenario={scenario.stopScenario} isPlaying={scenario.isPlaying} />
       <div

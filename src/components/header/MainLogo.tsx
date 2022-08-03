@@ -8,7 +8,7 @@ interface MainLogoProps {
   forceDarkTheme?: boolean;
 }
 
-const MainLogo: React.FC<MainLogoProps> = ({ forceDarkTheme = false }) => {
+function MainLogo({ forceDarkTheme = false }: MainLogoProps) {
   const isDarkMode = useSelector(getDarkMode);
   return (
     <>
@@ -17,15 +17,21 @@ const MainLogo: React.FC<MainLogoProps> = ({ forceDarkTheme = false }) => {
         className={`main-logo ${isDarkMode || forceDarkTheme ? '' : 'hidden'}`}
         width={300}
         height="auto"
+        alt="Abra Logo"
       />
       <img
         src={LogoLight}
         className={`main-logo ${isDarkMode || forceDarkTheme ? 'hidden' : ''}`}
         width={300}
         height="auto"
+        alt="Abra Logo"
       />
     </>
   );
+}
+
+MainLogo.defaultProps = {
+  forceDarkTheme: false,
 };
 
 export default MainLogo;

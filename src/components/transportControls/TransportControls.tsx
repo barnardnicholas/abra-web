@@ -6,7 +6,7 @@ import { UseScenarioProps } from '../hooks/useScenario';
 interface TransportControlsProps {
   scenario: UseScenarioProps;
 }
-const TransportControls: React.FC<TransportControlsProps> = ({ scenario }) => {
+function TransportControls({ scenario }: TransportControlsProps) {
   const selectedScenario = useSelector(getSelectedScenario);
 
   return (
@@ -15,11 +15,15 @@ const TransportControls: React.FC<TransportControlsProps> = ({ scenario }) => {
         !selectedScenario || selectedScenario === 'none' ? 'hidden' : ''
       }`}
     >
-      <button className="button" onClick={() => scenario.setIsPlaying(!scenario.isPlaying)}>
+      <button
+        className="button"
+        onClick={() => scenario.setIsPlaying(!scenario.isPlaying)}
+        type="button"
+      >
         {scenario.isPlaying ? 'Stop' : 'Play'}
       </button>
     </div>
   );
-};
+}
 
 export default TransportControls;

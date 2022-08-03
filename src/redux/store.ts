@@ -1,14 +1,13 @@
+import { Dispatch } from 'react';
 import { Action } from 'redux';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 // import { createStore, applyMiddleware } from 'redux';
 // import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
-
 import rootReducer from './reducers';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { Dispatch } from 'react';
 
 const middleware = [thunk];
 
@@ -32,7 +31,7 @@ export const useAppDispatch = (): Dispatch<Action<any>> => useDispatch<AppDispat
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export default () => {
-  let persistor = persistStore(store);
+  const persistor = persistStore(store);
   return { store, persistor };
 };
 // export default store;

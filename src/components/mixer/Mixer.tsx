@@ -9,7 +9,7 @@ import MixerChannel from './MixerChannel';
 interface MixerProps {
   scenario: UseScenarioProps;
 }
-const Mixer: React.FC<MixerProps> = ({ scenario }) => {
+function Mixer({ scenario }: MixerProps) {
   const showMixer = useSelector(getShowMixer);
 
   return (
@@ -17,9 +17,9 @@ const Mixer: React.FC<MixerProps> = ({ scenario }) => {
       <div className="mixer">
         <h3>Mixer</h3>
         <Divider />
-        {Object.values(scenario.soundChannels).map((channel: SoundChannel, i: number) => (
+        {Object.values(scenario.soundChannels).map((channel: SoundChannel) => (
           <MixerChannel
-            key={i}
+            key={channel.id}
             channel={channel}
             setVolume={scenario.setVolume}
             setFrequency={scenario.setFrequency}
@@ -29,6 +29,6 @@ const Mixer: React.FC<MixerProps> = ({ scenario }) => {
       </div>
     </div>
   );
-};
+}
 
 export default Mixer;
