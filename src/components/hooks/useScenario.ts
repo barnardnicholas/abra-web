@@ -19,13 +19,13 @@ import {
 let playTimers: ReturnType<typeof setTimeout>[] = []; // Keep refs to timeouts here - gets cleared on stop
 /* eslint-enable */
 
-const channelClocks: Record<string, ReturnType<typeof setTimeout>> = {}; // channel clocks for concurrent mode
+const channelClocks: Record<string, ReturnType<typeof setTimeout>> = {}; // channel clocks for concurrent timing
 
 interface ChannelRef {
   frequency: number;
   isPlaying: boolean;
 }
-let channelRefs: Record<string, ChannelRef> = {};
+let channelRefs: Record<string, ChannelRef> = {}; // hoisted ref for frequency/isPlaying - tick doesn't read updated state
 
 export interface UseScenarioProps {
   soundChannels: Record<string, SoundChannel>;
@@ -195,7 +195,12 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
         const channelToPlay: SoundChannel = soundChannels[slug];
         const newDelay = getNewChannelDelay(channelToPlay.frequency);
         console.log(`${slug} - ${channelToPlay.frequency} - ${newDelay}`);
-        channelClocks[slug] = setTimeout(tick, getNewChannelDelay(channelToPlay.frequency)); // Set first timer
+        channelClocks[slug] = setTimeout(
+          tick,
+          getNewChannelDelay(
+            channelToPlay.frequency + Math.random() * (1 - channelToPlay.frequency),
+          ),
+        ); // Set first timer - delays will be shorter for first time around
       }
     }); // Play all background sounds, start clocks for random sounds
     /* eslint-disable */
