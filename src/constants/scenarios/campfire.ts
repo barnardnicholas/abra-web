@@ -59,7 +59,7 @@ const campfire: Scenario = {
         'fire-burst/fire-burst-3.mp3',
       ],
       volume: 0.75,
-      frequency: 0.1,
+      frequency: 0.5,
       area: [
         [-2, 1, -2],
         [2, 2, 2],

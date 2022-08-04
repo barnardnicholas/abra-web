@@ -41,7 +41,7 @@ const rainstorm: Scenario = {
       type: soundTypes.random,
       paths: ['thunder/thunder-1.mp3', 'thunder/thunder-2.mp3', 'thunder/thunder-3.mp3'],
       volume: 0.75,
-      frequency: 0.1,
+      frequency: 0.66,
       area: [
         [-2, 1, -2],
         [2, 2, 2],
@@ -62,7 +62,7 @@ const rainstorm: Scenario = {
         'water-drops/water-drops-6.mp3',
       ],
       volume: 0.5,
-      frequency: 0.25,
+      frequency: 0.66,
       area: [
         [-2, -2, -2],
         [2, 0, 2],
