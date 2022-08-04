@@ -47,8 +47,8 @@ const ocean: Scenario = {
         'seagull/seagull-5.mp3',
         'seagull/seagull-6.mp3',
       ],
-      volume: 0.5,
-      frequency: 0.25,
+      volume: 0.66,
+      frequency: 0.5,
       area: [
         [-2, 2, -2],
         [2, 2, 2],
@@ -68,8 +68,8 @@ const ocean: Scenario = {
         'water-drops/water-drops-5.mp3',
         'water-drops/water-drops-6.mp3',
       ],
-      volume: 0.7,
-      frequency: 0.5,
+      volume: 0.1,
+      frequency: 1,
       area: [
         [-2, -2, -2],
         [2, 0, 2],
@@ -82,8 +82,8 @@ const ocean: Scenario = {
       name: 'Water Splash',
       type: soundTypes.random,
       paths: ['water-splash/water-splash.mp3'],
-      volume: 0.3,
-      frequency: 0.01,
+      volume: 0.2,
+      frequency: 0.25,
       area: [
         [-2, -2, -2],
         [2, 0, 2],
@@ -103,7 +103,7 @@ const ocean: Scenario = {
         'sail-flapping/sail-flapping-5.mp3',
       ],
       volume: 0.2,
-      frequency: 0.1,
+      frequency: 0.5,
       area: [
         [-1, 1, -1],
         [2, 2, 2],
