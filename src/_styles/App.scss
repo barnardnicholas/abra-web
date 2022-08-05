@@ -109,6 +109,7 @@ em,
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--main-typography) transparent;
+  overscroll-behavior: none;
 }
 
 /* Chrome, Edge, and Safari */
