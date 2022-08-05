@@ -14,6 +14,8 @@ import CameraRig from './CameraRig';
 import { getDebug } from '../../redux/selectors/debug';
 import { UseScenarioProps } from '../hooks/useScenario';
 import { getDarkMode } from '../../redux/selectors/darkMode';
+import PlaceholderSprite from './PlaceholderSprite';
+import { getSelectedScenario } from '../../redux/selectors/scenarios';
 
 const sphereScale = new Vector3(0.25, 0.25, 0.25);
 
@@ -23,9 +25,15 @@ interface CanvasContentProps {
   scenario: UseScenarioProps;
   debug: boolean;
   isDarkBackground: boolean;
+  selectedScenario: string | null;
 }
 
-function CanvasContent({ scenario, debug, isDarkBackground }: CanvasContentProps) {
+function CanvasContent({
+  scenario,
+  debug,
+  isDarkBackground,
+  selectedScenario,
+}: CanvasContentProps) {
   const { soundChannels, reportDuration } = scenario;
   const [listener] = useState(() => new AudioListener());
   const bgColor = new THREE.Color(isDarkBackground ? '#272730' : '#f7f7f7');
@@ -68,6 +76,7 @@ function CanvasContent({ scenario, debug, isDarkBackground }: CanvasContentProps
         >
           <sphereBufferGeometry attach="geometry" />
         </mesh>
+        <PlaceholderSprite visible={!debug && !!selectedScenario} />
         {/* Sounds */}
         {Object.values(soundChannels).map((channel: SoundChannel, i: number) => {
           if (channel.type === soundTypes.background)
@@ -141,6 +150,7 @@ function Canvas({ scenario }: CanvasProps) {
   const prevIsDarkMode = usePrevious(isDarkMode);
   const [isDarkBackground, setIsDarkBackground] = useState<boolean>(isDarkMode);
   const [showBackgroundBlocker, setShowBackgroundBlocker] = useState<boolean>(false);
+  const selectedScenario = useSelector(getSelectedScenario);
 
   useEffect(() => {
     if (isDarkMode !== prevIsDarkMode) {
@@ -161,7 +171,12 @@ function Canvas({ scenario }: CanvasProps) {
         dpr={[1, 2]}
         style={{ background: isDarkBackground ? '#272730' : '#f7f7f7' }}
       >
-        <CanvasContent scenario={scenario} debug={debug} isDarkBackground={isDarkBackground} />
+        <CanvasContent
+          scenario={scenario}
+          debug={debug}
+          isDarkBackground={isDarkBackground}
+          selectedScenario={selectedScenario}
+        />
       </ThreeCanvas>
       <div className={`background-blocker ${showBackgroundBlocker ? '' : 'hidden'}`} />
       {debug && <Debug scenario={scenario} />}
