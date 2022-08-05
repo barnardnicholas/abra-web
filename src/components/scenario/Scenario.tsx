@@ -147,18 +147,21 @@ interface CanvasProps {
 function Canvas({ scenario }: CanvasProps) {
   const debug = useSelector(getDebug);
   const isDarkMode = useSelector(getDarkMode);
-  const prevIsDarkMode = usePrevious(isDarkMode);
+  const selectedScenario = useSelector(getSelectedScenario);
+  const prevProps = usePrevious({ isDarkMode, selectedScenario });
   const [isDarkBackground, setIsDarkBackground] = useState<boolean>(isDarkMode);
   const [showBackgroundBlocker, setShowBackgroundBlocker] = useState<boolean>(false);
-  const selectedScenario = useSelector(getSelectedScenario);
 
   useEffect(() => {
-    if (isDarkMode !== prevIsDarkMode) {
+    if (isDarkMode !== prevProps.isDarkMode) {
       setShowBackgroundBlocker(true);
       setTimeout(() => setIsDarkBackground(isDarkMode), 510);
       setTimeout(() => setShowBackgroundBlocker(false), 520);
     }
-  }, [isDarkMode, prevIsDarkMode]);
+    if (selectedScenario && !prevProps.selectedScenario) {
+      setTimeout(() => setShowBackgroundBlocker(false), 520);
+    }
+  }, [isDarkMode, selectedScenario, prevProps.isDarkMode, prevProps.selectedScenario]);
 
   const cameraProps = { fov: 75, position: new Vector3(0, 0, 4) };
 

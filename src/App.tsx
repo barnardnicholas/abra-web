@@ -12,16 +12,23 @@ import Mixer from './components/mixer/Mixer';
 import { getShowSettings } from './redux/selectors/settings';
 import { getShowMixer } from './redux/selectors/mixer';
 import TransportControls from './components/transportControls/TransportControls';
+import { getDebug } from './redux/selectors/debug';
 
 function App() {
   const selectedScenario = useSelector(getSelectedScenario) || 'none';
   const isDarkMode = useSelector(getDarkMode);
+  const debug = useSelector(getDebug);
   const isShowingSettings = useSelector(getShowSettings);
   const isShowingMixer = useSelector(getShowMixer);
   const scenario = useScenario(selectedScenario as string);
   return (
     <div className={`App ${isDarkMode ? '' : 'theme-light'}`}>
       <Scenario scenario={scenario} />
+      <div
+        className={`graphics-blocker ${
+          !!selectedScenario && selectedScenario !== 'none' && !debug ? 'hidden' : ''
+        }`}
+      />
       {/* <StyleGuide /> */}
       <Header stopScenario={scenario.stopScenario} isPlaying={scenario.isPlaying} />
       <div
