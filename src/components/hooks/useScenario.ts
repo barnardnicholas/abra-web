@@ -51,12 +51,23 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
 
   const prevProps = usePrevious({ scenarioName: scenarioSlug, soundChannels, isPlaying });
 
+  /**
+   * Set the position of a sound in scenario state
+   * @param {string} slug - ID slug of channel
+   * @param {Vector3} position - new position of channel
+   * @return {void} Nothing
+   */
   function setPosition(slug: string, position: Vector3) {
     setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
       return { ...prevSoundChannels, [slug]: { ...prevSoundChannels[slug], position } };
     });
   }
 
+  /**
+   * Stop a sound channel
+   * @param {string} slug - ID slug of channel
+   * @return {void} Nothing
+   */
   const stop = useCallback(
     (slug: string) => {
       if (!isEmpty(soundChannels)) {
@@ -74,6 +85,13 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
     [soundChannels],
   );
 
+  /**
+   * Play a sound channel
+   * @param {string} slug - ID slug of channel
+   * @param {Vector3} [position] - Optional position to set
+   * @param {string} [path] - Optional audio path
+   * @return {void} Nothing
+   */
   const play = useCallback(
     (slug: string, position?: Vector3, path?: string) => {
       if (soundChannels[slug].mute) return;
@@ -108,6 +126,12 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
     [soundChannels, stop],
   );
 
+  /**
+   * Update the volume of a channel
+   * @param {string} slug - ID slug of channel
+   * @param {float} volume - New volume
+   * @return {void} Nothing
+   */
   function setVolume(slug: string, volume: number) {
     setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
       return {
@@ -117,6 +141,12 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
     });
   }
 
+  /**
+   * Update the frequency of a channel
+   * @param {string} slug - ID slug of channel
+   * @param {float} frequency - New frequency
+   * @return {void} Nothing
+   */
   function setFrequency(slug: string, frequency: number) {
     setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
       return {
@@ -126,6 +156,12 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
     });
   }
 
+  /**
+   * Update the mute state of a channel
+   * @param {string} slug - ID slug of channel
+   * @param {boolean} mute - New mute state
+   * @return {void} Nothing
+   */
   function setMute(slug: string, mute: boolean) {
     setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
       const newChannel = { ...prevSoundChannels[slug], mute };
@@ -154,6 +190,13 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
     });
   }
 
+  /**
+   * When sounds have loaded, this callback reports the durations of the audio files
+   * @param {string} slug - ID slug of channel
+   * @param {number} duration - duration in MS
+   * @param {number} index - index of the sound file
+   * @return {void} Nothing
+   */
   function reportDuration(slug: string, duration: number, index = 0) {
     setSoundChannels((prevSoundChannels: Record<string, SoundChannel>) => {
       const { durations } = prevSoundChannels[slug];
@@ -162,6 +205,10 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
     });
   }
 
+  /**
+   * Start the scenario playing
+   * @return {void} Nothing
+   */
   const startScenario = useCallback(() => {
     Object.keys(soundChannels).forEach((slug: string) => {
       const { type } = soundChannels[slug];
@@ -202,8 +249,11 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
   }, [play, soundChannels]);
   /* eslint-enable */
 
+  /**
+   * Stop the scenario
+   * @return {void} Nothing
+   */
   /* eslint-disable */
-
   function stopScenario() {
     Object.values(channelClocks).forEach(value => clearTimeout(value)); // Clear out channel clocks
 
