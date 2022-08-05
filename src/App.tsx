@@ -26,7 +26,7 @@ function App() {
       <Scenario scenario={scenario} />
       <div
         className={`graphics-blocker ${
-          !!selectedScenario && selectedScenario !== 'none' && !debug ? 'hidden' : ''
+          !!selectedScenario && selectedScenario !== 'none' && debug ? 'hidden' : ''
         }`}
       />
       {/* <StyleGuide /> */}
