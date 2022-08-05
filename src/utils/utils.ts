@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { useRef, useEffect } from 'react';
 import { Vector3 } from 'three';
 import { Scenario, Sound, SoundChannel, soundTypes, soundTypeValues } from '../types/Scenario';
+import { minLowFreq, maxLowFreq, minHighFreq, maxHighFreq } from '../constants/timers';
 
 /* eslint-disable */
 export function usePrevious(value: any) {
@@ -133,8 +134,23 @@ export function getRandomPath(channel: SoundChannel, prevPath?: string): string 
   return newPath;
 }
 
-export function getNewTimerDelay() {
-  return Math.random() * 5000 + 1000;
+function buildWeightedTimerArray(minMs: number, maxMs: number): number[] {
+  // create an array containing 100 possible times at equal increments
+  // make more low values than high ones according to a curve
+  const length = 100;
+  return new Array(length).fill(minMs).reduce((acc: number[], curr: number, index: number) => {
+    const multiplier = Math.ceil((Math.sqrt(length - index) * (length + index) * 1.5) / 100); // how many elements to add?
+    const thisValue = curr + (index / length) * (maxMs - minMs);
+    return acc.concat(new Array(multiplier).fill(thisValue));
+  }, []);
+}
+
+export function getNewChannelDelay(frequency: number) {
+  const invFreq = 1 - frequency; // Invert freq for use in maths
+  const minTime = minHighFreq + (minLowFreq - minHighFreq) * invFreq;
+  const maxTime = maxHighFreq + (maxLowFreq - maxHighFreq) * invFreq;
+  const timeArr = buildWeightedTimerArray(minTime, maxTime);
+  return timeArr[Math.floor(Math.random() * timeArr.length)];
 }
 
 export function getPlayPositionPercent(durationMs: number, lastPlayedMs: number | null): number {

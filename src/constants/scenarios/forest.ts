@@ -57,7 +57,7 @@ const forest: Scenario = {
         'blackbird/blackbird-15.mp3',
       ],
       volume: 0.5,
-      frequency: 0.25,
+      frequency: 0.3,
       area: [
         [-2, 1, -2],
         [2, 2, 2],
@@ -78,7 +78,7 @@ const forest: Scenario = {
         'chaffinch/chaffinch-6.mp3',
       ],
       volume: 0.5,
-      frequency: 0.25,
+      frequency: 0.3,
       area: [
         [-2, 1, -2],
         [2, 2, 2],

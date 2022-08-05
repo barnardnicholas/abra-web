@@ -41,7 +41,7 @@ const jungle: Scenario = {
       type: soundTypes.random,
       paths: ['parrot/parrot-1.mp3', 'parrot/parrot-2.mp3', 'parrot/parrot-3.mp3'],
       volume: 0.75,
-      frequency: 0.2,
+      frequency: 0.4,
       area: [
         [-2, 1, -2],
         [2, 2, 2],
@@ -55,7 +55,7 @@ const jungle: Scenario = {
       type: soundTypes.random,
       paths: ['bee/bee-1.mp3', 'bee/bee-2.mp3', 'bee/bee-3.mp3', 'bee/bee-4.mp3', 'bee/bee-5.mp3'],
       volume: 0.2,
-      frequency: 0.1,
+      frequency: 0.2,
       area: [
         [-2, 1, -2],
         [2, 2, 2],
@@ -98,7 +98,7 @@ const jungle: Scenario = {
         'song-thrush/thrush-2.mp3',
       ],
       volume: 0.5,
-      frequency: 0.25,
+      frequency: 0.3,
       area: [
         [-2, 1, -2],
         [2, 2, 2],

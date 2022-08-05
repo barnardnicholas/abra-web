@@ -75,7 +75,7 @@ const city: Scenario = {
         'traffic/siren.mp3',
       ],
       volume: 0.75,
-      frequency: 0.1,
+      frequency: 0.5,
       area: [
         [-2, 1, -2],
         [2, 2, 2],
@@ -97,7 +97,7 @@ const city: Scenario = {
         'traffic/passing-car-3.mp3',
       ],
       volume: 0.75,
-      frequency: 0.35,
+      frequency: 0.5,
       area: [
         [-2, 1, -2],
         [2, 2, 2],
@@ -111,7 +111,7 @@ const city: Scenario = {
       type: soundTypes.random,
       paths: ['traffic/backing-up.mp3', 'traffic/bus-pass.mp3', 'traffic/garbage-truck.mp3'],
       volume: 0.75,
-      frequency: 0.25,
+      frequency: 0.5,
       area: [
         [-2, 1, -2],
         [2, 2, 2],
@@ -132,7 +132,7 @@ const city: Scenario = {
         'traffic/passing-motorbike-3.mp3',
       ],
       volume: 0.75,
-      frequency: 0.25,
+      frequency: 0.5,
       area: [
         [-2, 1, -2],
         [2, 2, 2],
@@ -150,7 +150,7 @@ const city: Scenario = {
         'traffic/police-radio-3.mp3',
       ],
       volume: 0.75,
-      frequency: 0.1,
+      frequency: 0.2,
       area: [
         [-2, 1, -2],
         [2, 2, 2],
