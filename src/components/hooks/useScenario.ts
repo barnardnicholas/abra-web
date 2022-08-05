@@ -5,11 +5,9 @@ import { SoundChannel, soundTypes } from '../../types/Scenario';
 import useSavedAndPresetScenarios from './useSavedAndPresetScenarios';
 import {
   buildSoundChannels,
-  // buildSoundPool,
   getNewChannelDelay,
   getPosition,
   getRandomPath,
-  // getRandomSound,
   isChannelPlaying,
   isEmpty,
   usePrevious,
@@ -169,8 +167,6 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
       const { type } = soundChannels[slug];
 
       if (type === soundTypes.background) {
-        // console.log(`Playing ${slug}`);
-
         if (!isChannelPlaying(soundChannels[slug])) play(slug);
       } else {
         /* eslint-disable */
@@ -179,7 +175,6 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
 
         const tick = () => {
           clearTimeout(channelClocks[slug]); // Clear out old timer
-          // console.log(`Playing ${slug}`); // Play
           if (!isChannelPlaying(soundChannels[slug]))
             play(
               slug,
@@ -260,7 +255,6 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
   useEffect(() => {
     stopScenario(); // Stop scenario on load (precaution)
     const channels: Record<string, SoundChannel> = buildSoundChannels(currentScenario.sounds);
-    // setSoundPool(buildSoundPool(channels, currentScenario));
     setSoundChannels(channels);
     /* eslint-disable */
   }, []);
@@ -269,9 +263,7 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
   useEffect(() => {
     if (scenarioSlug !== prevProps.scenarioName) {
       stopScenario();
-      console.log('Rebuilding...');
       const channels: Record<string, SoundChannel> = buildSoundChannels(currentScenario.sounds);
-      // setSoundPool(buildSoundPool(channels, currentScenario));
       setSoundChannels(channels);
     }
     /* eslint-disable */

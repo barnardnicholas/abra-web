@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { useRef, useEffect } from 'react';
 import { Vector3 } from 'three';
-import { Scenario, Sound, SoundChannel, soundTypes, soundTypeValues } from '../types/Scenario';
+import { Sound, SoundChannel, soundTypeValues } from '../types/Scenario';
 import { minLowFreq, maxLowFreq, minHighFreq, maxHighFreq } from '../constants/timers';
 
 /* eslint-disable */
@@ -93,31 +93,6 @@ export function buildSoundChannels(sounds: Record<string, Sound>): Record<string
   });
   return channels;
 }
-
-export function buildSoundPool(sounds: Record<string, SoundChannel>, currentScenario: Scenario) {
-  const filteredSounds = Object.keys(sounds).filter(slug => {
-    return (
-      !!currentScenario.sounds[slug] && currentScenario.sounds[slug].type === soundTypes.random
-    );
-  }); // Filter out background sounds
-  const soundFreqs = filteredSounds.reduce((acc: Record<string, number>, curr: string) => {
-    acc[curr] = Math.round(sounds[curr].frequency * 100);
-    return acc;
-  }, {}); // Get workable numbers from frequencies
-  const result = Object.keys(soundFreqs).reduce((acc: string[], curr: string) => {
-    const newItems = new Array(soundFreqs[curr]).fill(curr);
-    return acc.concat(newItems);
-  }, []); // Build array of proprtional amounts of each sound
-  return result;
-} // Build pool of sounds, weighted by frequency
-
-export function getRandomSound(soundChannels: Record<string, SoundChannel>, soundPool: string[]) {
-  const aRandomSound: SoundChannel =
-    soundChannels[soundPool[Math.floor(Math.random() * soundPool.length)]];
-  // if (aRandomSound.slug === lastSound && Object.keys(soundChannels).length > 1)
-  //   return getRandomSound();
-  return aRandomSound.slug;
-} // Pull random sound from pool - cannot be the same as lastSound
 
 export function getPosition(area: [number[], number[]]): Vector3 {
   // area = [minX, minY, minZ], [maxX, maxY, maxZ]
