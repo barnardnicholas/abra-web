@@ -8,7 +8,7 @@ interface PlaceholderProps {
 function PlaceholderSprite({ visible }: PlaceholderProps) {
   const loader = new TextureLoader();
   const texture = loader.load('sprites/placeholder.png');
-  const material = new MeshBasicMaterial({ map: texture, alphaMap: texture, transparent: true });
+  const material = new MeshBasicMaterial({ map: texture, transparent: true });
 
   return (
     <mesh
