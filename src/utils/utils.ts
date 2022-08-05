@@ -1,9 +1,13 @@
-import dayjs from 'dayjs';
 import { useRef, useEffect } from 'react';
 import { Vector3 } from 'three';
 import { Sound, SoundChannel, soundTypeValues } from '../types/Scenario';
 import { minLowFreq, maxLowFreq, minHighFreq, maxHighFreq } from '../constants/timers';
 
+/**
+ * Use in React Components for prevProps
+ * @param {any} value - Value to reference
+ * @return {any} Reference to value
+ */
 /* eslint-disable */
 export function usePrevious(value: any) {
   const ref = useRef<any>(value);
@@ -16,6 +20,11 @@ export function usePrevious(value: any) {
   return ref.current;
 }
 
+/**
+ * Helper for detecting empty objects
+ * @param {Object} obj - Obj to examine
+ * @return {boolean} True if empty, false if not empty
+ */
 export function isObjEmpty(obj: Record<string, unknown>): boolean {
   const keys = Object.keys(obj);
   for (let i = 0; i < keys.length; i += 1) {
@@ -24,6 +33,11 @@ export function isObjEmpty(obj: Record<string, unknown>): boolean {
   return true;
 }
 
+/**
+ * General helper for measuring emptiness of variables - can mean empty or falsy, depending on type
+ * @param {any} item - variable to examine
+ * @return {boolean} True
+ */
 /* eslint-disable */
 export function isEmpty(item: any): boolean {
   /* eslint-enable */
@@ -36,34 +50,20 @@ export function isEmpty(item: any): boolean {
   return !item;
 }
 
-export function areArraysEqual(arr1: any[], arr2: any[]): boolean {
-  // Compare two non-nested arrays
-  if (arr1.length !== arr2.length) return false;
-  return arr1.reduce((acc: boolean, curr: any, i: number) => {
-    let localAcc = acc;
-    if (arr2[i] !== curr) localAcc = false;
-    return localAcc;
-  }, true);
-}
-
-export function getRandomBetween(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-export function clamp(value: number, min: number, max: number): number {
-  return Math.min(Math.max(value, min), max);
-}
-
-export function trimFreq(freq: number, deviation = 0.03): number {
-  if (freq > 1 - deviation) return 1 - deviation;
-  if (freq < deviation) return deviation;
-  return freq;
-}
-
+/**
+ * Given a channel object, determine whether any sound for that channel is playing
+ * @param {SoundChannel} channel - Value to clamp
+ * @return {boolean} True if playing, false if not playing
+ */
 export function isChannelPlaying(channel: SoundChannel) {
   return Object.values(channel.isPlaying).some(p => !!p);
 }
 
+/**
+ * Given a saved/preset scenarios sounds, construct channels object for state
+ * @param {Record<string, Sound>} sounds - sounds array from scenario data
+ * @return {Record<string, SoundChannel>} Constructed object to be saved to state
+ */
 export function buildSoundChannels(sounds: Record<string, Sound>): Record<string, SoundChannel> {
   const channels: Record<string, SoundChannel> = {};
   Object.values(sounds).forEach((sound: Sound) => {
@@ -94,6 +94,11 @@ export function buildSoundChannels(sounds: Record<string, Sound>): Record<string
   return channels;
 }
 
+/**
+ * Given a channels area bounds, return a random useable position which Three can use to place sounds
+ * @param {[number[], number[]]} area - The max area bounds from channel data
+ * @return {Vector3} Randomly-generated Vector3 position within bounds
+ */
 export function getPosition(area: [number[], number[]]): Vector3 {
   // area = [minX, minY, minZ], [maxX, maxY, maxZ]
   const pos = [0, 0, 0].map((_, i: number) => {
@@ -102,6 +107,11 @@ export function getPosition(area: [number[], number[]]): Vector3 {
   return new Vector3(pos[0], pos[1], pos[2]);
 }
 
+/**
+ * Given a channel, select a random path from its list of sounds and return it. If prevPath is provided, will recursively re-run until different sound is selected
+ * @param {SoundChannel} channel - The channel to reference
+ * @return {string} A valid audio path from the channels list of sounds
+ */
 export function getRandomPath(channel: SoundChannel, prevPath?: string): string {
   const newPath =
     channel.paths[Math.floor(Math.random() * channel.paths.length)] || channel.paths[0];
@@ -109,6 +119,12 @@ export function getRandomPath(channel: SoundChannel, prevPath?: string): string 
   return newPath;
 }
 
+/**
+ * Given min & max intervals in MS, generate a weighted array of possible intervals which favours shorter sounds according to a curve function
+ * @param {number} minMs - Minimum MS interval
+ * @param {number} maxMs - Maximum MS interval
+ * @return {number[]} Array of incremental values - more favoured values will be duplicated according to curve
+ */
 function buildWeightedTimerArray(minMs: number, maxMs: number): number[] {
   // create an array containing 100 possible times at equal increments
   // make more low values than high ones according to a curve
@@ -120,6 +136,11 @@ function buildWeightedTimerArray(minMs: number, maxMs: number): number[] {
   }, []);
 }
 
+/**
+ * Given a channel frequency (float), generate a new interval in MS for triggering the next sound event
+ * @param {float} frequency - Channel frequency - 1 = often, 0 = rarely
+ * @return {number} Time interval in MS
+ */
 export function getNewChannelDelay(frequency: number) {
   const invFreq = 1 - frequency; // Invert freq for use in maths
   const minTime = minHighFreq + (minLowFreq - minHighFreq) * invFreq;
@@ -128,15 +149,12 @@ export function getNewChannelDelay(frequency: number) {
   return timeArr[Math.floor(Math.random() * timeArr.length)];
 }
 
-export function getPlayPositionPercent(durationMs: number, lastPlayedMs: number | null): number {
-  if (!durationMs || !lastPlayedMs || Number.isNaN(lastPlayedMs) || Number.isNaN(durationMs))
-    return 0;
-  const now = dayjs().valueOf(); // MS now
-  const dMs = now - lastPlayedMs;
-  if (dMs > durationMs) return 100;
-  return Math.floor(dMs / (durationMs / 100));
-}
-
+/**
+ * For use on THREE mouse object - calculate the distance of the mouse pointer from the center of the canvas.
+ * @param {float} x - THREE.mouse.x from useThree.mouse
+ * @param {float} y - THREE.mouse.y from useThree.mouse
+ * @return {float} Distance from canvas center - positive float number
+ */
 export function getMouseDistanceFromCenter(x: number, y: number): number {
   let localX = x;
   let localY = y;
