@@ -47,7 +47,7 @@ const ocean: Scenario = {
         'seagull/seagull-5.mp3',
         'seagull/seagull-6.mp3',
       ],
-      volume: 0.66,
+      volume: 0.5,
       frequency: 0.5,
       area: [
         [-2, 2, -2],
@@ -68,8 +68,8 @@ const ocean: Scenario = {
         'water-drops/water-drops-5.mp3',
         'water-drops/water-drops-6.mp3',
       ],
-      volume: 0.1,
-      frequency: 1,
+      volume: 0.3,
+      frequency: 0.75,
       area: [
         [-2, -2, -2],
         [2, 0, 2],
