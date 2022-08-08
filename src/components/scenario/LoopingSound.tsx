@@ -47,7 +47,7 @@ function LoopingSound({
   }, [sound, reportDuration, duration, slug]);
 
   useEffect(() => {
-    if (sound.current) {
+    if (!!sound.current) {
       if (!prevProps.isPlaying && isPlaying && !!sound.current) {
         sound.current.play();
       } else if (prevProps.isPlaying && !isPlaying && !!sound.current) {
