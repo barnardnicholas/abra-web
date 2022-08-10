@@ -38,13 +38,11 @@ export function isObjEmpty(obj: Record<string, unknown>): boolean {
  * @param {any} item - variable to examine
  * @return {boolean} True
  */
-/* eslint-disable */
-export function isEmpty(item: any): boolean {
-  /* eslint-enable */
+export function isEmpty(item: unknown): boolean {
   if (Array.isArray(item)) return !item.length;
   if (typeof item === 'string') return !item.trim().length;
   if (item instanceof Date) return Number.isNaN(item.valueOf());
-  if (typeof item === 'object') return isObjEmpty(item);
+  if (typeof item === 'object') return isObjEmpty(item as Record<string, unknown>);
   if (typeof item === 'number') return false;
 
   return !item;
