@@ -117,7 +117,7 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
         const newChannel: SoundChannel = {
           ...prevSoundChannels[slug],
           isPlaying: { ...prevSoundChannels[slug].isPlaying, [intPath]: true },
-          currentPath: path || prevSoundChannels[slug].paths[0],
+          currentPath: intPath,
         };
         if (position) newChannel.position = position;
         return { ...prevSoundChannels, [slug]: newChannel };
