@@ -1,4 +1,3 @@
-import { stringLiteral, validate } from '@babel/types';
 import { Vector3 } from 'three';
 import { Sound, SoundChannel, soundTypes, soundTypeValues } from '../types/Scenario';
 import {
@@ -8,6 +7,7 @@ import {
   buildSoundChannels,
   areArraysEqual,
   areObjectsEqual,
+  getPosition,
 } from './utils';
 
 // ------------------------------------------------------------------------
@@ -329,4 +329,31 @@ describe('buildSoundChannels', () => {
 
 // ------------------------------------------------------------------------
 
-describe('getPosition', () => {});
+describe('getPosition', () => {
+  const area1: [number[], number[]] = [
+    [-2, -2, -2],
+    [2, 2, 2],
+  ];
+  const area2: [number[], number[]] = [
+    [-2, -2, -2],
+    [0, 0, 0],
+  ];
+  const area3: [number[], number[]] = [
+    [0, 0, 0],
+    [2, 2, 2],
+  ];
+
+  test('Returns a Vector3', () => {
+    expect(getPosition(area1)).toBeInstanceOf(Vector3);
+  });
+  test('Returns a value within bounds', () => {
+    [area1, area2, area3].forEach(area => {
+      expect(getPosition(area).x).toBeLessThanOrEqual(area[1][0]);
+      expect(getPosition(area).x).toBeGreaterThanOrEqual(area[0][0]);
+      expect(getPosition(area).y).toBeLessThanOrEqual(area[1][1]);
+      expect(getPosition(area).y).toBeGreaterThanOrEqual(area[0][1]);
+      expect(getPosition(area).z).toBeLessThanOrEqual(area[1][2]);
+      expect(getPosition(area).z).toBeGreaterThanOrEqual(area[0][2]);
+    });
+  });
+});
