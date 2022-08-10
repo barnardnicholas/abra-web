@@ -229,19 +229,22 @@ const useScenario = (scenarioSlug: string): UseScenarioProps => {
               getRandomPath(soundChannels[slug]),
             );
 
-          const newDelay = getNewChannelDelay(channelRefs[slug].frequency);
+          const newDelay = getNewChannelDelay(
+            channelRefs[slug].frequency,
+            soundChannels[slug].durations,
+          );
           console.log(`${slug} - ${channelRefs[slug].frequency} - ${newDelay}`);
           channelClocks[slug] = setTimeout(tick, newDelay); // Set new timer
         };
 
         const channelToPlay: SoundChannel = soundChannels[slug];
-        const newDelay = getNewChannelDelay(channelToPlay.frequency);
+        const newDelay = getNewChannelDelay(channelToPlay.frequency, channelToPlay.durations);
         console.log(`${slug} - ${channelToPlay.frequency} - ${newDelay}`);
         channelClocks[slug] = setTimeout(
           tick,
           getNewChannelDelay(
             channelToPlay.frequency + Math.random() * (1 - channelToPlay.frequency),
-          ),
+          ), // Not passing durations for first sounds
         ); // Set first timer - delays will be shorter for first time around
       }
     }); // Play all background sounds, start clocks for random sounds

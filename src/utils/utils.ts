@@ -233,7 +233,6 @@ export function getNewChannelDelay(frequency: number, durations?: number[]) {
       if (acc < curr) return curr;
       return acc;
     }, 0);
-    const newMin = highestDuration + 1000;
     if (minTime < highestDuration + 1000) minTime = highestDuration + 1000;
     if (maxTime < highestDuration + 4000) maxTime = highestDuration + 4000;
   } // Override min & max if durations invalidate them
