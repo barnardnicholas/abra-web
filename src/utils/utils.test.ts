@@ -9,6 +9,7 @@ import {
   areObjectsEqual,
   getPosition,
   getRandomPath,
+  buildWeightedTimerArray,
 } from './utils';
 
 // ------------------------------------------------------------------------
@@ -400,6 +401,28 @@ describe('getRandomPath', () => {
         return acc;
       }, false),
     ).toEqual(false);
+  });
+});
+
+// ------------------------------------------------------------------------
+
+describe('buildWeightedTimerArray', () => {
+  const min1: number = 1000;
+  const max1: number = 600000;
+
+  test('Returns an array of numbers', () => {
+    const result = buildWeightedTimerArray(min1, max1);
+    expect(Array.isArray(result)).toEqual(true);
+    result.forEach((number: number) => {
+      expect(Number.isNaN(number)).toEqual(false);
+    });
+  });
+  test('numbers are within bounds', () => {
+    const result = buildWeightedTimerArray(min1, max1);
+    result.forEach((number: number) => {
+      expect(number).toBeLessThanOrEqual(max1);
+      expect(number).toBeGreaterThanOrEqual(min1);
+    });
   });
 });
 

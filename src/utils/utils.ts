@@ -207,7 +207,7 @@ export function getRandomPath(channel: SoundChannel, prevPath?: string): string 
  * @param {number} maxMs - Maximum MS interval
  * @return {number[]} Array of incremental values - more favoured values will be duplicated according to curve
  */
-function buildWeightedTimerArray(minMs: number, maxMs: number): number[] {
+export function buildWeightedTimerArray(minMs: number, maxMs: number): number[] {
   // create an array containing 100 possible times at equal increments
   // make more low values than high ones according to a curve
   const length = 100;
