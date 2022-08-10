@@ -1,5 +1,9 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { PersistGate } from 'redux-persist/integration/react';
+import store from './redux/store';
+import LoadingHeader from './components/header/LoadingHeader';
 import './_styles/App.scss';
 import Scenario from './components/scenario/Scenario';
 import Header from './components/header/Header';
@@ -43,4 +47,16 @@ function App() {
   );
 }
 
-export default App;
+function AppContext() {
+  return (
+    <Provider store={store().store}>
+      <PersistGate loading={<LoadingHeader />} persistor={store().persistor}>
+        <Router>
+          <App />
+        </Router>
+      </PersistGate>
+    </Provider>
+  );
+}
+
+export default AppContext;
