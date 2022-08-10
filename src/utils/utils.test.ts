@@ -10,7 +10,9 @@ import {
   getPosition,
   getRandomPath,
   buildWeightedTimerArray,
+  getNewChannelDelay,
 } from './utils';
+import { minLowFreq, maxLowFreq, minHighFreq, maxHighFreq } from '../constants/timers';
 
 // ------------------------------------------------------------------------
 
@@ -427,3 +429,25 @@ describe('buildWeightedTimerArray', () => {
 });
 
 // ------------------------------------------------------------------------
+
+describe('getNewChannelDelay', () => {
+  const freq1: number = 0.5;
+  const freq2: number = 0.1;
+  const freq3: number = 0.9;
+  const freq4: number = 0;
+  const freq5: number = 1;
+
+  test('Returns a number within bounds', () => {
+    [freq1, freq2, freq3, freq4, freq5].forEach((freq: number) => {
+      const result = getNewChannelDelay(freq);
+      expect(result).toBeLessThanOrEqual(maxLowFreq);
+      expect(result).toBeGreaterThanOrEqual(minHighFreq);
+    });
+  });
+  test('Returns a number in line with expected values', () => {
+    const lowResult: number = getNewChannelDelay(freq2);
+    const highResult: number = getNewChannelDelay(freq3);
+
+    expect(highResult).toBeLessThan(lowResult); // Low frequency = high delay
+  });
+});

@@ -208,7 +208,7 @@ export function getRandomPath(channel: SoundChannel, prevPath?: string): string 
  * @return {number[]} Array of incremental values - more favoured values will be duplicated according to curve
  */
 export function buildWeightedTimerArray(minMs: number, maxMs: number): number[] {
-  // create an array containing 100 possible times at equal increments
+  // create an array containing possible times at equal increments
   // make more low values than high ones according to a curve
   const length = 100;
   return new Array(length).fill(minMs).reduce((acc: number[], curr: number, index: number) => {
@@ -229,7 +229,7 @@ export function getNewChannelDelay(frequency: number) {
   const maxTime = maxHighFreq + (maxLowFreq - maxHighFreq) * invFreq;
   const timeArr = buildWeightedTimerArray(minTime, maxTime);
   return timeArr[Math.floor(Math.random() * timeArr.length)];
-}
+} // TODO add durations prop for min interval length
 
 /**
  * For use on THREE mouse object - calculate the distance of the mouse pointer from the center of the canvas.
