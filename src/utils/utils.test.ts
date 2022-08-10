@@ -8,6 +8,7 @@ import {
   areArraysEqual,
   areObjectsEqual,
   getPosition,
+  getRandomPath,
 } from './utils';
 
 // ------------------------------------------------------------------------
@@ -357,3 +358,49 @@ describe('getPosition', () => {
     });
   });
 });
+
+// ------------------------------------------------------------------------
+
+describe('getRandomPath', () => {
+  const paths = ['slug1.mp3', 'slug2.mp3', 'slug3.mp3'];
+  const prevPath = `/audio/${soundTypeValues[soundTypes.random]}/${paths[2]}`;
+  const testChannel: SoundChannel = {
+    id: 0,
+    name: 'Name',
+    slug: 'slug',
+    position: new Vector3(0, 0, 0),
+    isPlaying: paths.reduce((acc: Record<string, boolean>, curr: string, index: number) => {
+      return { ...acc, [curr]: index === 1 ? true : false };
+    }, {}),
+    durations: new Array(paths.length).fill(0),
+    type: soundTypes.random,
+    paths: paths.map((path: string) => `/audio/${soundTypeValues[soundTypes.random]}/${path}`),
+    currentPath: paths[Math.floor(Math.random() * paths.length)] || paths[0],
+    frequency: 0.5,
+    area: [
+      [0, 0, 0],
+      [0, 0, 0],
+    ],
+    volume: 0.5,
+    mute: false,
+  };
+  test('Returns a vaid path from channel paths', () => {
+    expect(paths.map(path => `/audio/${soundTypeValues[soundTypes.random]}/${path}`)).toContain(
+      getRandomPath(testChannel),
+    );
+  });
+  test(`If prevPath is provided, result shouldn't match it`, () => {
+    let results: string[] = [];
+    for (let i = 0; i < 100; i++) {
+      results.push(getRandomPath(testChannel, prevPath));
+    }
+    expect(
+      results.reduce((acc: boolean, curr: string) => {
+        if (curr === prevPath) return true;
+        return acc;
+      }, false),
+    ).toEqual(false);
+  });
+});
+
+// ------------------------------------------------------------------------
