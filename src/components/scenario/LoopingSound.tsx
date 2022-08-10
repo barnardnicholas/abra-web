@@ -47,7 +47,9 @@ function LoopingSound({
   }, [sound, reportDuration, duration, slug]);
 
   useEffect(() => {
+    /* eslint-disable */
     if (!!sound.current) {
+      /* eslint-enable */
       if (!prevProps.isPlaying && isPlaying && !!sound.current) {
         sound.current.play();
       } else if (prevProps.isPlaying && !isPlaying && !!sound.current) {
