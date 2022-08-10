@@ -11,6 +11,7 @@ import {
   getRandomPath,
   buildWeightedTimerArray,
   getNewChannelDelay,
+  getMouseDistanceFromCenter,
 } from './utils';
 import { minLowFreq, maxLowFreq, minHighFreq, maxHighFreq } from '../constants/timers';
 
@@ -449,5 +450,41 @@ describe('getNewChannelDelay', () => {
     const highResult: number = getNewChannelDelay(freq3);
 
     expect(highResult).toBeLessThan(lowResult); // Low frequency = high delay
+  });
+});
+
+// ------------------------------------------------------------------------
+
+describe('getMouseDistanceFromCenter', () => {
+  const c1: number = 1;
+  const c2: number = -1;
+  const c3: number = 0.5;
+  const c4: number = -0.5;
+
+  const result1 = getMouseDistanceFromCenter(c1, c1);
+  const result2 = getMouseDistanceFromCenter(c2, c2);
+  const result3 = getMouseDistanceFromCenter(c3, c3);
+  const result4 = getMouseDistanceFromCenter(c4, c4);
+  const result5 = getMouseDistanceFromCenter(c1, c4);
+  const result6 = getMouseDistanceFromCenter(c2, c4);
+  const result7 = getMouseDistanceFromCenter(c3, c4);
+  const result8 = getMouseDistanceFromCenter(0, 0);
+
+  const rArr: number[] = [result1, result2, result3, result4, result5, result6, result7, result8];
+
+  test('Returns a positive number', () => {
+    rArr.forEach(result => {
+      expect(result).toBeGreaterThanOrEqual(0);
+    });
+  });
+  test('Returns values in line with expectations', () => {
+    expect(result1).toEqual(Math.sqrt(c1 * c1 + c1 * c1));
+    expect(result2).toEqual(Math.sqrt(c2 * c2 + c2 * c2));
+    expect(result3).toEqual(Math.sqrt(c3 * c3 + c3 * c3));
+    expect(result4).toEqual(Math.sqrt(c4 * c4 + c4 * c4));
+    expect(result5).toEqual(Math.sqrt(c1 * c1 + c4 * c4));
+    expect(result6).toEqual(Math.sqrt(c2 * c2 + c4 * c4));
+    expect(result7).toEqual(Math.sqrt(c3 * c3 + c4 * c4));
+    expect(result8).toEqual(Math.sqrt(0 * 0 + 0 * 0));
   });
 });
