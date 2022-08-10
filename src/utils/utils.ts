@@ -219,17 +219,27 @@ export function buildWeightedTimerArray(minMs: number, maxMs: number): number[] 
 }
 
 /**
- * Given a channel frequency (float), generate a new interval in MS for triggering the next sound event
+ * Given a channel frequency (float), generate a new interval in MS for triggering the next sound event.
  * @param {float} frequency - Channel frequency - 1 = often, 0 = rarely
+ * @param {number[]} [durations] - Array of sound durations in MS. If provided, result will not be less than max duration
  * @return {number} Time interval in MS
  */
-export function getNewChannelDelay(frequency: number) {
+export function getNewChannelDelay(frequency: number, durations?: number[]) {
   const invFreq = 1 - frequency; // Invert freq for use in maths
-  const minTime = minHighFreq + (minLowFreq - minHighFreq) * invFreq;
-  const maxTime = maxHighFreq + (maxLowFreq - maxHighFreq) * invFreq;
+  let minTime = minHighFreq + (minLowFreq - minHighFreq) * invFreq;
+  let maxTime = maxHighFreq + (maxLowFreq - maxHighFreq) * invFreq;
+  if (Array.isArray(durations) && durations.length) {
+    const highestDuration: number = durations.reduce((acc: number, curr: number) => {
+      if (acc < curr) return curr;
+      return acc;
+    }, 0);
+    const newMin = highestDuration + 1000;
+    if (minTime < highestDuration + 1000) minTime = highestDuration + 1000;
+    if (maxTime < highestDuration + 4000) maxTime = highestDuration + 4000;
+  } // Override min & max if durations invalidate them
   const timeArr = buildWeightedTimerArray(minTime, maxTime);
   return timeArr[Math.floor(Math.random() * timeArr.length)];
-} // TODO add durations prop for min interval length
+}
 
 /**
  * For use on THREE mouse object - calculate the distance of the mouse pointer from the center of the canvas.

@@ -438,6 +438,12 @@ describe('getNewChannelDelay', () => {
   const freq4: number = 0;
   const freq5: number = 1;
 
+  const durations: number[] = [1000, 3000, 5000];
+  const highestDuration: number = durations.reduce((acc: number, curr: number) => {
+    if (acc < curr) return curr;
+    return acc;
+  }, 0);
+
   test('Returns a number within bounds', () => {
     [freq1, freq2, freq3, freq4, freq5].forEach((freq: number) => {
       const result = getNewChannelDelay(freq);
@@ -450,6 +456,12 @@ describe('getNewChannelDelay', () => {
     const highResult: number = getNewChannelDelay(freq3);
 
     expect(highResult).toBeLessThan(lowResult); // Low frequency = high delay
+  });
+  test('If given a durations array, result will not be less than max duration + 1000', () => {
+    [freq1, freq2, freq3, freq4, freq5].forEach((freq: number) => {
+      const result = getNewChannelDelay(freq, durations);
+      expect(result).toBeGreaterThanOrEqual(highestDuration + 1000);
+    });
   });
 });
 
