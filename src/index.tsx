@@ -11,6 +11,10 @@ import { unregister } from './registerServiceWorker';
 
 const container = document.getElementById('root');
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript
+
+const vh = window.innerHeight * 0.01;
+document.documentElement.style.setProperty('--vh', `${vh}px`);
+
 root.render(
   <React.StrictMode>
     <Provider store={store().store}>
