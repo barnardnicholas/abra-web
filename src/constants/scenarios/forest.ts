@@ -6,13 +6,13 @@ const forest: Scenario = {
   slug: 'forest',
   description: 'Forest with small stream and birdsong',
   sounds: {
-    rain1: {
+    forestBirds: {
       id: 0,
       slug: 'forestBirds',
       name: 'Forest birds',
       type: soundTypes.background,
       paths: ['forest-birds.mp3'],
-      volume: 0.75,
+      volume: 0.9,
       frequency: 0,
       area: [
         [0, 0, 0],
@@ -57,7 +57,7 @@ const forest: Scenario = {
         'blackbird/blackbird-15.mp3',
       ],
       volume: 0.5,
-      frequency: 0.25,
+      frequency: 0.3,
       area: [
         [-2, 1, -2],
         [2, 2, 2],
@@ -78,7 +78,7 @@ const forest: Scenario = {
         'chaffinch/chaffinch-6.mp3',
       ],
       volume: 0.5,
-      frequency: 0.25,
+      frequency: 0.3,
       area: [
         [-2, 1, -2],
         [2, 2, 2],

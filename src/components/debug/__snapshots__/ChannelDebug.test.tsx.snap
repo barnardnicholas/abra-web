@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders correctly 1`] = `
+<div
+  className="debug-item"
+>
+  <strong>
+    random Channel: Name (slug)
+  </strong>
+  <div>
+    <table
+      className="debug-table"
+    >
+      <thead>
+        <tr>
+          <td>
+            FileName
+          </td>
+          <td>
+            Is Playing
+          </td>
+          <td>
+            Duration
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            slug1.mp3
+          </td>
+          <td>
+            <div
+              className="play-indicator "
+              style={
+                Object {
+                  "transition": "max-width 0ms linear",
+                }
+              }
+            />
+          </td>
+          <td>
+            0.0s
+          </td>
+        </tr>
+        <tr>
+          <td>
+            slug2.mp3
+          </td>
+          <td>
+            <div
+              className="play-indicator "
+              style={
+                Object {
+                  "transition": "max-width 0ms linear",
+                }
+              }
+            />
+          </td>
+          <td>
+            0.0s
+          </td>
+        </tr>
+        <tr>
+          <td>
+            slug3.mp3
+          </td>
+          <td>
+            <div
+              className="play-indicator "
+              style={
+                Object {
+                  "transition": "max-width 0ms linear",
+                }
+              }
+            />
+          </td>
+          <td>
+            0.0s
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br />
+</div>
+`;

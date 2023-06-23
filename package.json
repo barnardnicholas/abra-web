@@ -1,8 +1,9 @@
 {
-  "name": "abra-web-2",
+  "name": "abra-web",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/types": "^7.18.9",
     "@react-three/fiber": "^8.0.27",
     "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/jest-dom": "^5.16.4",
@@ -13,6 +14,7 @@
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@types/react-redux": "^7.1.24",
+    "dayjs": "^1.11.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.2",
@@ -25,14 +27,14 @@
     "redux-thunk": "^2.4.1",
     "sass": "^1.53.0",
     "three": "^0.142.0",
-    "typescript": "^4.7.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "npm run build && firebase deploy"
   },
   "eslintConfig": {
     "extends": [
@@ -53,6 +55,12 @@
     ]
   },
   "devDependencies": {
-    "@types/three": "^0.141.0"
+    "@types/react-test-renderer": "^18.0.0",
+    "@types/three": "^0.141.0",
+    "eslint": "^8.20.0",
+    "eslint-config-airbnb-typescript-prettier": "^5.0.0",
+    "prettier": "^2.7.1",
+    "react-test-renderer": "^18.2.0",
+    "typescript": "^4.7.4"
   }
 }

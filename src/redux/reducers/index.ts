@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import darkModeReducer from '../reducers/darkMode';
+import darkModeReducer from './darkMode';
 import debugReducer from './debug';
 import scenariosReducer from './scenarios';
 import settingsReducer from './settings';

@@ -1,10 +1,8 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { setScenario } from '../../redux/actions/scenario';
 import { getSelectedScenario } from '../../redux/selectors/scenarios';
 import { DropdownOption } from '../../types/DropdownOption';
-import { usePrevious } from '../../utils/utils';
 import Select from '../form/Select';
 
 const scenarioOptions: DropdownOption<string>[] = [
@@ -12,6 +10,8 @@ const scenarioOptions: DropdownOption<string>[] = [
   { label: 'Rainstorm', value: 'rainstorm' },
   { label: 'Forest', value: 'forest' },
   { label: 'City', value: 'city' },
+  { label: 'Campfire', value: 'campfire' },
+  { label: 'Jungle', value: 'jungle' },
 ];
 
 interface ScenarioPickerProps {
@@ -19,7 +19,7 @@ interface ScenarioPickerProps {
   isPlaying: boolean;
 }
 
-const ScenarioPicker: React.FC<ScenarioPickerProps> = ({ stopScenario, isPlaying }) => {
+function ScenarioPicker({ stopScenario, isPlaying }: ScenarioPickerProps) {
   const dispatch = useDispatch();
 
   const selectedScenario = useSelector(getSelectedScenario);
@@ -40,6 +40,6 @@ const ScenarioPicker: React.FC<ScenarioPickerProps> = ({ stopScenario, isPlaying
       disabled={isPlaying}
     />
   );
-};
+}
 
 export default ScenarioPicker;

@@ -1,20 +1,21 @@
 import React, { Fragment, Suspense, useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { Canvas as ThreeCanvas, useFrame, useThree } from '@react-three/fiber';
+import { Vector3, AudioListener, Mesh, MeshPhongMaterial } from 'three';
+import { Canvas as ThreeCanvas } from '@react-three/fiber';
+import { useSelector } from 'react-redux';
 import LoopingSound from './LoopingSound';
 import SingleSound from './SingleSound';
 import SphereMesh from './SphereMesh';
-import { Vector3, AudioListener, Mesh, MeshLambertMaterial } from 'three';
 import GroundPlane from './GroundPlane';
 import { SoundChannel, soundTypes } from '../../types/Scenario';
 import Debug from '../debug/Debug';
 import { usePrevious } from '../../utils/utils';
 import CameraRig from './CameraRig';
-// import LoadingSprite from './LoadingSprite';
-import { useSelector } from 'react-redux';
 import { getDebug } from '../../redux/selectors/debug';
 import { UseScenarioProps } from '../hooks/useScenario';
 import { getDarkMode } from '../../redux/selectors/darkMode';
+import PlaceholderSprite from './PlaceholderSprite';
+import { getSelectedScenario } from '../../redux/selectors/scenarios';
 
 const sphereScale = new Vector3(0.25, 0.25, 0.25);
 
@@ -24,9 +25,15 @@ interface CanvasContentProps {
   scenario: UseScenarioProps;
   debug: boolean;
   isDarkBackground: boolean;
+  selectedScenario: string | null;
 }
 
-const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug, isDarkBackground }) => {
+function CanvasContent({
+  scenario,
+  debug,
+  isDarkBackground,
+  selectedScenario,
+}: CanvasContentProps) {
   const { soundChannels, reportDuration } = scenario;
   const [listener] = useState(() => new AudioListener());
   const bgColor = new THREE.Color(isDarkBackground ? '#272730' : '#f7f7f7');
@@ -36,18 +43,19 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug, isDarkBa
   const prevProps = usePrevious({ cameraTarget });
 
   useEffect(() => {
-    if (!prevProps.cameraTarget && cameraTarget.current) {
-      cameraTarget.current.add(listener);
+    const target = cameraTarget.current;
+    if (!prevProps.cameraTarget && target) {
+      target.add(listener);
     }
     return () => {
-      if (!!cameraTarget.current) cameraTarget.current.remove(listener);
+      if (target) target.remove(listener);
     };
-  }, [cameraTarget, prevProps]);
+  }, [cameraTarget, prevProps, listener]);
 
   return (
     <>
       <color attach="background" args={[bgColor]} />
-      <Suspense fallback={<></>}>
+      <Suspense fallback={null}>
         {/* <fog attach="fog" args={['#000000', 5, 20]} /> */}
         <ambientLight />
         <spotLight
@@ -62,18 +70,19 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug, isDarkBa
           ref={cameraTarget}
           position={new Vector3(0, 0.5, 0)}
           scale={sphereScale}
-          material={new MeshLambertMaterial({ color: 'purple' })}
+          material={new MeshPhongMaterial({ color: 'purple' })}
           castShadow
           visible={debug}
         >
           <sphereBufferGeometry attach="geometry" />
         </mesh>
+        <PlaceholderSprite visible={!debug && !!selectedScenario} />
         {/* Sounds */}
         {Object.values(soundChannels).map((channel: SoundChannel, i: number) => {
           if (channel.type === soundTypes.background)
             return (
               <SphereMesh
-                key={i}
+                key={channel.id}
                 color={colors[i]}
                 scale={sphereScale}
                 position={new Vector3(channel.area[0][0], channel.area[0][1], channel.area[0][2])}
@@ -90,13 +99,13 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug, isDarkBa
                 />
               </SphereMesh>
             );
-          else if (channel.type === soundTypes.random)
-            return channel.paths.map((path: string, i: number) => (
+          if (channel.type === soundTypes.random)
+            return channel.paths.map((path: string, j: number) => (
               <SphereMesh
-                key={i}
+                key={path}
                 scale={sphereScale}
                 position={channel.position}
-                color={colors[i % colors.length]}
+                color={colors[j % colors.length]}
                 visible={
                   debug &&
                   channel.isPlaying[path] &&
@@ -106,18 +115,22 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug, isDarkBa
               >
                 <SingleSound
                   slug={channel.slug}
-                  duration={channel.durations[i]}
+                  duration={channel.durations[j]}
                   reportDuration={reportDuration}
                   soundFile={path}
                   isPlaying={channel.isPlaying[path] && channel.currentPath === path}
-                  onPlaybackEnd={() => {}}
                   listener={listener}
                   volume={channel.volume}
-                  index={i}
+                  index={j}
                 />
               </SphereMesh>
             ));
-          else return <Fragment key={i} />;
+
+          return (
+            /* eslint-disable */
+            <Fragment key={i} />
+            /*  eslint-enable */
+          );
         })}
 
         <GroundPlane visible={debug} />
@@ -125,54 +138,53 @@ const CanvasContent: React.FC<CanvasContentProps> = ({ scenario, debug, isDarkBa
       <CameraRig />
     </>
   );
-};
+}
 
 interface CanvasProps {
   scenario: UseScenarioProps;
-  selectedScenario: string;
 }
 
-const Canvas: React.FC<CanvasProps> = ({ scenario, selectedScenario }) => {
+function Canvas({ scenario }: CanvasProps) {
   const debug = useSelector(getDebug);
   const isDarkMode = useSelector(getDarkMode);
-  const prevIsDarkMode = usePrevious(isDarkMode);
+  const selectedScenario = useSelector(getSelectedScenario);
+  const prevProps = usePrevious({ isDarkMode, selectedScenario });
   const [isDarkBackground, setIsDarkBackground] = useState<boolean>(isDarkMode);
   const [showBackgroundBlocker, setShowBackgroundBlocker] = useState<boolean>(false);
 
   useEffect(() => {
-    return () => {
-      scenario.stopScenario();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isDarkMode !== prevIsDarkMode) {
+    if (isDarkMode !== prevProps.isDarkMode) {
       setShowBackgroundBlocker(true);
       setTimeout(() => setIsDarkBackground(isDarkMode), 510);
       setTimeout(() => setShowBackgroundBlocker(false), 520);
     }
-  }, [isDarkMode, prevIsDarkMode]);
+    if (selectedScenario && !prevProps.selectedScenario) {
+      setTimeout(() => setShowBackgroundBlocker(false), 520);
+    }
+  }, [isDarkMode, selectedScenario, prevProps.isDarkMode, prevProps.selectedScenario]);
 
-  const canvasProps = {
-    camera: { fov: 75, position: new Vector3(0, 0, 4) },
-    legacy: true,
-    shadows: true,
-  };
-  const contentProps = { scenario, debug, isDarkBackground };
+  const cameraProps = { fov: 75, position: new Vector3(0, 0, 4) };
 
   return (
     <div className="three-container">
       <ThreeCanvas
-        {...canvasProps}
+        camera={cameraProps}
+        legacy
+        shadows
         dpr={[1, 2]}
         style={{ background: isDarkBackground ? '#272730' : '#f7f7f7' }}
       >
-        <CanvasContent {...contentProps} />
+        <CanvasContent
+          scenario={scenario}
+          debug={debug}
+          isDarkBackground={isDarkBackground}
+          selectedScenario={selectedScenario}
+        />
       </ThreeCanvas>
       <div className={`background-blocker ${showBackgroundBlocker ? '' : 'hidden'}`} />
       {debug && <Debug scenario={scenario} />}
     </div>
   );
-};
+}
 
 export default Canvas;

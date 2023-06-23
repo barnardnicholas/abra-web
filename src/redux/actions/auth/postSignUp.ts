@@ -7,11 +7,11 @@ export const postSignUpSuccess = createAction('postSignUpSuccess');
 export const postSignUpFailure = createAction('postSignUpFailure');
 
 export const postSignUp = (postBody: any) => async (dispatch: AppDispatch) => {
-    dispatch(postSignUpRequest());
-    try {
-        // await api.post('auth/register', postBody);
-        // return dispatch(postSignUpSuccess());
-    } catch (e) {
-        // handleApiErrors(dispatch, postSignUpFailure, e as APIError);
-    }
+  dispatch(postSignUpRequest());
+  try {
+    // await api.post('auth/register', postBody);
+    // return dispatch(postSignUpSuccess());
+  } catch (e) {
+    // handleApiErrors(dispatch, postSignUpFailure, e as APIError);
+  }
 };

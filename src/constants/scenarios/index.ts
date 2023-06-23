@@ -4,6 +4,8 @@ import rainstorm from './rainstorm';
 import ocean from './ocean';
 import forest from './forest';
 import city from './city';
+import campfire from './campfire';
+import jungle from './jungle';
 
 const scenarios: Record<string, Scenario> = {
   none,
@@ -11,5 +13,7 @@ const scenarios: Record<string, Scenario> = {
   ocean,
   forest,
   city,
+  campfire,
+  jungle,
 };
 export default scenarios;

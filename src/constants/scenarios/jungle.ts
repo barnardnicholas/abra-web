@@ -1,0 +1,111 @@
+import { Scenario, soundTypes } from '../../types/Scenario';
+
+const jungle: Scenario = {
+  id: 1,
+  name: 'Jungle',
+  slug: 'jungle',
+  description: 'Jungle with Parrots',
+  sounds: {
+    jungle: {
+      id: 0,
+      slug: 'jungle',
+      name: 'Jungle',
+      type: soundTypes.background,
+      paths: ['jungle.mp3'],
+      volume: 0.75,
+      frequency: 0,
+      area: [
+        [0.5, 0, 0],
+        [0.5, 0, 0],
+      ],
+      mute: false,
+    },
+    summerAmbience: {
+      id: 1,
+      slug: 'summerAmbience',
+      name: 'Summer Ambience',
+      type: soundTypes.background,
+      paths: ['summer-ambience.mp3'],
+      volume: 0.9,
+      frequency: 0,
+      area: [
+        [-0.5, 0, 0],
+        [-0.5, 0, 0],
+      ],
+      mute: false,
+    },
+    parrot: {
+      id: 2,
+      slug: 'parrot',
+      name: 'Parrot',
+      type: soundTypes.random,
+      paths: ['parrot/parrot-1.mp3', 'parrot/parrot-2.mp3', 'parrot/parrot-3.mp3'],
+      volume: 0.75,
+      frequency: 0.4,
+      area: [
+        [-2, 1, -2],
+        [2, 2, 2],
+      ],
+      mute: false,
+    },
+    bee: {
+      id: 3,
+      slug: 'bee',
+      name: 'Bee',
+      type: soundTypes.random,
+      paths: ['bee/bee-1.mp3', 'bee/bee-2.mp3', 'bee/bee-3.mp3', 'bee/bee-4.mp3', 'bee/bee-5.mp3'],
+      volume: 0.2,
+      frequency: 0.2,
+      area: [
+        [-2, 1, -2],
+        [2, 2, 2],
+      ],
+      mute: false,
+    },
+    frog: {
+      id: 4,
+      slug: 'frog',
+      name: 'Frog',
+      type: soundTypes.random,
+      paths: [
+        'frog/frog-1.mp3',
+        'frog/frog-2.mp3',
+        'frog/frog-3.mp3',
+        'frog/frog-4.mp3',
+        'frog/frog-5.mp3',
+        'frog/frog-6.mp3',
+      ],
+      volume: 0.25,
+      frequency: 0.25,
+      area: [
+        [-2, 1, -2],
+        [2, 2, 2],
+      ],
+      mute: false,
+    },
+    songThrush: {
+      id: 6,
+      slug: 'songThrush',
+      name: 'Song Thrush',
+      type: soundTypes.random,
+      paths: [
+        'song-thrush/song-thrush-1.mp3',
+        'song-thrush/song-thrush-2.mp3',
+        'song-thrush/song-thrush-3.mp3',
+        'song-thrush/song-thrush-4.mp3',
+        'song-thrush/song-thrush-5.mp3',
+        'song-thrush/thrush-1.mp3',
+        'song-thrush/thrush-2.mp3',
+      ],
+      volume: 0.5,
+      frequency: 0.3,
+      area: [
+        [-2, 1, -2],
+        [2, 2, 2],
+      ],
+      mute: false,
+    },
+  },
+};
+
+export default jungle;

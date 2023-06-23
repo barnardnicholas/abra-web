@@ -1,8 +1,6 @@
 // Standard Theme
 @mixin themeColors() {
   .App {
-    --vh: 1vh; // Dynamic variable - will be reset by hookß
-
     --main-background: #272730;
     --main-background-trans: #272730cc;
     --main-typography: #f7f7f7;

@@ -1,14 +1,19 @@
 import React from 'react';
 import { FormInputProps } from '../../types/FormInputProps';
 
-const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
+function ToggleSwitch({
   name,
   onChange,
   value,
   disabled,
   hideDisabled,
   label = '',
-}) => {
+}: ToggleSwitchProps) {
+  function handleChange() {
+    const newVal = !value;
+    onChange(name, newVal);
+  }
+
   return (
     <div
       className={`toggle-switch ${disabled ? 'left grey-out' : ''} ${
@@ -31,11 +36,11 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
       </label>
     </div>
   );
+}
 
-  function handleChange() {
-    const newVal = !value;
-    onChange(name, newVal);
-  }
+ToggleSwitch.defaultProps = {
+  hideDisabled: false,
+  label: '',
 };
 
 interface ToggleSwitchProps extends FormInputProps<boolean> {

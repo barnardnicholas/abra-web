@@ -88,3 +88,40 @@ em,
     opacity: 0.75;
   }
 }
+
+.graphics-blocker {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--main-background);
+  pointer-events: none;
+
+  &.hidden {
+    opacity: 0;
+    transition: opacity 0.5s ease, background-color 0.5s ease;
+  }
+}
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--main-typography) transparent;
+  overscroll-behavior: none;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--main-typography);
+  border-radius: 0;
+}
