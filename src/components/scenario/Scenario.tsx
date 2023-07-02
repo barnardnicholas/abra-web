@@ -1,4 +1,4 @@
-import React, { Fragment, Suspense, useEffect, useRef, useState } from 'react';
+import React, { Fragment, Suspense, useEffect, useRef, useState, useMemo } from 'react';
 import * as THREE from 'three';
 import { Vector3, AudioListener, Mesh, MeshPhongMaterial } from 'three';
 import { Canvas as ThreeCanvas } from '@react-three/fiber';
@@ -16,6 +16,7 @@ import { UseScenarioProps } from '../hooks/useScenario';
 import { getDarkMode } from '../../redux/selectors/darkMode';
 import PlaceholderSprite from './PlaceholderSprite';
 import { getSelectedScenario } from '../../redux/selectors/scenarios';
+import TestScene from './TestScene';
 
 const sphereScale = new Vector3(0.25, 0.25, 0.25);
 
@@ -36,7 +37,16 @@ function CanvasContent({
 }: CanvasContentProps) {
   const { soundChannels, reportDuration } = scenario;
   const [listener] = useState(() => new AudioListener());
-  const bgColor = new THREE.Color(isDarkBackground ? '#272730' : '#f7f7f7');
+  const bgColor = useMemo<THREE.Color>(
+    () => new THREE.Color(isDarkBackground ? '#272730' : '#f7f7f7'),
+    [isDarkBackground],
+  );
+  const meshColor = useMemo<THREE.Color>(() => {
+    const resultColor = new THREE.Color(isDarkBackground ? '#f7f7f7' : '#272730');
+    if (isDarkBackground) resultColor.sub(new THREE.Color('#DDDDDD'));
+    else resultColor.add(new THREE.Color('#888888'));
+    return resultColor;
+  }, [isDarkBackground]);
 
   const cameraTarget = useRef<Mesh>(null!);
 
@@ -56,16 +66,16 @@ function CanvasContent({
     <>
       <color attach="background" args={[bgColor]} />
       <Suspense fallback={null}>
-        {/* <fog attach="fog" args={['#000000', 5, 20]} /> */}
-        <ambientLight />
-        <spotLight
+        <fog attach="fog" args={['#000000', 5, 20]} />
+        {/* <ambientLight /> */}
+        {/* <spotLight
           castShadow
           intensity={8}
           angle={Math.PI / 10}
           position={[10, 10, 10]}
           shadow-mapSize-width={2048}
           shadow-mapSize-height={2048}
-        />
+        /> */}
         <mesh
           ref={cameraTarget}
           position={new Vector3(0, 0.5, 0)}
@@ -77,6 +87,9 @@ function CanvasContent({
           <sphereBufferGeometry attach="geometry" />
         </mesh>
         <PlaceholderSprite visible={!debug && !!selectedScenario} />
+        <TestScene visible={debug && !!selectedScenario} meshColor={meshColor} />
+        <GroundPlane visible={debug} />
+
         {/* Sounds */}
         {Object.values(soundChannels).map((channel: SoundChannel, i: number) => {
           if (channel.type === soundTypes.background)
@@ -132,8 +145,6 @@ function CanvasContent({
             /*  eslint-enable */
           );
         })}
-
-        <GroundPlane visible={debug} />
       </Suspense>
       <CameraRig />
     </>
