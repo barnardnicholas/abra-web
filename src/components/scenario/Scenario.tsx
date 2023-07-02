@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import LoopingSound from './LoopingSound';
 import SingleSound from './SingleSound';
 import SphereMesh from './SphereMesh';
-import GroundPlane from './GroundPlane';
+// import GroundPlane from './GroundPlane';
 import { SoundChannel, soundTypes } from '../../types/Scenario';
 import Debug from '../debug/Debug';
 import { usePrevious } from '../../utils/utils';
@@ -88,7 +88,7 @@ function CanvasContent({
         </mesh>
         <PlaceholderSprite visible={!debug && !!selectedScenario} />
         <TestScene visible={debug && !!selectedScenario} meshColor={meshColor} />
-        <GroundPlane visible={debug} />
+        {/* <GroundPlane visible={debug} /> */}
 
         {/* Sounds */}
         {Object.values(soundChannels).map((channel: SoundChannel, i: number) => {

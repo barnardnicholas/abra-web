@@ -13,7 +13,7 @@ type LightType = DirectionalLight | PointLight | SpotLight;
 function TestScene({ visible = true, meshColor }: TestSceneProps) {
   console.log(meshColor);
   const gltf = useLoader(GLTFLoader, '/models/test-scene.gltf');
-  console.dir(gltf);
+  // console.dir(gltf);
   const lights = gltf.scene.children.filter((child: Object3D<Event>) => {
     const intChild = { ...child } as Record<string, unknown>;
     if (intChild?.isLight) return true;
@@ -39,7 +39,6 @@ function TestScene({ visible = true, meshColor }: TestSceneProps) {
       })}
       {/* Lights */}
       {(lights as LightType[]).map((light: LightType) => {
-        console.log(light);
         if (light.type === 'DirectionalLight')
           return (
             <directionalLight
@@ -47,8 +46,8 @@ function TestScene({ visible = true, meshColor }: TestSceneProps) {
               scale={light.scale}
               color={light.color}
               rotation={light.rotation}
-              intensity={light.intensity / 54 / 7000}
-              // quaternion={light.quaternion}
+              intensity={light.intensity / 3000}
+              quaternion={light.quaternion}
               castShadow
             />
           );
@@ -59,8 +58,8 @@ function TestScene({ visible = true, meshColor }: TestSceneProps) {
               scale={light.scale}
               color={light.color}
               rotation={light.rotation}
-              intensity={light.intensity / 54 / 7000}
-              // quaternion={light.quaternion}
+              intensity={light.intensity / 400000}
+              quaternion={light.quaternion}
               castShadow
             />
           );
