@@ -99,7 +99,7 @@ const forest: Scenario = {
         'cuckoo/cuckoo-6.mp3',
         'cuckoo/cuckoo-7.mp3',
       ],
-      volume: 0.5,
+      volume: 0.25,
       frequency: 0.25,
       area: [
         [-2, 1, -2],
@@ -157,8 +157,8 @@ const forest: Scenario = {
       name: 'Tree Falling',
       type: soundTypes.random,
       paths: ['tree-falling/tree-falling.mp3'],
-      volume: 0.5,
-      frequency: 0.05,
+      volume: 0.25,
+      frequency: 0.01,
       area: [
         [-2, 1, -2],
         [2, 2, 2],
