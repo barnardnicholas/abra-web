@@ -1,16 +1,16 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { getShowMixer } from '../../redux/selectors/mixer';
+import { useAtom } from 'jotai';
 import { SoundChannel } from '../../types/Scenario';
 import Divider from '../common/Divider';
-import { UseScenarioProps } from '../hooks/useScenario';
+import { UseScenarioReturnType } from '../hooks/useScenario';
 import MixerChannel from './MixerChannel';
+import { showMixerAtom } from '../../atoms/atoms';
 
 interface MixerProps {
-  scenario: UseScenarioProps;
+  scenario: UseScenarioReturnType;
 }
 function Mixer({ scenario }: MixerProps) {
-  const showMixer = useSelector(getShowMixer);
+  const [showMixer] = useAtom(showMixerAtom);
 
   return (
     <div className={`mixer-container ${showMixer ? 'expanded' : ''}`}>

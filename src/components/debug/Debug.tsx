@@ -1,13 +1,13 @@
 import React from 'react';
 import { SoundChannel } from '../../types/Scenario';
 import { isEmpty } from '../../utils/utils';
-import { UseScenarioProps } from '../hooks/useScenario';
+import { UseScenarioReturnType } from '../hooks/useScenario';
 /* eslint-disable */
 import ChannelDebug from './ChannelDebug';
 /* eslint-enable */
 
 interface DebugProps {
-  scenario: UseScenarioProps;
+  scenario: UseScenarioReturnType;
 }
 
 function Debug({ scenario }: DebugProps) {

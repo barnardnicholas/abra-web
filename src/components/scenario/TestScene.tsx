@@ -42,6 +42,7 @@ function TestScene({ visible = true, meshColor }: TestSceneProps) {
         if (light.type === 'DirectionalLight')
           return (
             <directionalLight
+              key={light.uuid}
               position={light.position}
               scale={light.scale}
               color={light.color}
@@ -54,6 +55,7 @@ function TestScene({ visible = true, meshColor }: TestSceneProps) {
         if (light.type === 'SpotLight')
           return (
             <spotLight
+              key={light.uuid}
               position={light.position}
               scale={light.scale}
               color={light.color}

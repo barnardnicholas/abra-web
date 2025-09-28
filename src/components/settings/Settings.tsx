@@ -1,35 +1,26 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleDarkMode } from '../../redux/actions/darkMode';
-import { toggleDebug } from '../../redux/actions/debug';
-import { getDarkMode } from '../../redux/selectors/darkMode';
-import { getDebug } from '../../redux/selectors/debug';
-import { getShowSettings } from '../../redux/selectors/settings';
+import { useAtom } from 'jotai';
 import Divider from '../common/Divider';
 import ToggleSwitch from '../form/ToggleSwitch';
+import { darkModeAtom, debugAtom, showSettingsAtom } from '../../atoms/atoms';
 
 function Settings() {
-  const dispatch = useDispatch();
-  const showSettings = useSelector(getShowSettings);
-  const isDebug = useSelector(getDebug);
-  const isDarkMode = useSelector(getDarkMode);
+  const [darkMode, setDarkMode] = useAtom(darkModeAtom);
+  const [debug, setDebug] = useAtom(debugAtom);
+  const [showSettings] = useAtom(showSettingsAtom);
+
   return (
     <div className={`settings-container ${showSettings ? 'expanded' : ''}`}>
       <div className="settings">
         <h3>Settings</h3>
         <Divider />
-        <ToggleSwitch
-          label="Debug"
-          value={isDebug}
-          name="debug"
-          onChange={() => dispatch(toggleDebug(!isDebug))}
-        />
+        <ToggleSwitch label="Debug" value={debug} name="debug" onChange={() => setDebug(!debug)} />
         <Divider />
         <ToggleSwitch
           label="Dark theme"
-          value={isDarkMode}
+          value={darkMode}
           name="darkMode"
-          onChange={() => dispatch(toggleDarkMode(!isDarkMode))}
+          onChange={() => setDarkMode(!darkMode)}
         />
         <Divider />
       </div>

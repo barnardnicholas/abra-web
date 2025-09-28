@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
-import { getSelectedScenario } from '../../redux/selectors/scenarios';
-import { UseScenarioProps } from '../hooks/useScenario';
+import { useAtom } from 'jotai';
+import { UseScenarioReturnType } from '../hooks/useScenario';
+import { selectedScenarioAtom } from '../../atoms/atoms';
 
 interface TransportControlsProps {
-  scenario: UseScenarioProps;
+  scenario: UseScenarioReturnType;
 }
 function TransportControls({ scenario }: TransportControlsProps) {
-  const selectedScenario = useSelector(getSelectedScenario);
+  const [selectedScenario] = useAtom(selectedScenarioAtom);
 
   return (
     <div

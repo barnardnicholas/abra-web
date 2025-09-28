@@ -1,15 +1,15 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useAtom } from 'jotai';
 import LogoDark from '../../assets/logos/ABRA-Logo-Grey-WO.svg';
 import LogoLight from '../../assets/logos/ABRA-Logo-Grey.svg';
-import { getDarkMode } from '../../redux/selectors/darkMode';
+import { darkModeAtom } from '../../atoms/atoms';
 
 interface MainLogoProps {
   forceDarkTheme?: boolean;
 }
 
 function MainLogo({ forceDarkTheme = false }: MainLogoProps) {
-  const isDarkMode = useSelector(getDarkMode);
+  const [isDarkMode] = useAtom(darkModeAtom);
   return (
     <>
       <img

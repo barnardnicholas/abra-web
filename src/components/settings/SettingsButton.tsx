@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { toggleSettings } from '../../redux/actions/settings';
-import { getShowSettings } from '../../redux/selectors/settings';
+import { useAtom } from 'jotai';
+import { showSettingsAtom } from '../../atoms/atoms';
 
 function SettingsButton() {
-  const dispatch = useDispatch();
-  const showSettings = useSelector(getShowSettings);
+  const [showSettings, setShowSettings] = useAtom(showSettingsAtom);
 
   function handleKeyDown() {
     console.log();
@@ -14,7 +12,8 @@ function SettingsButton() {
   return (
     <button
       className={`settings-button ${showSettings ? 'active' : ''}`}
-      onClick={() => dispatch(toggleSettings(!showSettings))}
+      aria-label="settings"
+      onClick={() => setShowSettings(!showSettings)}
       type="button"
       onKeyDown={handleKeyDown}
     >
