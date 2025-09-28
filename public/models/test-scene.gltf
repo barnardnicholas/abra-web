@@ -214,21 +214,6 @@
 			]
 		}
 	],
-	"materials":[
-		{
-			"alphaMode":"BLEND",
-			"name":"Side Wall Material",
-			"pbrMetallicRoughness":{}
-		},
-		{
-			"name":"Floor Material",
-			"pbrMetallicRoughness":{}
-		},
-		{
-			"name":"Back Wall Material",
-			"pbrMetallicRoughness":{}
-		}
-	],
 	"meshes":[
 		{
 			"name":"Cube",
@@ -239,8 +224,7 @@
 						"TEXCOORD_0":1,
 						"NORMAL":2
 					},
-					"indices":3,
-					"material":0
+					"indices":3
 				}
 			]
 		},
@@ -253,8 +237,7 @@
 						"TEXCOORD_0":5,
 						"NORMAL":6
 					},
-					"indices":3,
-					"material":1
+					"indices":3
 				}
 			]
 		},
@@ -267,8 +250,7 @@
 						"TEXCOORD_0":8,
 						"NORMAL":9
 					},
-					"indices":3,
-					"material":2
+					"indices":3
 				}
 			]
 		},
@@ -281,8 +263,7 @@
 						"TEXCOORD_0":11,
 						"NORMAL":12
 					},
-					"indices":3,
-					"material":0
+					"indices":3
 				}
 			]
 		},
@@ -295,8 +276,7 @@
 						"TEXCOORD_0":14,
 						"NORMAL":15
 					},
-					"indices":16,
-					"material":0
+					"indices":16
 				}
 			]
 		}

@@ -44,7 +44,7 @@ function CanvasContent({
   const meshColor = useMemo<THREE.Color>(() => {
     const resultColor = new THREE.Color(isDarkBackground ? '#f7f7f7' : '#272730');
     if (isDarkBackground) resultColor.sub(new THREE.Color('#DDDDDD'));
-    else resultColor.add(new THREE.Color('#888888'));
+    else resultColor.add(new THREE.Color('#DDDDDD'));
     return resultColor;
   }, [isDarkBackground]);
 
@@ -66,8 +66,8 @@ function CanvasContent({
     <>
       <color attach="background" args={[bgColor]} />
       <Suspense fallback={null}>
-        <fog attach="fog" args={['#000000', 5, 20]} />
-        {/* <ambientLight /> */}
+        {/* <fog attach="fog" args={[isDarkBackground ? '#272730' : '#f7f7f7', 10, 35]} /> */}
+        <ambientLight intensity={8} />
         {/* <spotLight
           castShadow
           intensity={8}
@@ -86,8 +86,16 @@ function CanvasContent({
         >
           <sphereBufferGeometry attach="geometry" />
         </mesh>
-        <PlaceholderSprite visible={!debug && !!selectedScenario} />
-        <TestScene visible={debug && !!selectedScenario} meshColor={meshColor} />
+        {/* <PlaceholderSprite visible={!debug && !!selectedScenario} /> */}
+        {selectedScenario === 'city' ? (
+          <TestScene
+            visible={!!selectedScenario}
+            meshColor={meshColor}
+            isDarkBackground={isDarkBackground}
+          />
+        ) : (
+          <PlaceholderSprite visible={!!selectedScenario && !debug} />
+        )}
         {/* <GroundPlane visible={debug} /> */}
 
         {/* Sounds */}
