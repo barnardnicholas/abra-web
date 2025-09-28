@@ -1,9 +1,8 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setScenario } from '../../redux/actions/scenario';
-import { getSelectedScenario } from '../../redux/selectors/scenarios';
+import { useAtom } from 'jotai';
 import { DropdownOption } from '../../types/DropdownOption';
 import Select from '../form/Select';
+import { selectedScenarioAtom } from '../../atoms/atoms';
 
 const scenarioOptions: DropdownOption<string>[] = [
   { label: 'Ocean', value: 'ocean' },
@@ -20,14 +19,12 @@ interface ScenarioPickerProps {
 }
 
 function ScenarioPicker({ stopScenario, isPlaying }: ScenarioPickerProps) {
-  const dispatch = useDispatch();
-
-  const selectedScenario = useSelector(getSelectedScenario);
+  const [selectedScenario, setSelectedScenario] = useAtom(selectedScenarioAtom);
 
   const handleChange = (_: string, value: string | number | null) => {
     stopScenario();
-    dispatch(setScenario(null));
-    setTimeout(() => dispatch(setScenario(value)), 10);
+    setSelectedScenario(null);
+    setTimeout(() => setSelectedScenario(value as string | null), 10);
   };
 
   return (

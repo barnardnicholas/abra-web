@@ -95,6 +95,7 @@ function Select({
               <button
                 type="button"
                 className="remove"
+                aria-label="close"
                 onClick={e => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -114,6 +115,7 @@ function Select({
         {search && !!options.length && (
           <div
             className="search"
+            aria-label="search"
             onClick={e => e.stopPropagation()}
             onKeyDown={handleKeyDown}
             role="textbox"

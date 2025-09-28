@@ -1,15 +1,14 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { toggleMixer } from '../../redux/actions/mixer';
-import { getShowMixer } from '../../redux/selectors/mixer';
+import { useAtom } from 'jotai';
+import { showMixerAtom } from '../../atoms/atoms';
 
 function MixerButton() {
-  const dispatch = useDispatch();
-  const showMixer = useSelector(getShowMixer);
+  const [showMixer, setShowMixer] = useAtom(showMixerAtom);
   return (
     <button
       className={`mixer-button ${showMixer ? 'active' : ''}`}
-      onClick={() => dispatch(toggleMixer(!showMixer))}
+      aria-label="open-mixer"
+      onClick={() => setShowMixer(!showMixer)}
       type="button"
     >
       <i className="fa fa-sliders-h" />

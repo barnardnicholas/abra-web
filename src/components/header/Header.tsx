@@ -1,31 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleMixer } from '../../redux/actions/mixer';
-import { toggleSettings } from '../../redux/actions/settings';
-import { getDebug } from '../../redux/selectors/debug';
-import { getShowMixer } from '../../redux/selectors/mixer';
-import { getSelectedScenario } from '../../redux/selectors/scenarios';
-import { getShowSettings } from '../../redux/selectors/settings';
+import { useAtom } from 'jotai';
 import { usePrevious } from '../../utils/utils';
 import MainLogo from './MainLogo';
 import MixerButton from '../mixer/MixerButton';
 import ScenarioPicker from './ScenarioPicker';
 import SettingsButton from '../settings/SettingsButton';
+import {
+  debugAtom,
+  // selectedScenarioAtom,
+  showMixerAtom,
+  showSettingsAtom,
+} from '../../atoms/atoms';
 
 interface HeaderProps {
   stopScenario: () => void;
   isPlaying: boolean;
   isLoading?: boolean;
+  selectedScenario: string | null;
 }
-function Header({ stopScenario, isPlaying, isLoading }: HeaderProps) {
-  const dispatch = useDispatch();
-
+function Header({ stopScenario, isPlaying, isLoading, selectedScenario }: HeaderProps) {
   const isScreenNarrow = window.innerWidth < 1000;
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
-  const selectedScenario = useSelector(getSelectedScenario);
-  const debug = useSelector(getDebug);
-  const showSettings = useSelector(getShowSettings);
-  const showMixer = useSelector(getShowMixer);
+  // const [selectedScenario] = useAtom(selectedScenarioAtom);
+  const [debug] = useAtom(debugAtom);
+  const [showSettings, setShowSettings] = useAtom(showSettingsAtom);
+  const [showMixer, setShowMixer] = useAtom(showMixerAtom);
   const prevProps = usePrevious({ selectedScenario, showSettings, showMixer });
 
   useEffect(() => {
@@ -34,17 +33,16 @@ function Header({ stopScenario, isPlaying, isLoading }: HeaderProps) {
 
   useEffect(() => {
     if (selectedScenario !== prevProps.selectedScenario) {
-      dispatch(toggleSettings(false));
-      dispatch(toggleMixer(false));
+      setShowSettings(false);
+      setShowMixer(false);
     }
     if (isScreenNarrow && showMixer && !prevProps.showMixer) {
-      dispatch(toggleSettings(false));
+      setShowSettings(false);
     }
     if (isScreenNarrow && showSettings && !prevProps.showSettings) {
-      dispatch(toggleMixer(false));
+      setShowMixer(false);
     }
   }, [
-    dispatch,
     selectedScenario,
     showMixer,
     showSettings,
@@ -52,6 +50,8 @@ function Header({ stopScenario, isPlaying, isLoading }: HeaderProps) {
     prevProps.showMixer,
     prevProps.showSettings,
     isScreenNarrow,
+    setShowMixer,
+    setShowSettings,
   ]);
 
   return (

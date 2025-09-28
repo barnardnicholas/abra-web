@@ -1,29 +1,29 @@
-import React from 'react';
-import { useSelector, Provider } from 'react-redux';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { PersistGate } from 'redux-persist/integration/react';
-import store from './redux/store';
+import { useAtom } from 'jotai';
 import LoadingHeader from './components/header/LoadingHeader';
 import './_styles/App.scss';
 import Scenario from './components/scenario/Scenario';
 import Header from './components/header/Header';
 // import StyleGuide from './components/StyleGuide';
-import { getSelectedScenario } from './redux/selectors/scenarios';
 import useScenario from './components/hooks/useScenario';
 import Settings from './components/settings/Settings';
-import { getDarkMode } from './redux/selectors/darkMode';
 import Mixer from './components/mixer/Mixer';
-import { getShowSettings } from './redux/selectors/settings';
-import { getShowMixer } from './redux/selectors/mixer';
 import TransportControls from './components/transportControls/TransportControls';
-import { getDebug } from './redux/selectors/debug';
+import {
+  darkModeAtom,
+  debugAtom,
+  selectedScenarioAtom,
+  showMixerAtom,
+  showSettingsAtom,
+} from './atoms/atoms';
 
 function App() {
-  const selectedScenario = useSelector(getSelectedScenario) || 'none';
-  const isDarkMode = useSelector(getDarkMode);
-  const debug = useSelector(getDebug);
-  const isShowingSettings = useSelector(getShowSettings);
-  const isShowingMixer = useSelector(getShowMixer);
+  const [selectedScenario] = useAtom(selectedScenarioAtom);
+  const [isDarkMode] = useAtom(darkModeAtom);
+  const [debug] = useAtom(debugAtom);
+  const [isShowingSettings] = useAtom(showSettingsAtom);
+  const [isShowingMixer] = useAtom(showMixerAtom);
   const scenario = useScenario(selectedScenario as string);
   return (
     <div className={`App ${isDarkMode ? '' : 'theme-light'}`}>
@@ -34,7 +34,11 @@ function App() {
         }`}
       />
       {/* <StyleGuide /> */}
-      <Header stopScenario={scenario.stopScenario} isPlaying={scenario.isPlaying} />
+      <Header
+        stopScenario={scenario.stopScenario}
+        isPlaying={scenario.isPlaying}
+        selectedScenario={selectedScenario}
+      />
       <div
         className={`background-blocker ${
           isShowingSettings || isShowingMixer ? 'semi-hidden' : 'hidden'
@@ -49,13 +53,11 @@ function App() {
 
 function AppContext() {
   return (
-    <Provider store={store().store}>
-      <PersistGate loading={<LoadingHeader />} persistor={store().persistor}>
-        <Router>
-          <App />
-        </Router>
-      </PersistGate>
-    </Provider>
+    <Suspense fallback={<LoadingHeader />}>
+      <Router>
+        <App />
+      </Router>
+    </Suspense>
   );
 }
 

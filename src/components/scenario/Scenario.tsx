@@ -1,8 +1,8 @@
 import React, { Fragment, Suspense, useEffect, useRef, useState, useMemo } from 'react';
+import { useAtom } from 'jotai';
 import * as THREE from 'three';
 import { Vector3, AudioListener, Mesh, MeshPhongMaterial } from 'three';
 import { Canvas as ThreeCanvas } from '@react-three/fiber';
-import { useSelector } from 'react-redux';
 import LoopingSound from './LoopingSound';
 import SingleSound from './SingleSound';
 import SphereMesh from './SphereMesh';
@@ -11,19 +11,17 @@ import { SoundChannel, soundTypes } from '../../types/Scenario';
 import Debug from '../debug/Debug';
 import { usePrevious } from '../../utils/utils';
 import CameraRig from './CameraRig';
-import { getDebug } from '../../redux/selectors/debug';
-import { UseScenarioProps } from '../hooks/useScenario';
-import { getDarkMode } from '../../redux/selectors/darkMode';
+import { UseScenarioReturnType } from '../hooks/useScenario';
 import PlaceholderSprite from './PlaceholderSprite';
-import { getSelectedScenario } from '../../redux/selectors/scenarios';
 import TestScene from './TestScene';
+import { darkModeAtom, debugAtom, selectedScenarioAtom } from '../../atoms/atoms';
 
 const sphereScale = new Vector3(0.25, 0.25, 0.25);
 
 const colors = ['green', 'red', 'yellow', 'purple', 'orange'];
 
 interface CanvasContentProps {
-  scenario: UseScenarioProps;
+  scenario: UseScenarioReturnType;
   debug: boolean;
   isDarkBackground: boolean;
   selectedScenario: string | null;
@@ -152,13 +150,13 @@ function CanvasContent({
 }
 
 interface CanvasProps {
-  scenario: UseScenarioProps;
+  scenario: UseScenarioReturnType;
 }
 
 function Canvas({ scenario }: CanvasProps) {
-  const debug = useSelector(getDebug);
-  const isDarkMode = useSelector(getDarkMode);
-  const selectedScenario = useSelector(getSelectedScenario);
+  const [debug] = useAtom(debugAtom);
+  const [isDarkMode] = useAtom(darkModeAtom);
+  const [selectedScenario] = useAtom(selectedScenarioAtom);
   const prevProps = usePrevious({ isDarkMode, selectedScenario });
   const [isDarkBackground, setIsDarkBackground] = useState<boolean>(isDarkMode);
   const [showBackgroundBlocker, setShowBackgroundBlocker] = useState<boolean>(false);

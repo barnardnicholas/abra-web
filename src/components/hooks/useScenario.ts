@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import { Vector3 } from 'three';
-// import { getConcurrentAudio } from '../../redux/selectors/debug';
 import { SoundChannel, soundTypes } from '../../types/Scenario';
 import useSavedAndPresetScenarios from './useSavedAndPresetScenarios';
 import {
@@ -25,7 +24,7 @@ interface ChannelRef {
 }
 let channelRefs: Record<string, ChannelRef> = {}; // hoisted ref for frequency/isPlaying - tick doesn't read updated state
 
-export interface UseScenarioProps {
+export interface UseScenarioReturnType {
   soundChannels: Record<string, SoundChannel>;
   setPosition: (slug: string, position: Vector3) => void;
   play: (slug: string, position?: Vector3) => void;
@@ -40,7 +39,7 @@ export interface UseScenarioProps {
   setIsPlaying: Dispatch<SetStateAction<boolean>>;
 }
 
-const useScenario = (scenarioSlug: string): UseScenarioProps => {
+const useScenario = (scenarioSlug: string): UseScenarioReturnType => {
   const { currentScenario } = useSavedAndPresetScenarios(scenarioSlug);
   const [soundChannels, setSoundChannels] = useState<Record<string, SoundChannel>>({});
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
